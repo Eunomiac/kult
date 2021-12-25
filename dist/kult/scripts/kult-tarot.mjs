@@ -13,7 +13,7 @@ import {
 	// GSDevTools,
 	SlowMo,
 	RoughEase
-} from "./external/greensock/all.js";
+} from "https://raw.githubusercontent.com/Eunomiac/kult/main/scripts/external/greensock/all.js";
 
 gsap.registerPlugin(Draggable, SlowMo, RoughEase);
 
@@ -122,7 +122,7 @@ const CONSTANTS = {
 			minTop: 50,
 			maxTop: 200
 		}
-	},
+	}, // https://raw.githubusercontent.com/Eunomiac/kult/main/index.html
 	slotSteps: {
 		blur: ["0px", "0px", "2px", "6px", "9px", "12px"],
 		opacity: [1, 1, 0.75, 0.65, 0.5, 0.35],

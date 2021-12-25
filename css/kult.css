@@ -1,10 +1,10 @@
 @font-face {
   font-family: Infidel;
-  src: url(../assets/fonts/Infidel-C.ttf); }
+  src: url("https://raw.githubusercontent.com/Eunomiac/kult/main/../assets/fonts/Infidel-C.ttf"); }
 
 @font-face {
   font-family: 'Alverata Informal W01';
-  src: url("../assets/fonts/Alverata Informal W01 Regular.ttf"); }
+  src: url("https://raw.githubusercontent.com/Eunomiac/kult/main/assets/fonts/Alverata Informal W01 Regular.ttf"); }
 
 html {
   height: 100%; }
