@@ -1,0 +1,167 @@
+$bg-color: rgb(0, 0, 0); // #f5f5f5;
+$card-aspect-ratio: 1.7119565217391304347826086956522;
+$card-height: 275px;
+$card-width: $card-height / $card-aspect-ratio;
+$card-row-gap: 50px;
+$card-shift-vert: $card-height / 15;
+$card-grid-padding: 20px;
+$card-column-gap: 5px;
+$card-font-size: 18px;
+$card-color: rgb(255, 215, 0);
+$card-font-family: 'Alverata Informal W01';
+$card-fade-shadow: 0 0 5px rgb(0, 0, 0), 0 0 5px rgb(0, 0, 0);
+$title-font-size: 24px;
+$title-font-family: Infidel;
+$title-color: rgb(255, 255, 255);
+$title-shadow-color: rgb(0, 0, 0);
+$title-shadow: 0 0 3px $title-shadow-color, 0 0 3px $title-shadow-color, 0 0 3px $title-shadow-color, 0 0 3px $title-shadow-color, 0 0 3px $title-shadow-color, 0 0 3px $title-shadow-color;
+$title-shift-vert: -25px;
+$keyword-font-size: 22px;
+$keyword-font-family: Infidel;
+$keyword-color: rgb(255, 0, 0); // rgb(150, 255, 255);
+$keyword-shadow-color: rgb(0, 0, 0);
+$keyword-shadow: 0 0 3px $keyword-shadow-color, 0 0 3px $keyword-shadow-color, 0 0 3px $keyword-shadow-color;
+$keyword-shift-vert: -20px;
+
+@font-face {
+	font-family: Infidel;
+	src: url(../assets/fonts/Infidel-C.ttf);
+}
+
+@font-face {
+	font-family: 'Alverata Informal W01';
+	src: url('../assets/fonts/Alverata\ Informal\ W01\ Regular.ttf');
+}
+
+html {
+	height: 100%;
+
+	body {
+		font-family: 'Alverata Informal W01';
+		background: $bg-color;
+
+		#header { }
+
+		#tarot-layout {
+			display: grid;
+			width: min-content;
+			padding: $card-grid-padding;
+			padding-bottom: $card-grid-padding + $card-shift-vert;
+			padding-top: $card-grid-padding + $card-shift-vert;
+			grid-template-columns: repeat(3, #{$card-width * 1.5});
+			grid-template-rows: repeat(3, #{$card-height});
+			grid-row-gap: $card-row-gap;
+			grid-column-gap: $card-column-gap;
+			background-color: rgba(0, 0, 0, 0.2);
+
+			.tarot-slot {
+				--glow-color: rgb(255, 0, 0);
+				--glow-blur: 0px;
+				--glow-size: 10px;
+
+				position: relative;
+				
+				&#slot-1 {
+					grid-column: 2 / 3;
+					grid-row: 2 / 3;
+				}
+				&#slot-2 {
+					grid-column: 1 / 2;
+					grid-row: 2 / 3;
+				}
+				&#slot-3 {
+					grid-column: 2 / 3;
+					grid-row: 1 / 2;
+				}
+				&#slot-4 {
+					grid-column: 3 / 4;
+					grid-row: 2 / 3;
+				}
+				&#slot-5 {
+					grid-column: 2 / 3;
+					grid-row: 3 / 4; 
+				}
+								
+				display: grid;
+				grid-template-columns: repeat(6, #{$card-width / 4});
+				
+				.tarot-card {
+					position: relative;
+					grid-column: 2 / 6;
+					grid-row: 1 / 2;
+					border: 3px solid black;
+					border-radius: 25px;
+					background-image: var(--bg-image);
+					background-size: contain;
+					background-position: center;
+					z-index: 2;
+					filter: drop-shadow(0 0 var(--glow-size) var(--glow-color)) blur(var(--glow-blur));
+					
+					&.shifted {
+						grid-column: 1 / 5;
+						top: $card-shift-vert;
+						z-index: 1;
+						filter: drop-shadow(0 0 var(--glow-size) var(--glow-color));
+						
+						&.hidden { display: none }		
+						&:hover { z-index: 3 }				
+						&:not(.hidden) + .tarot-card:not(.shifted) { 
+							grid-column: 3 / 7;
+							top: -1 * $card-shift-vert;
+						}
+					}
+
+					.card-title {
+						position: absolute;
+						display: block;
+						opacity: 1;
+						color: $title-color;
+						text-align: center;
+						transform-origin: left;
+						transform: scaleX(0.7);
+						width: calc(100% / 0.7);
+						font-size: $title-font-size;
+						font-family: $title-font-family;
+						font-variant: small-caps;
+						text-shadow: $title-shadow;		
+						bottom: $title-shift-vert;
+						pointer-events: none;
+						transition: 0.5s;
+						white-space: nowrap;
+					}
+
+					&:not(:hover) .card-title { opacity: 0 }
+
+					.card-keyword {
+						position: absolute;
+						color: $keyword-color;
+						text-align: center;
+						width: calc(100% + 2 * 25px);
+						margin-left: -25px;
+						font-size: $keyword-font-size;
+						line-height: $keyword-font-size;
+						font-family: $keyword-font-family;
+						text-shadow: $keyword-shadow;		
+						top: $keyword-shift-vert;
+						pointer-events: none;
+						white-space: nowrap; 
+					}
+				}
+
+				.slot-text {
+					position: absolute;
+					display: none;
+					pointer-events: none;
+					color: $card-color;
+					text-align: center;
+					width: $card-width * 1.5;
+					font-size: $card-font-size;
+					font-family: $card-font-family;
+					text-shadow: $card-fade-shadow;
+					z-index: 1000;
+
+				}
+			}
+		}
+	}
+}

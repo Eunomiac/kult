@@ -1,0 +1,6 @@
+/.vscode/**
+/.EXAMPLES&REFERENCE/**
+/scripts/external/**
+/dist/**
+debug.js
+Draggable.js

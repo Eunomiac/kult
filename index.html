@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">  
+	<head>
+		<title>Tarot Card Reader for KULT: Divinity Lost</title>
+		<!--  Styles  -->
+		<link rel="stylesheet" href="css/kult.css">
+		
+		<!-- Scripts -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script type="module" src="scripts/kult-tarot.mjs"></script>
+	</head>
+  
+	<body>
+		<section id="header">
+			KULT: Divinity Lost Tarot Reading
+		</section>
+		<section id="main">
+			<div id="tarot-control">
+				<button id="reset">Reset</button>
+				<button id="deal">Deal</button>
+			</div>		
+			<div id="tarot-layout">
+				<div id="slot-1" class="tarot-slot">
+					<div id="card-1-shifted" class="tarot-card shifted hidden">
+						<span id="card-1-shiftTitle" class="card-title shift-title"></span>
+						<span id="card-1-shiftKeyword" class="card-keyword shift-keyword"></span>
+					</div>
+					<div id="card-1" class="tarot-card">
+						<span id="card-1-title" class="card-title"></span>
+						<span id="card-1-keyword" class="card-keyword"></span>
+					</div>
+					<span id="slot-1-text" class="slot-text"></span>
+				</div>
+				<div id="slot-2" class="tarot-slot">
+					<div id="card-2-shifted" class="tarot-card shifted hidden">
+						<span id="card-2-shiftTitle" class="card-title shift-title"></span>
+						<span id="card-2-shiftKeyword" class="card-keyword shift-keyword"></span>
+					</div>
+					<div id="card-2" class="tarot-card">
+						<span id="card-2-title" class="card-title"></span>
+						<span id="card-2-keyword" class="card-keyword"></span>
+					</div>
+					<span id="slot-2-text" class="slot-text"></span>
+				</div>
+				<div id="slot-3" class="tarot-slot">
+					<div id="card-3-shifted" class="tarot-card shifted hidden">
+						<span id="card-3-shiftTitle" class="card-title shift-title"></span>
+						<span id="card-3-shiftKeyword" class="card-keyword shift-keyword"></span>
+					</div>
+					<div id="card-3" class="tarot-card">
+						<span id="card-3-title" class="card-title"></span>
+						<span id="card-3-keyword" class="card-keyword"></span>
+					</div>
+					<span id="slot-3-text" class="slot-text"></span>
+				</div>
+				<div id="slot-4" class="tarot-slot">
+					<div id="card-4-shifted" class="tarot-card shifted hidden">
+						<span id="card-4-shiftTitle" class="card-title shift-title"></span>
+						<span id="card-4-shiftKeyword" class="card-keyword shift-keyword"></span>
+					</div>
+					<div id="card-4" class="tarot-card">
+						<span id="card-4-title" class="card-title"></span>
+						<span id="card-4-keyword" class="card-keyword"></span>
+					</div>
+					<span id="slot-4-text" class="slot-text"></span>
+				</div>
+				<div id="slot-5" class="tarot-slot">
+					<div id="card-5-shifted" class="tarot-card shifted hidden">
+						<span id="card-5-shiftTitle" class="card-title shift-title"></span>
+						<span id="card-5-shiftKeyword" class="card-keyword shift-keyword"></span>
+					</div>
+					<div id="card-5" class="tarot-card">
+						<span id="card-5-title" class="card-title shift-title"></span>
+						<span id="card-5-keyword" class="card-keyword"></span>
+					</div>
+					<span id="slot-5-text" class="slot-text"></span>
+				</div>		
+			</div>		
+		</section>
+	</body>  
+</html>

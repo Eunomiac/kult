@@ -1,0 +1,81 @@
+// ████████████████████████████████████████
+// █████████ WORKSPACE SETTINGS ███████████
+// ████████████████████████████████████████
+{
+    // ████████[CORE]████████
+    
+    // ████████[CORE]  THEMES & APPEARANCE ████████
+
+    // ████████[CORE]  GITHUB INTEGRATION ████████
+
+    // ████████[CORE]  DEBUGGING ████████
+
+    // ████████[EXTENSION]  GITLENS ████████    
+
+    // ████████[EXTENSION]  MULTI-COMMAND ████████
+
+    // ████████[EXTENSION]  CODE RUNNER ████████
+
+    // ████████[LINTING]████████
+    "editor.formatOnSave": false, // true,
+    "scss.validate": false,
+    "css.validate": false,
+    "less.validate": false,
+    "editor.codeActionsOnSave": {
+       // ESLint
+       // "source.fixAll.eslint": true,
+       // StyleLint
+       // "source.fixAll.stylelint": true
+    },
+    "eslint.lintTask.enable": true,
+    "stylelint.validate": [],
+    "[css]": {
+        "editor.defaultFormatter": "stylelint.vscode-stylelint"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }, 
+    "[html]": {
+        "editor.defaultFormatter": "mohd-akram.vscode-html-format"
+    },
+    "[scss]": {
+        "editor.defaultFormatter": "stylelint.vscode-stylelint",
+        "editor.formatOnSave": false
+    },
+    "[handlebars]": {
+        "editor.defaultFormatter": "vscode.html-language-features",
+        "editor.formatOnSave": false
+		},
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/CVS": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true,
+			"README.md": true,
+			".prettierrc.js": true,
+			".npmignore": true,
+			".htmlhintrc": true,
+			".gitignore": true,
+			".eslintrc.js": false,
+			".eslintignore": true,
+			"gulpfile.js": true,
+			"LICENSE.txt": true,
+			"package.json": true,
+			"stylelint.config.js": true,
+			"dist": true,
+			"node_modules": true,
+			"scripts/external": true,
+			"css": true,
+			".vscode": false
+		},
+		"explorerExclude.backup": null,
+		
+    
+    // ████████[EXTENSION]  #REGION FOLDING FOR VS CODE ████████
+    
+    
+    // ████████[EXTENSION]  REGIONS WITH COLORS ████████
+
+}
