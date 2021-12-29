@@ -58,17 +58,17 @@
 			".npmignore": true,
 			".htmlhintrc": true,
 			".gitignore": true,
-			".eslintrc.js": false,
+			".eslintrc.js": true,
 			".eslintignore": true,
-			"gulpfile.js": true,
+			"gulpfile.js": false,
 			"LICENSE.txt": true,
 			"package.json": true,
 			"stylelint.config.js": true,
 			"dist": true,
 			"node_modules": true,
-			"scripts/external": true,
+			"scripts/external": false,
 			"css": true,
-			".vscode": false
+			".vscode": true
 		},
 		"explorerExclude.backup": null,
 		

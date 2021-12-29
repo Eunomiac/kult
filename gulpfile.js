@@ -193,7 +193,7 @@ const BUILDFILES = {
 		"./css/": ["scss/**/*.scss"]
 	},
 	hbs: {
-		"./dist/kult/html/": ["html/**/*.hbs", "html/**/*.html"]
+		"./dist/kult/": ["*.hbs", "*.html"]
 	},
 	assets: {
 		"./dist/kult/assets/": ["assets/**/*.*"],

@@ -6,7 +6,7 @@ import {
 	// GSDevTools,
 	SlowMo,
 	RoughEase
-} from "https://raw.githubusercontent.com/Eunomiac/kult/main/scripts/external/greensock/all.js";
+} from "./external/greensock/all.js";
 
 gsap.registerPlugin(Draggable, SlowMo, RoughEase);
 
@@ -16,7 +16,7 @@ const DEBUG = {
 
 // #region ▮▮▮▮▮▮▮[INITIALIZATION] Initialization, Configuration & Constants ▮▮▮▮▮▮▮ ~
 const CONSTANTS = {
-	imgPath: "https://raw.githubusercontent.com/Eunomiac/kult/main/images/",
+	imgPath: "https://raw.githubusercontent.com/Eunomiac/kult/main/assets/images/",
 	bgEmptySlot: "linear-gradient(202deg, rgb(0, 0, 0), rgb(100, 100, 100))",
 	bgCardBack: "card-back.webp",
 	initialLayout: {
@@ -115,7 +115,7 @@ const CONSTANTS = {
 			minTop: 50,
 			maxTop: 200
 		}
-	}, // https://raw.githubusercontent.com/Eunomiac/kult/main/index.html
+	},
 	slotSteps: {
 		blur: ["0px", "0px", "2px", "6px", "9px", "12px"],
 		opacity: [1, 1, 0.75, 0.65, 0.5, 0.35],
@@ -2628,6 +2628,14 @@ const getImgStyle = (imgfile) => {
 	if (/^http/.test(imgfile)) { return `url(${imgfile})` }
 	return `url("${CONSTANTS.imgPath}${imgfile}")`;
 };
+/* const createCard = (slot, shiftedCard = false) => {
+	LAYOUT[slot] = LAYOUT[slot] ?? {};
+	LAYOUT[slot].card = drawCard();
+	LAYOUT[slot].shiftedCard = shiftedCard;
+
+} */
+
+
 const updateSlotOpacity = (isInstant = false) => {
 	const setOpacity = (slot, opacity, blur, color, size, scale) => {
 		const updateData = {};
