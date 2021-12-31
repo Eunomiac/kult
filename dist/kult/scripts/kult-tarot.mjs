@@ -5,151 +5,96 @@
 |*     ▌██████████████████░░░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░░░███████████████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
-import {
-	gsap,
-	Draggable,
-	// InertiaPlugin,
-	// MotionPathPlugin,
-	// GSDevTools,
-	SlowMo,
-	RoughEase
-} from "./external/greensock/all.js";
+console.clear();
+/*
+WHEN DONE:  @Weremir wants to test it 
+*/
 
-gsap.registerPlugin(Draggable, SlowMo, RoughEase);
+import {gsap, Draggable, Flip, InertiaPlugin, SlowMo} from "./external/greensock/all.js";
+
+gsap.registerPlugin(Draggable, Flip, InertiaPlugin, SlowMo);
 
 const DEBUG = {
-	isTestingMajorArcana: true
+	isTestingMajorArcana: true,
+	// isLimitingDeckSize: 10
+};
+
+// ▮▮▮▮▮▮▮[UTILITY] Utility Functions ▮▮▮▮▮▮▮
+const shuffle = (arr) => {
+	let currentIndex = arr.length,
+					randomIndex;
+	while (currentIndex !== 0) {
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex--;
+		[arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
+	}
+	return arr;
+};
+const randBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const round = (num, sigDigits = 0) => Math.round(num * (10 ** sigDigits)) / (10 ** sigDigits);
+const sinOf = (deg) => Math.sin(deg * (Math.PI / 180));
+const cosOf = (deg) => Math.cos(deg * (Math.PI / 180));
+const getImgCSS = (imgRef) => {
+	if (/^(linear|url)/.test(imgRef)) { return imgRef }
+	if (/^http/.test(imgRef)) { return `url(${imgRef})` }
+	return `url("${CONSTANTS.imgPath}${imgRef}")`;
 };
 
 // ▮▮▮▮▮▮▮[INITIALIZATION] Initialization, Configuration & Constants ▮▮▮▮▮▮▮
 const CONSTANTS = {
 	imgPath: "https://raw.githubusercontent.com/Eunomiac/kult/main/assets/images/",
+	bgTable: "table-bg.webp",
 	bgEmptySlot: "linear-gradient(202deg, rgb(0, 0, 0), rgb(100, 100, 100))",
-	bgCardBack: "card-back.webp",
-	initialLayout: {
-		interval: null,
-		slotQueue: [],
-		1: {
-			mainCard: null,
-			shiftCard: null,
-			isFaceUp: false,
-			fadeText: [],
-			opacity: 1
-		},
-		2: {
-			mainCard: null,
-			shiftCard: null,
-			isFaceUp: false,
-			fadeText: [],
-			opacity: 0.75
-		},
-		3: {
-			mainCard: null,
-			shiftCard: null,
-			isFaceUp: false,
-			fadeText: [],
-			opacity: 0.75
-		},
-		4: {
-			mainCard: null,
-			shiftCard: null,
-			isFaceUp: false,
-			fadeText: [],
-			opacity: 0.75
-		},
-		5: {
-			mainCard: null,
-			shiftCard: null,
-			isFaceUp: false,
-			fadeText: [],
-			opacity: 0.75
-		}
+	bgCardBack: "card-back-.webp",
+	slotStyles: {
+		0: {opacity: 1},
+		1: {opacity: 0.6},
+		2: {opacity: 0.5},
+		3: {opacity: 0.4},
+		4: {opacity: 0.3}
 	},
-	readingTemplates: {
-		individual: [
-			null,
-			"A core characteristic of the individual.",
-			"Something from the past that shaped the individual.",
-			"An ambition that drives the individual.",
-			"The individual’s greatest weakness.",
-			"The individual’s greatest strength."
-		],
-		location: [
-			null,
-			"The general nature of the location.",
-			"Something about the location’s past.",
-			"An unexpected or quirky trait.",
-			"A weakness of the location that might be exploited.",
-			"Something that makes the location exceptional."
-		],
-		cult: [
-			null,
-			"What power or ambition drives the cult?",
-			"What is something important about the cult's history?",
-			"What does the cult wish to accomplish?",
-			"What is the cult's most significant weakness?",
-			"What is an unexpected advantage or resource the cult has?"
-		],
-		plot: [
-			null,
-			"Who or what is behind the plot?",
-			"What is the motivation for the plot?",
-			"What is the next move in the plot?",
-			"Who or what opposes the plot?",
-			"Who or what supports the plot?"
-		],
-		creature: [
-			null,
-			"From what myth, legend or background story does the creature originate?",
-			"How could one find out more about the creature?",
-			"What drives the creature?",
-			"What is the creature's greatest weakness?",
-			"What is the creature's greatest strength?"
-		],
-		artifact: [
-			null,
-			"How did the artifact come to be?",
-			"Who else is seeking the artifact?",
-			"What are the dangers of using the artifact?",
-			"What is the artifact's most significant power?",
-			"What other power does the artifact have?"
-		]
+	padding: {x: 20, y: 20},
+	spacing: {x: 100, y: 30},
+	card: {
+		aspectRatio: 1.712,
+		get height() { return ((window.innerHeight - (2 * CONSTANTS.padding.y)) / 3 - CONSTANTS.spacing.y) },
+		get width() { return this.height / this.aspectRatio }
 	},
-	fadeTextPosition: {
-		fades: {
-			minLeft: -25,
-			maxLeft: 25,
-			minTop: 50,
-			maxTop: 200
-		}
+	deckOffset: -15,
+	deckEdgeAlpha: {min: 0, max: 250},
+	deckRadiusPercent: 1.4,
+	ghostTextCategories: ["individual", "location", "organization", "situation", "creature", "item"],
+};
+CONSTANTS.slotPos = {
+	get 1() {
+		return {
+			x: window.innerWidth / 2,
+			y: window.innerHeight / 2
+		};
 	},
-	slotSteps: {
-		blur: ["0px", "0px", "2px", "6px", "9px", "12px"],
-		opacity: [1, 1, 0.75, 0.65, 0.5, 0.35],
-		color: [
-			"rgb(255, 0, 0)",
-			"rgb(0, 255, 0)",
-			"rgb(255, 0, 0)",
-			"rgb(255, 0, 0)",
-			"rgb(255, 0, 0)",
-			"rgb(255, 0, 0)"
-		],
-		size: ["15px", "15px", "20px", "25px", "35px", "50px"],
-		scale: [1, 1.25, 1, 1, 1, 1, 1]
+	get 2() {
+		return {
+			x: this[1].x - (CONSTANTS.spacing.x + CONSTANTS.card.width),
+			y: this[1].y
+		};
 	},
-	timing: {
-		cardTextInterval: 1000,
-		cardTextFadeInTime: 5000,
-		cardTextFadeOutTime: 5000,
-		cardTextDuration: {
-			min: 5000,
-			max: 15000
-		},
-		cardTextFadeDelay: {
-			min: 0,
-			max: 2000
-		},
-		slotFullFadeDuration: 1
+	get 3() {
+		return {
+			x: this[1].x,
+			y: this[1].y - (CONSTANTS.spacing.y + CONSTANTS.card.height)
+		};
+	},
+	get 4() {
+		return {
+			x: this[1].x + (CONSTANTS.spacing.x + CONSTANTS.card.width),
+			y: this[1].y
+		};
+	},
+	get 5() {
+		return {
+			x: this[1].x,
+			y: this[1].y + (CONSTANTS.spacing.y + CONSTANTS.card.height)
+		};
 	}
 };
 const TAROTDATA = {
@@ -157,33 +102,144 @@ const TAROTDATA = {
 		{
 			name: "ANTHROPOS",
 			affiliation: "Divine",
-			keyword: "Awakening to",
 			value: 0,
-			summary: "Anthropos represents the Awakened Man: the Path to Awakening and the true divine origin of humanity.",
-			details: "The card reveals a connection to an Awakened Man, the path to Awakening, or of some shard of divinity that lies hidden deep within or is traceable back to a previous life.",
-			note: "This card is one of the top three most powerful cards in the whole Arcana, along with the <strong><em>Demiurge</em></strong> and <em><strong>Astaroth</em></strong>, and always reveals something of great significance. When this card is drawn, it might be suitable to draw an additional card and place on top of it to show how its power manifests itself.",
+			keyword: "Awakening to",
+			summary: "One of the three most powerful cards in the Kult Tarot, Anthropos represents the glorious potential of humanity's lost divinity against the forces holding us captive. Anthropos is a powerful sign that this reading favours humanity in its struggle against both the Archons and the Death Angels.",
+			note: "Because of the unique significance of Anthropos, a second card has been drawn and paired with it to reveal how the power of Anthropos manifests in the context of this reading.",
+			ghostText: {				
+				individual: [
+					"an Awakened Man",
+					"a single mother feels divinity ignite in her heart",
+					"a teenager's visions of past lives reveal Awakened truths",
+					"an enemy is revealed to have been a friend all along",
+					"a spiritual athiest who doesn't know how right he is",
+					"a Sleeper opening their eyes for the first time",
+					"the author of a self-help book that really works",
+					"a mole who has the trust of a Lichtor"
+				],
+				location: [
+					"a Tomb of the Unknown Soldier",
+					"a cozy second-hand book store",
+					"an Amish community",
+					"a remote survivalist camp"
+				],
+				organization: [
+					"a cult that worships humanity's lost divinity",
+					"base jumpers who've never lost a member",
+					"neoshamans offering ayahuasca vision quests",
+					"a strict meditation retreat"
+				],
+				situation: [
+					"a milestone on the Path to Awakening",
+					"Sleepers confront their divine captors head on",
+					"a divine plan fails catastrophically"
+				],
+				creature: [
+					"a monster unexpectedly demonstrates humanity",
+					"the ghost of a lost ally returns to offer aid",
+					"an agent of the divine turn traitors"					
+				],
+				item: [
+					"a lie detector that works, but not on humans",
+					"an empty mirror frame",
+					"the smoking gun an Archon thought was well-hidden"
+				]
+			},
 			isDrawingShiftCard: true,
 			imgfile: "major-0.webp"
 		},
 		{
 			name: "DEMIURGOS",
 			affiliation: "Divine",
-			keyword: "Imprisoned by",
 			value: 1,
-			summary: "Demiurgos represents the Demiurge: The ruler who is now lost and was the Creator of Mankind's prison.",
-			details: "The card reveals a connection to the lost Demiurge, one of His servants, or perhaps to His Citadel that vanished. It has strong connections with: The power of Metropolis. The Endless City. The Citadels of the Archons. A Dead Civilization. Secret Paths. Beasts of Metropolis. Survivors. Stillness and Death. Hidden Secrets. A Great Power that is Sleeping. Dark Vaults. Watchers. Enslaved Gods. Temples. Dark streets. The Machinery of Death and Rebirth.",
-			note: "This card is one of the top three most powerful cards in the whole Arcana, along with <strong><em>Anthropos</em></strong> and <em><strong>Astaroth</em></strong>, and always reveals something of great significance. When this card is drawn, it might be suitable to draw an additional card and place on top of it to show how its power manifests itself.",
+			keyword: "Imprisoned by",
+			summary: "One of the three most powerful cards in the Kult Tarot, Demiurgos represents the Demiurge: The original architect of Mankind's prison, the ruler who is now lost. Demiurgos is a powerful sign that this reading favours the Archons and their machinations.",
+			note: "Because of the unique significance of Demiurgos, a second card has been drawn and paired with it to reveal how the power of Demiurgos manifests in the context of this reading.",
+			ghostText: {
+				individual: [
+					"the mastermind of a vast conspiracy",
+					"a villain who has been watching closely",
+					"an Archon taking a personal interest"
+				],
+				location: [
+					"the Demiurge's vanished Citadel",
+					"Metropolis",
+					"the Endless City",
+					"the Citadel of an Archon",
+					"a secret path",
+					"a dark vault",
+					"the temple of a strict faith",
+					"a dark street",
+				],
+				organization: [
+					"a dead civilization",
+					"grateful survivors",
+					"a cult whose indoctrinations always succeed",
+					"a neurolink start-up with the tech to rewrite memory"
+				],
+				situation: [
+					"a connection to the lost Demiurge Itself",
+					"stillness and death",
+					"hidden secrets",
+					"someone is watching",
+				],
+				creature: [
+					"beasts of Metropolis",
+					"a great Power that is sleeping",
+					"an enslaved god",
+				],
+				item: [
+					"Machinery of Death and Rebirth",
+					"scrawled map to a lost city",
+					"an artifact of Metropolis"
+				]
+			},
 			isDrawingShiftCard: true,
 			imgfile: "major-1.webp"
 		},
 		{
 			name: "ASTAROTH",
 			affiliation: "Divine",
-			keyword: "Hellish",
 			value: 2,
-			summary: "Astaroth is the Ruler of Inferno and Shadow of the Demiurge: The being who strives to become the new Demiurge by binding Elysium to Inferno rather than the Powers of Metropolis.",
-			details: "The cards tells of a connection directly to the Higher Power that is Astaroth and has strong connections with: The Will of Inferno. The Black Sun. The Citadels of the Death Angels. The Spiked Wheel. That Which Grows from Death. The Machinery of Death and Rebirth. Pulsating and Growing. Entwined Wills. Pathways and Gates to Shattered Worlds. Any Imaginable Suffering. Senseless Beauty. A Growing Power. Cracks in the Illusion. Wills Behind the Veil.",
-			note: "This card is one of the top three most powerful cards in the whole Arcana, along with <strong><em>Anthropos</em></strong> and the <strong><em>Demiurge</em></strong>, and always reveals something of great significance. When this card is drawn, it might be suitable to draw an additional card and place on top of it to show how its power manifests itself.",
+			keyword: "Hellish",
+			summary: "One of the three most powerful cards in the Kult Tarot, Astaroth is the Ruler of Inferno and Shadow of the Demiurge, who seeks to subvert Elysium away from the Powers of Metropolis. Astaroth is a powerful sign that this reading favours the Death Angels and their machinations.",
+			note: "Because of the unique significance of Astaroth, a second card has been drawn and paired with it to reveal how the power of Astaroth manifests in the context of this reading.",
+			ghostText: {
+				individual: [
+					"a kid with an Illusion-shattering viral video",
+					"an epileptic who shouts Truths during his seizures",
+					"a philanthropist whose gifts corrupt the recipient"
+				],
+				location: [
+					"Inferno",
+					"the Citadel of a Death Angel",
+					"a gateway to a shattered world"
+				],
+				organization: [
+					"free wills behind the Veil",
+					"a nomadic cult of ritual killers",
+				],
+				situation: [
+					"a direct connection to Astaroth",
+					"the will of the Inferno manifests",
+					"the Black Sun",
+					"entwined wills, master and slave",
+					"unimaginable suffering",
+					"senseless beauty",
+					"a growing power",
+					"spreading cracks in the Illusion"
+				],
+				creature: [
+					"that which grows from death",
+					"a pulsating, growing thing",
+					"an Infernal infestation"
+				],
+				item: [
+					"Machinery of Death and Rebirth",
+					"the Spiked Wheel",
+					"the last missive from a destroyed world"
+				]
+			},
 			isDrawingShiftCard: true,
 			imgfile: "major-2.webp"
 		},
@@ -193,8 +249,16 @@ const TAROTDATA = {
 			value: 3,
 			keyword: "the Archon of Hierarchy",
 			summary: "Kether's influence manifests as hierarchical structures with masters and servants, widening class gaps, and an aristocracy with power and benefits.",
-			details: "Its influence is greatest in structures with a strong leader at their helm, including royal families, the leaders of the Catholic Church, corporate executives, and authoritarian countries such as China and North Korea.",
 			note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["masters and servants, widening class gaps, and an aristocracy with power and benefits. Its influence is greatest in structures with a strong leader at their helm, including royal families, the leaders of the Catholic Church, corporate executives, and authoritarian countries such as China and North Korea."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-3.webp"
 		},
 		{
@@ -203,8 +267,16 @@ const TAROTDATA = {
 			value: 4,
 			keyword: "the Archon of Submission",
 			summary: "Chokmah's influence manifests as the submission to religious leaders, martyrdom, fanaticism, theocratic rule, and dogmatism. It exists virtually everywhere religion can be found.",
-			details: "Chokmah's servants have a strong influence in the Middle East and many imams and rabbis are lictors. The Archon also has significant influence over the Catholic Church.",
 			note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["submission to religious leaders, martyrdom, fanaticism, theocratic rule, and dogmatism Chokmah's servants have a strong influence in the Middle East and many imams and rabbis are lictors. The Archon also has significant influence over the Catholic Church."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-4.webp"
 		},
 		{
@@ -213,8 +285,16 @@ const TAROTDATA = {
 			value: 5,
 			keyword: "the Archon of Community",
 			summary: "Binah's influence manifests as the family's power over the individual, mistrust of the state and other authorities outside of the family, strengthened traditions, and the distrust of strangers.",
-			details: "Her grip is strong anywhere family ties are at their peak, including the Middle East, Africa, Eastern Europe, Latin America, China, and the southern United States. Her influence is once again growing in Russia. Among the Roma, Binah is a goddess who is worshipped and revered.",
 			note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["family's power over the individual, mistrust of the state and other authorities outside of the family, strengthened traditions, and the distrust of strangers Her grip is strong anywhere family ties are at their peak, including the Middle East, Africa, Eastern Europe, Latin America, China, and the southern United States. Her influence is once again growing in Russia. Among the Roma, Binah is a goddess who is worshipped and revered."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-5.webp"
 		},
 		{
@@ -223,8 +303,16 @@ const TAROTDATA = {
 			value: 6,
 			keyword: "the Archon of Safety",
 			summary: "Chesed's influence manifests as people's longing for safety, the desire to feel comfortable and safe from dangers threatening you, encouraging friendly behavior, and the sense that you are protected against the unknown and dangerous.",
-			details: "Once, Chesed's servants were to be found amid generous noblemen, monasteries, wise women of the forest, doctors who did anything to find cures for diseases, aid organizations, benevolent charities, and warm-hearted people. Now, his power has faded.",
 			note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["people's longing for safety, the desire to feel comfortable and safe from dangers threatening you, encouraging friendly behavior, and the sense that you are protected against the unknown and dangerous Once, Chesed's servants were to be found amid generous noblemen, monasteries, wise women of the forest, doctors who did anything to find cures for diseases, aid organizations, benevolent charities, and warm-hearted people. Now, his power has faded."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-6.webp"
 		},
 		{
@@ -233,8 +321,16 @@ const TAROTDATA = {
 			value: 7,
 			keyword: "the Archon of Law",
 			summary: "Geburah's influence generates bureaucratic institutions, stricter laws, increased policing, and societal control over its citizenry. Those so influenced yield to increased control, typically out of their fear of chaos.",
-			details: "The Archon has a strong influence over legal systems of every kind. Lictors are often judges, chiefs of police, or lawyers. They have a great presence anywhere bureaucracy is strong, and where laws and rules are used to control people.",
 			note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["bureaucratic institutions, stricter laws, increased policing, and societal control over its citizenry. Those so influenced yield to increased control, typically out of their fear of chaos. The Archon has a strong influence over legal systems of every kind. Lictors are often judges, chiefs of police, or lawyers. They have a great presence anywhere bureaucracy is strong, and where laws and rules are used to control people."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-7.webp"
 		},
 		{
@@ -243,8 +339,16 @@ const TAROTDATA = {
 			value: 8,
 			keyword: "the Archon of Allure",
 			summary: "Tiphareth's influence incites a manic craving for beauty and affirmation, which must be fulfilled by any means necessary. Celebrities are worshipped as prophets, the mediocre waste their days imbibing the internet and television shows, and despise and ignore anyone who doesn't meet the social 'norms.'",
-			details: "Her influence is great everywhere in society, but especially via the media, advertising, and the Internet.",
 			note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["a manic craving for beauty and affirmation, which must be fulfilled by any means necessary. Celebrities are worshipped as prophets, the mediocre waste their days imbibing the internet and television shows, and despise and ignore anyone who doesn't meet the social 'norms.' Her influence is great everywhere in society, but especially via the media, advertising, and the Internet."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-8.webp"
 		},
 		{
@@ -253,8 +357,16 @@ const TAROTDATA = {
 			value: 9,
 			keyword: "the Archon of Victory",
 			summary: "Netzach's influence strengthens patriotism and nationalism, unites societies against a common enemy, and feeds the us-versus-them mentality. The righteous obliterate all that threaten them, strengthen their military, justify their violence in the name of the Greater Good, and incite people to arm themselves.",
-			details: "His influence is strongest within the military, military academies, private armies, manufacturers of weapons, lobbyists, and mercenaries. Has his largest influence in North America.",
 			note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["patriotism and nationalism, unites societies against a common enemy, and feeds the us-versus-them mentality. The righteous obliterate all that threaten them, strengthen their military, justify their violence in the name of the Greater Good, and incite people to arm themselves. His influence is strongest within the military, military academies, private armies, manufacturers of weapons, lobbyists, and mercenaries. Has his largest influence in North America."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-9.webp"
 		},
 		{
@@ -263,8 +375,16 @@ const TAROTDATA = {
 			value: 10,
 			keyword: "the Archon of Honor",
 			summary: "Hod's influence conflates honor with prestige, elevates one's status among others above all else, and sets the law aside in favor of personal vendettas. Expecting admiration for their adherence to their inflexible values, the honor-bound ruthlessly ostracize any who have brought shame upon themselves by failing to uphold their honor and fulfil the many duties it demands.",
-			details: "The Principle is strongest in areas and communities where the honor culture still is very dominant, including the Middle East and countries in Asia, such as India, Pakistan, and Japan. In large parts of North Africa, Hod's servants and ideology are also still strong, even though these traditions have started to be questioned.",
 			note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["conflates honor with prestige, elevates one's status among others above all else, and sets the law aside in favor of personal vendettas. Expecting admiration for their adherence to their inflexible values, the honor-bound ruthlessly ostracize any who have brought shame upon themselves by failing to uphold their honor and fulfil the many duties it demands. The Principle is strongest in areas and communities where the honor culture still is very dominant, including the Middle East and countries in Asia, such as India, Pakistan, and Japan. In large parts of North Africa, Hod's servants and ideology are also still strong, even though these traditions have started to be questioned."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-10.webp"
 		},
 		{
@@ -273,8 +393,16 @@ const TAROTDATA = {
 			value: 11,
 			keyword: "the Archon of Avarice",
 			summary: "Yesod influences society through greed, capitalism, economics, consumer frenzy, and increased corporate power, as well as by promoting the admiration and respect of wealth as a sign of personal intelligence and ambition. It encourages contempt for the poverty-stricken, who are associated with laziness and stupidity, and supports the dismantling of social welfare institutions.",
-			details: "The Archon has control over large parts of the Western world and nowadays also China.",
 			note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["greed, capitalism, economics, consumer frenzy, and increased corporate power, as well as by promoting the admiration and respect of wealth as a sign of personal intelligence and ambition. It encourages contempt for the poverty-stricken, who are associated with laziness and stupidity, and supports the dismantling of social welfare institutions. The Archon has control over large parts of the Western world and nowadays also China."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-11.webp"
 		},
 		{
@@ -283,8 +411,16 @@ const TAROTDATA = {
 			value: 12,
 			keyword: "the Archon of Awakening",
 			summary: "Malkuth's influence strives to free people from their prison by shattering the Illusion to reveal other dimensions, and inspiring people to question the nature of society and the fabric of reality. She inspires magicians and scientists to experiment with the unknown and search for their lost divinity. (Previously, Malkuth represented Conformity and the natural cycles we tend to see in our world and our prison.)",
-			details: "Malkuth has her strongest influence among magicians and scientists. Europe is her primary stronghold, as well as regions of North America and Asia. During the Islamic Enlightenment, she had followers throughout the Middle East and North Africa.",
 			note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["free people from their prison by shattering the Illusion to reveal other dimensions, and inspiring people to question the nature of society and the fabric of reality. She inspires magicians and scientists to experiment with the unknown and search for their lost divinity. (Previously, Malkuth represented Conformity and the natural cycles we tend to see in our world and our prison.) Malkuth has her strongest influence among magicians and scientists. Europe is her primary stronghold, as well as regions of North America and Asia. During the Islamic Enlightenment, she had followers throughout the Middle East and North Africa."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-12.webp"
 		},
 		{
@@ -293,8 +429,16 @@ const TAROTDATA = {
 			value: 13,
 			keyword: "the Death Angel of Power",
 			summary: "Thaumiel's influence manifests as a hunger for power, corruption, dictatorship, fascism, intrigue, insurrection, oppression, ruthlessness and totalitarian rule – a breakdown of solidarity and trust.",
-			details: "Thaumiel's Principle is strongest where there are hierarchies and power structures with clear rifts. Governments undergoing political upheaval, the entertainment business, the world of sports, organized crime, neo-nazi organizations, Wall Street and other stock exchanges, major corporations, and so on down to street gangs and school classes.",
 			note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["hunger for power, corruption, dictatorship, fascism, intrigue, insurrection, oppression, ruthlessness and totalitarian rule – a breakdown of solidarity and trust. Thaumiel's Principle is strongest where there are hierarchies and power structures with clear rifts. Governments undergoing political upheaval, the entertainment business, the world of sports, organized crime, neo-nazi organizations, Wall Street and other stock exchanges, major corporations, and so on down to street gangs and school classes."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-13.webp"
 		},
 		{
@@ -303,8 +447,16 @@ const TAROTDATA = {
 			value: 14,
 			keyword: "the Death Angel of Abuse",
 			summary: "Chagidiel's influence takes shape in the violation of children, the perversion of adult love and care, forgotten and lost children, homeless street kids, and the degradation and ruination of school systems.",
-			details: "The Death Angel's strongest influence is over nuclear families, but he is also active within pedophile networks, orphanages, youth centers, trafficking rings, illegal porn sites, and various cults and religious organizations all over the world.",
 			note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["the violation of children, the perversion of adult love and care, forgotten and lost children, homeless street kids, and the degradation and ruination of school systems. The Death Angel's strongest influence is over nuclear families, but he is also active within pedophile networks, orphanages, youth centers, trafficking rings, illegal porn sites, and various cults and religious organizations all over the world."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-14.webp"
 		},
 		{
@@ -313,8 +465,16 @@ const TAROTDATA = {
 			value: 15,
 			keyword: "the Death Angel of Exclusion",
 			summary: "Satahariel's influence incites self-loathing, loneliness, hopelessness, contempt for 'normals,' self-destruction, anxiety, depression, suicide, school shootings and massacres, and communities of outsiders inspiring each other to commit destructive actions.",
-			details: "Sathariel's corruptive will seeks out those who feel rejected and those who feel their lives are devoid of meaning. These can be found everywhere.",
 			note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: [", contempt for 'normals,' self-destruction, anxiety, depression, suicide, school shootings and massacres, and communities of outsiders inspiring each other to commit destructive actions. Sathariel's corruptive will seeks out those who feel rejected and those who feel their lives are devoid of meaning. These can be found everywhere."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-15.webp"
 		},
 		{
@@ -323,8 +483,16 @@ const TAROTDATA = {
 			value: 16,
 			keyword: "the Death Angel of Fear",
 			summary: "Gamichicoth's influence awakens fear of 'the Other' by escalating distrust and blaming various ethnic groups, religions, or political dissidents for society's problems. False narratives are created and distributed through news media, rumors, and manipulated visual evidence, while heralds whisper how all our concerns would dissipate if only 'the Others' were punished or disappeared.",
-			details: "The Death Angels influence is strongest within the middle class and in regions with conservative values. The Ku Klux Klan, fanatic pro-lifers, concerned parents' groups, paramilitary forces committing genocide, neo-fascists of all types, and patriarchal structures who fear liberal values will corrupt young people are all at risk of falling under this Death Angel's influence.",
 			note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["False narratives are created and distributed through news media, rumors, and manipulated visual evidence, while heralds whisper how all our concerns would dissipate if only 'the Others' were punished or disappeared. The Death Angels influence is strongest within the middle class and in regions with conservative values. The Ku Klux Klan, fanatic pro-lifers, concerned parents' groups, paramilitary forces committing genocide, neo-fascists of all types, and patriarchal structures who fear liberal values will corrupt young people are all at risk of falling under this Death Angel's influence."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-16.webp"
 		},
 		{
@@ -333,8 +501,16 @@ const TAROTDATA = {
 			value: 17,
 			keyword: "the Death Angel of Torment",
 			summary: "Golab's influence increases societal sadism, giving people pleasure from inflicting pain on others or by being subjected to torment themselves. Criminals are tortured in public, people carry out their most sadistic ideas unto both willing and unwilling subjects in obscure safe houses, while murderers leave trails of mutilated bodies.",
-			details: "Golab's presence is strongest wherever sadistic assaults are committed against humans. He is found in organized crime, the military, terrorist groups, prisons, and psychiatric hospitals.",
 			note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["Golab's presence is strongest wherever sadistic assaults are committed against humans. He is found in organized crime, the military, terrorist groups, prisons, and psychiatric hospitals.  Criminals are tortured in public, people carry out their most sadistic ideas unto both willing and unwilling subjects in obscure safe houses, while murderers leave trails of mutilated bodies."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-17.webp"
 		},
 		{
@@ -343,8 +519,16 @@ const TAROTDATA = {
 			value: 18,
 			keyword: "the Death Angel of Compulsion",
 			summary: "Togarini's influence increases the manic creativity that distorts reality, tearing beauty asunder. Insane artwork opens portals to Inferno, magicians experiment at the border of life and death, and death itself acts erratically – souls binding themselves into rotting corpses, or haunting the living as distorted spectres.",
-			details: "The Death Angel's influence is strongest among artists, magicians, body modifiers, and the senses and imagination enchanted by the dark and grotesque.",
 			note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["Insane artwork opens portals to Inferno, magicians experiment at the border of life and death, and death itself acts erratically – souls binding themselves into rotting corpses, or haunting the living as distorted spectres. The Death Angel's influence is strongest among artists, magicians, body modifiers, and the senses and imagination enchanted by the dark and grotesque."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-18.webp"
 		},
 		{
@@ -353,8 +537,16 @@ const TAROTDATA = {
 			value: 19,
 			keyword: "the Death Angel of Conflict",
 			summary: "Hareb-Serap's influence propagates uncontrollable rage, bloodlust, and senseless violence. Gangs have shootouts in public places, police beat suspects to death, hooligans storm arenas, lynch mobs tear their targets to pieces, harmless conflicts escalate into bloody fist-fights, and 'normal' people teeter on the brink of explosive outbursts at all times.",
-			details: "The Death Angel's greatest influence is over war zones, gang territories, the Middle East, Africa, and parts of Asia. Many of his servants are soldiers or gang members, but Hareb-Serap's Principle can be stirred in all of us.",
 			note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: ["Gangs have shootouts in public places, police beat suspects to death, hooligans storm arenas, lynch mobs tear their targets to pieces, harmless conflicts escalate into bloody fist-fights, and 'normal' people teeter on the brink of explosive outbursts at all times. The Death Angel's greatest influence is over war zones, gang territories, the Middle East, Africa, and parts of Asia. Many of his servants are soldiers or gang members, but Hareb-Serap's Principle can be stirred in all of us."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-19.webp"
 		},
 		{
@@ -363,8 +555,16 @@ const TAROTDATA = {
 			value: 20,
 			keyword: "the Death Angel of Vengeance",
 			summary: "Samael's influence strengthens paranoia, vindictiveness, and obsession with injustices, while perpetrators take brutal revenge for nonexistent affronts, jealous partners murder their loved ones for imagined betrayals, and terrorists exact gory retribution upon their foes.",
-			details: "The Death Angel has a strong influence over individuals with a strong lust for vengeance, but also in organizations with strong codes of honor and a willingness to use violence to get what they want, such as the mafia, gangs, terrorist organizations, and certain cults. Magicians occasionally seek insight into Samael's dark brilliance.",
 			note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: [", while perpetrators take brutal revenge for nonexistent affronts, jealous partners murder their loved ones for imagined betrayals, and terrorists exact gory retribution upon their foes. The Death Angel has a strong influence over individuals with a strong lust for vengeance, but also in organizations with strong codes of honor and a willingness to use violence to get what they want, such as the mafia, gangs, terrorist organizations, and certain cults. Magicians occasionally seek insight into Samael's dark brilliance."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-20.webp"
 		},
 		{
@@ -373,8 +573,16 @@ const TAROTDATA = {
 			value: 21,
 			keyword: "the Death Angel of Lust",
 			summary: "Gamaliel influences society towards hypersexualization and objectification, where crowds commit gang rape, victims are forced into prostitution, pornography becomes increasingly hardcore and perverted, and celebrants gather in clubs and secret societies for macabre orgies, and people embrace mindless desires with no consideration of the consequences of their actions.",
-			details: "The Death Angel has a strong influence over the pornography business, webcam shows, brothels, rapists, and, deep down, virtually everyone to some degree.",
 			note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: [", where crowds commit gang rape, victims are forced into prostitution, pornography becomes increasingly hardcore and perverted, and celebrants gather in clubs and secret societies for macabre orgies, and people embrace mindless desires with no consideration of the consequences of their actions. The Death Angel has a strong influence over the pornography business, webcam shows, brothels, rapists, and, deep down, virtually everyone to some degree."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-21.webp"
 		},
 		{
@@ -383,35 +591,43 @@ const TAROTDATA = {
 			value: 22,
 			keyword: "the Death Angel of Discord",
 			summary: "Nahemoth's influence deforms the natural world, turning it dangerous and threatening, expressed as forest fires, oil spills, poisoned streams and groundwater, misshapen animal life, violent storms, cold snaps, heat waves, torrential rains, earthquakes, tsunamis, cannibal tribes, disfigured fetuses, and baleful eclipses. She turns the world upside down, instilling fear by destroying conformity and normalcy.",
-			details: "Her influence is strongest in regions where people fear and venerate nature, as well as places with chemical spills, radioactive zones, open sewers, strip mines, industrial zones, and rubbish dumps.",
 			note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
+			ghostText: {
+				process: [", expressed as forest fires, oil spills, poisoned streams and groundwater, misshapen animal life, violent storms, cold snaps, heat waves, torrential rains, earthquakes, tsunamis, cannibal tribes, disfigured fetuses, and baleful eclipses. Her influence is strongest in regions where people fear and venerate nature, as well as places with chemical spills, radioactive zones, open sewers, strip mines, industrial zones, and rubbish dumps."],
+				individual: [],
+				location: [],
+				organization: [],
+				situation: [],
+				creature: [],
+				item: []
+			},
 			imgfile: "major-22.webp"
 		}
 	],
 	"suits": {
 		crescents: {
 			name: "Crescents",
-			summary: "<em>Also known as the Moon, the Crescent is a symbol of the dream, the search for the unattainable, and the source of creation. The dream inspires and strengthens, but is also a crutch for the unbearable in life and an escape from reality. It has a strong connection to Limbo.</em>",
+			summary: "Also known as the Moon, the Crescent is a symbol of the dream, the search for the unattainable, and the source of creation. The dream inspires and strengthens, but is also a crutch for the unbearable in life and an escape from reality. It has a strong connection to Limbo.",
 			imgfile: "minor-crescents-1.webp"
 		},
 		eyes: {
 			name: "Eyes",
-			summary: "<em>The Suit of the Eyes represents Elysium, the enslavement of our minds and souls. It is also the faith that binds us, the crippling madness, and the rebellious, penetrating insight that lets us see through the Illusion.</em>",
+			summary: "The Suit of the Eyes represents Elysium, the enslavement of our minds and souls. It is also the faith that binds us, the crippling madness, and the rebellious, penetrating insight that lets us see through the Illusion.",
 			imgfile: "minor-eyes-1.webp"
 		},
 		hourglasses: {
 			name: "Hourglasses",
-			summary: "<em>The hourglass represents Time and Space, the prison binding us in the Illusion, but it also carries the hope of breaking the shackles and waking up. The hourglass also reproduces the Labyrinth that all cities are built from. It has a strong connection to Achlys and the Underworld.</em>",
+			summary: "The hourglass represents Time and Space, the prison binding us in the Illusion, but it also carries the hope of breaking the shackles and waking up. The hourglass also reproduces the Labyrinth that all cities are built from. It has a strong connection to Achlys and the Underworld.",
 			imgfile: "minor-hourglasses-1.webp"
 		},
 		roses: {
 			name: "Roses",
-			summary: "<em>The rose is a symbol of Passion, the blinding desire that binds or liberates us. It relates to our sexuality. It is strongly connected to the primal forces of Gaia.</em>",
+			summary: "The rose is a symbol of Passion, the blinding desire that binds or liberates us. It relates to our sexuality. It is strongly connected to the primal forces of Gaia.",
 			imgfile: "minor-roses-1.webp"
 		},
 		skulls: {
 			name: "Skulls",
-			summary: "<em>This suit represents Death as a breakthrough to the other side, as well as the mortal destruction that binds us to our flesh. It is strongly connected to both Metropolis and the Archons, as well as to Inferno and the Death Angels.</em>",
+			summary: "This suit represents Death as a breakthrough to the other side, as well as the mortal destruction that binds us to our flesh. It is strongly connected to both Metropolis and the Archons, as well as to Inferno and the Death Angels.",
 			imgfile: "minor-skulls-1.webp"
 		}
 	},
@@ -2599,361 +2815,620 @@ const TAROTDATA = {
 		]
 	}
 };
-const DECK = [];
-let LAYOUT = {};
-const READINGDATA = {
-	template: "cult",
-	textCategories: {
-		individual: true,
-		location: true,
-		organization: true,
-		situation: true,
-		creature: true,
-		item: true
+const TEMPLATEDATA = {
+	character: {
+		1: "This defines the core, essential essence of this individual.",
+		2: "Here is something from the past that shaped this individual.",
+		3: "This is what the individual most desires: their motivation.",
+		4: "The individual's greatest weakness can be found here.",
+		5: "This card describes the individual's greatest strength."
+	},
+	location: {
+		1: "This defines the general nature of this location.",
+		2: "Here is something significant from the location's past.",
+		3: "This card describes something unexpected about the location.",
+		4: "A weakness of the location, one that could be exploited, can be found here.",
+		5: "This is something that makes the location exceptional."
+	},
+	cult: {
+		1: "This defines the power or ambition that drives the cult's activities.",
+		2: "Here is something important about the cult's history.",
+		3: "This card describes something important the cult wishes to accomplish.",
+		4: "The cult's greatest weakness can be found here.",
+		5: "This is an unexpected advantage or resource the cult has."
+	},
+	plot: {
+		1: "This defines who (or what) is pulling the strings of this plot.",
+		2: "This card describes the principle motivation behind the plot.",
+		3: "The next move in this plot can be found here.",
+		4: "This card tells us of someone or something that opposes the plot.",
+		5: "This card reveals someone or something that supports the plot."
+	},
+	creature: {
+		1: "This defines the legend, backstory or cultural influence from which this creature originates.",
+		2: "This card tells us how one might learn more about this creature.",
+		3: "This is what drives the creature.",
+		4: "The creature's greatest weakness can be found here.",
+		5: "This card describes the creature's greatest strength."
+	},
+	artifact: {
+		1: "This defines how the artifact came to be.",
+		2: "Here is someone or something else that seeks this artifact.",
+		3: "Revealed here are the dangers of using this artifact.",
+		4: "The artifact's most significant power is described here.",
+		5: "This card tells us of another power the artifact has."
 	}
 };
 
-// ▮▮▮▮▮▮▮[UTILITY] Utility Functions ▮▮▮▮▮▮▮
-const shuffle = (arr) => {
-	let currentIndex = arr.length,
-					randomIndex;
-	while (currentIndex !== 0) {
-		randomIndex = Math.floor(Math.random() * currentIndex);
-		currentIndex--;
-		[arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
+Object.entries({
+	cardWander: (targets) => gsap.to(targets, {
+			x: function(i, cardElem) { return gsap.getProperty(cardElem, "x") + gsap.utils.random(-150, 150) },
+			y: function(i, cardElem) { return gsap.getProperty(cardElem, "y") + gsap.utils.random(-50, 50) },
+			scale: "random(0.8, 1.2)",
+			ease: "sine.inOut",
+			duration: 3,
+			stagger: {
+				repeat: -1,
+				yoyo: true,
+				amount: 3,
+				ease: "elastic.inOut"
+			}
+		}),
+	cardWanderHoverOn: (targets) => gsap.fromTo(targets, {zIndex: 100}, {
+			x: function(i, cardElem) { return gsap.getProperty(cardElem, "x") },
+			y: function(i, cardElem) { return gsap.getProperty(cardElem, "y") },
+			scale: 1.5,
+			zIndex: 100,
+			boxShadow: "rgb(255 166 33) 0px 0px 30px",
+			duration: 0.5,
+			ease: "power2.out"
+		}),
+	cardWanderHoverOff: (targets) => gsap.to(targets, {
+			x: function(i, cardElem) { return gsap.getProperty(cardElem, "x") + gsap.utils.random(-150, 150) },
+			y: function(i, cardElem) { return gsap.getProperty(cardElem, "y") + gsap.utils.random(-50, 50) },
+			scale: 1,
+			boxShadow: "rgb(255 166 33) 0px 0px 0px",
+			zIndex: 90,
+			duration: 0.5,
+			ease: "power2.out",
+			onComplete() { gsap.effects.cardWander(targets) }
+		}),
+	explodeOutOverLayer: () => {
+		$("#over-layer *").off("click mouseenter");
+		const fadeTimeline = gsap.timeline({
+			onComplete() {
+				Table.Phase = "CardsDealt";
+				Table.ReadyReading();
+			}
+		});
+		fadeTimeline.to("#over-layer", {
+			scale: 2,
+			opacity: 0,
+			ease: "expo.out",
+			duration: 2.5,
+			onComplete() {
+				$("#over-layer *").remove();
+				gsap.set("#over-layer", {scale: 1, opacity: 1});
+			}
+		}, 0);
+		fadeTimeline.to(".canvas-layer:not(#over-layer)", {
+			scale: 1,
+			duration: 3,
+			ease: "expo.out"
+		}, 0);
+		return fadeTimeline;
+	},
+	fadeInTo65: (targets) => gsap.to(targets, {
+			opacity: 1,
+			scale: 0.65,
+			duration: 2,
+			ease: "power2.out"
+		}),
+	cardOrbitRotation: () => gsap.to("#over-layer", {
+			rotation: "+=360",
+			duration: 150,
+			repeat: -1,
+			ease: "none",
+			onUpdate() {
+				gsap.set("#over-layer > .tarot-card-main", {
+					rotation: -1 * gsap.getProperty("#over-layer", "rotation")
+				})
+			}
+		}),
+	dealCircleFan: () => {
+		const {x: xCenter, y: yCenter} = Table.Get().layout[1].pos;
+		const radius = CONSTANTS.deckRadiusPercent * (yCenter - CONSTANTS.padding.y);
+		const stepAngle = 360 / TarotDeck.Get().cards.length;
+		const stepOffset = CONSTANTS.deckOffset / TarotDeck.Get().cards.length;
+		
+		return gsap.to("#over-layer > .tarot-card-main", {
+			x: function(cardNum) {
+				return xCenter + (radius * sinOf(stepAngle * cardNum)) + gsap.utils.random(-150, 150);
+			},
+			y: function(cardNum) {
+				return yCenter + (radius * cosOf(stepAngle * cardNum)) + gsap.utils.random(-150, 150);
+			},			
+			scale: "random(0.8, 1.2)",
+			duration: 1,
+			outlineColor: "random([#FFFFFF, #777777, #000000])",
+			stagger: -0.05,
+			ease: "power2.out",
+			onComplete() {
+				$("#over-layer > .tarot-card-main").on("click", function(event) {
+					event.preventDefault();
+					$(event.target).off("click mouseenter mouseleave");
+					gsap.killTweensOf(event.target);
+					TarotDeck.Get().deal(event.target);
+				});
+				$("#over-layer > .tarot-card-main").hover(
+					function handlerIn(event) {
+						event.preventDefault();
+						gsap.killTweensOf(event.target); //, "x,y,scale");
+						gsap.effects.cardWanderHoverOn(event.target);
+					}, function handlerOut(event) {
+						event.preventDefault();
+						gsap.effects.cardWanderHoverOff(event.target);
+					}
+				);
+				gsap.set("#over-layer > .tarot-card-main", {pointerEvents: "all"});
+				gsap.effects.cardWander("#over-layer > .tarot-card-main");
+			}
+		});
 	}
-	return arr;
-};
-const randBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-const round = (num, sigDigits = 0) => Math.round(num * (10 ** sigDigits)) / (10 ** sigDigits);
+}).forEach(([name, effect]) => gsap.registerEffect({name, effect}));
 
-// ████████ CARD IMAGES: Updating Slots With Setting Card Images ████████
-const getImgStyle = (imgfile) => {
-	if (/^(linear|url)/.test(imgfile)) { return imgfile }
-	if (/^http/.test(imgfile)) { return `url(${imgfile})` }
-	return `url("${CONSTANTS.imgPath}${imgfile}")`;
-};
-/* const createCard = (slot, shiftedCard = false) => {
-	LAYOUT[slot] = LAYOUT[slot] ?? {};
-	LAYOUT[slot].card = drawCard();
-	LAYOUT[slot].shiftedCard = shiftedCard;
+/* gsap.registerEffect({
+	name: "cardWander",
+	effect: (targets) => {
+		return gsap.to(targets, {
+			x: function(i, cardElem) { return gsap.getProperty(cardElem, "x") + gsap.utils.random(-150, 150) },
+			y: function(i, cardElem) { return gsap.getProperty(cardElem, "y") + gsap.utils.random(-50, 50) },
+			scale: "random(0.8, 1.2)",
+			ease: "sine.inOut",
+			duration: 3,
+			stagger: {
+				repeat: -1,
+				yoyo: true,
+				amount: 3,
+				ease: "elastic.inOut"
+			}
+		})
+	}
+});
+gsap.registerEffect({ name: "cardWanderHoverOn",
+	effect: (targets, config) => {
+		return gsap.fromTo(targets, {zIndex: 100}, {
+			x: function(i, cardElem) { return gsap.getProperty(cardElem, "x") },
+			y: function(i, cardElem) { return gsap.getProperty(cardElem, "y") },
+			scale: 1.5,
+			zIndex: 100,
+			boxShadow: "rgb(255 166 33) 0px 0px 30px",
+			duration: 0.5,
+			ease: "power2.out"
+		});
+	}
+});
+gsap.registerEffect({ 
+	name: "cardWanderHoverOff",
+	effect: (targets, config) => {		
+		return gsap.to(targets, {
+			x: function(i, cardElem) { return gsap.getProperty(cardElem, "x") + gsap.utils.random(-150, 150) },
+			y: function(i, cardElem) { return gsap.getProperty(cardElem, "y") + gsap.utils.random(-50, 50) },
+			scale: 1,
+			boxShadow: "rgb(255 166 33) 0px 0px 0px",
+			zIndex: 90,
+			duration: 0.5,
+			ease: "power2.out",
+			onComplete() { gsap.effects.cardWander(targets) }
+		});
+	}
+});
+gsap.registerEffect({
+	name: "explodeFade",
+	effect: (targets) => {
+		return gsap.to(targets, {
+			opacity: 0,
+			scale: 15,
+			duration: 1,
+			ease: "power2.out",
+			onComplete() { $(".canvas-layer *").remove() }
+		});
+	}
+});
+gsap.registerEffect({
+	name: "fadeInTo65",
+	effect: (targets) => {
+		return gsap.to(targets, {
+			opacity: 1,
+			scale: 0.65,
+			duration: 2,
+			ease: "power2.out"
+		});
+	}
+});
+gsap.registerEffect({
+	name: "cardOrbitRotation",
+	effect: () => {
+		return gsap.to("#over-layer", {
+			rotation: "+=360",
+			duration: 150,
+			repeat: -1,
+			// ease:"myWiggle",
+			ease: "none",
+			onUpdate() {
+				gsap.set("#over-layer > .tarot-card-main", {
+					rotation: -1 * gsap.getProperty("#over-layer", "rotation")
+				})
+			}
+		});
+	}
+});
+gsap.registerEffect({
+	name: "dealCircleFan",
+	effect: () => {
+		const {x: xCenter, y: yCenter} = Table.Get().layout[1].pos;
+		const radius = CONSTANTS.deckRadiusPercent * (yCenter - CONSTANTS.padding.y);
+		const stepAngle = 360 / TarotDeck.Get().cards.length;
+		const stepOffset = CONSTANTS.deckOffset / TarotDeck.Get().cards.length;
+		
+		return gsap.to("#over-layer > .tarot-card-main", {
+			x: function(cardNum) {
+				return xCenter + (radius * sinOf(stepAngle * cardNum)) + gsap.utils.random(-150, 150);
+			},
+			y: function(cardNum) {
+				return yCenter + (radius * cosOf(stepAngle * cardNum)) + gsap.utils.random(-150, 150);
+			},			
+			scale: "random(0.8, 1.2)",
+			duration: 1,
+			outlineColor: "random([#FFFFFF, #777777, #000000])",
+			stagger: -0.05,
+			ease: "power2.out",
+			onComplete() {
+				$("#over-layer > .tarot-card-main").on("click", function(event) {
+					event.preventDefault();
+					$(event.target).off("click mouseenter mouseleave");
+					gsap.killTweensOf(event.target);
+					TarotDeck.Get().deal(event.target);
+				});
+				$("#over-layer > .tarot-card-main").hover(
+					function handlerIn(event) {
+						event.preventDefault();
+						gsap.killTweensOf(event.target); //, "x,y,scale");
+						gsap.effects.cardWanderHoverOn(event.target);
+					}, function handlerOut(event) {
+						event.preventDefault();
+						gsap.effects.cardWanderHoverOff(event.target);
+					}
+				);
+				gsap.set("#over-layer > .tarot-card-main", {pointerEvents: "all"});
+				gsap.effects.cardWander("#over-layer > .tarot-card-main");
+			}
+		});
+	}	
+}); */
 
-} */
+const PING = (x, y, {color = "rgba(0, 255, 0, 1)", size = 20} = {}, containerID = "#debug-layer") => {
+	
+}
 
-const updateSlotOpacity = (isInstant = false) => {
-	const setOpacity = (slot, opacity, blur, color, size, scale) => {
-		const updateData = {};
-		const {mainCard, isFaceUp} = LAYOUT[slot];
-		const slotSel = `#slot-${slot}`;
-		const curOpacity = gsap.getProperty(slotSel, "opacity");
-		const curBlur = gsap.getProperty(slotSel, "--glow-blur", "px");
-		const curColor = gsap.getProperty(slotSel, "--glow-color");
-		const curSize = gsap.getProperty(slotSel, "--glow-size", "px");
-		const curScale = gsap.getProperty(slotSel, "scale");
-		if (opacity !== curOpacity) {
-			updateData.opacity = opacity;
-			updateData.duration = CONSTANTS.timing.slotFullFadeDuration * Math.abs(curOpacity - opacity);
+class Table {
+	static Initialize() { Table._Session = new Table() }
+	static Get() { return Table._Session ?? false }	
+	static get Phase() { return (Table._Phase = Table._Phase ?? "Initial") }
+	static set Phase(phase) {
+		if (["Initial", "CardOrbit", "CardsDealt", "CardsRevealed"].includes(phase)) {
+			Table._Phase = phase;
 		}
-		if (blur !== curBlur) {
-			updateData["--glow-blur"] = blur;
-		}
-		if (color !== curColor) {
-			updateData["--glow-color"] = color;
-		}
-		if (size !== curSize) {
-			updateData["--glow-size"] = size;
-		}
-		if (scale !== curScale) {
-			updateData.scale = scale;
-		}
-		console.log([
-			`[Slot ${slot}]`,
-			`      ↳ opac:  ${round(curOpacity, 2)} ▸ ${round(opacity, 2)}`,
-			`      ↳ blur:  ${curBlur} ▶ ${blur}`,
-			`      ↳ color: ${curColor} ⇒ ${color}`,
-			`      ↳ size: ${curSize} ⇨ ${size}`,
-			`      ↳ scale: ${curScale} ⇾ ${scale}`
-		].join("\n"));
-		if (Object.values(updateData).length) {
-			updateData.duration = updateData.duration ?? (isInstant ? 0 : 0.5);
-			gsap.to(slotSel, updateData);
-		}
-	};
-	const [baseBlur, ...blurSteps] = [...CONSTANTS.slotSteps.blur];
-	const [baseOpacity, ...opacitySteps] = [...CONSTANTS.slotSteps.opacity];
-	const [baseColor, ...colorSteps] = [...CONSTANTS.slotSteps.color];
-	const [baseSize, ...sizeSteps] = [...CONSTANTS.slotSteps.size];
-	const [baseScale, ...scaleSteps] = [...CONSTANTS.slotSteps.scale];
-	[1, 2, 3, 4, 5].forEach((slot) => {
-		const {mainCard, isFaceUp} = LAYOUT[slot];
-		if (!mainCard || isFaceUp) {
-			setOpacity(slot, baseOpacity, baseBlur, baseColor, baseSize, baseScale);
-		} else {
-			setOpacity(
-				slot,
-				opacitySteps.shift(),
-				blurSteps.shift(),
-				colorSteps.shift(),
-				sizeSteps.shift(),
-				scaleSteps.shift()
+	}
+	static get MainCards() {
+		return Object.fromEntries(
+			Object.entries(Table.Get().layout)
+				.map(([slot, {card}]) => [slot, card])
 			);
-		}
-	});
-};
-const updateSlotImage = (slot) => {
-	const {mainCard, shiftCard, isFaceUp} = LAYOUT[slot];
-	const [main$, shift$] = [$(`#card-${slot}`), $(`#card-${slot}-shifted`)];
-	const duration = 0;
-	if (mainCard) {
-		if (isFaceUp) {
-			gsap.to(main$, {duration, ["--bg-image"]: getImgStyle(mainCard.imgfile)});
-		} else {
-			gsap.to(main$, {duration, ["--bg-image"]: getImgStyle(CONSTANTS.bgCardBack)});
-		}
-	} else {
-		gsap.to(main$, {duration, ["--bg-image"]: getImgStyle(CONSTANTS.bgEmptySlot)});
 	}
-	if (shiftCard) {
-		shift$.removeClass("hidden");
-		gsap.to(shift$, {duration, ["--bg-image"]: getImgStyle(shiftCard.imgfile)});
-	} else {
-		shift$.addClass("hidden");
-		gsap.to(shift$, {duration, ["--bg-image"]: getImgStyle(CONSTANTS.bgEmptySlot)});
-	}
-};
 
-// ████████ FADING TEXT: Fading Text Hints In and Out ████████
-const fadeInNextText = () => {
-	if (LAYOUT.slotQueue.length === 0) {
-		const validSlots = [1, 2, 3, 4, 5]
-			.filter((slot) => LAYOUT[slot].fadeText.length > 0);
-		if (validSlots.length) {
-			LAYOUT.slotQueue = shuffle(validSlots);
-		} else {
-			return;
+	static ReadyReading() {
+		if (Table.Phase === "CardsDealt") {
+			Object.values(Table.MainCards).forEach((card) => card.updateSlotStyle())
 		}
 	}
-	const slot = LAYOUT.slotQueue.pop();
-	if (LAYOUT[slot].fadeText.length) {
-		const $text = $(`#slot-${slot}-text`);
-		if (!$text.text()) {
-			const slotText = LAYOUT[slot].fadeText.shift();
-			LAYOUT[slot].fadeText.push(slotText);
-			const [left, top] = [
-				randBetween(CONSTANTS.fadeTextPosition.fades.minLeft, CONSTANTS.fadeTextPosition.fades.maxLeft),
-				randBetween(CONSTANTS.fadeTextPosition.fades.minTop, CONSTANTS.fadeTextPosition.fades.maxTop)
-			];
-			const fadeDelay = randBetween(CONSTANTS.timing.cardTextFadeDelay.min, CONSTANTS.timing.cardTextFadeDelay.max);
-			setTimeout(() => {
-				$text.css({left, top})
-					.text(slotText)
-					.fadeIn({
-						duration: CONSTANTS.timing.cardTextFadeInTime,
-						queue: false,
-						complete() {
-							setTimeout(() => {
-								$text.fadeOut({
-									duration: CONSTANTS.timing.cardTextFadeOutTime,
-									complete() { $text.text("") }
-								});
-							}, randBetween(CONSTANTS.timing.cardTextDuration.min, CONSTANTS.timing.cardTextDuration.max));
-						}
-					});
-			}, fadeDelay);
-		} else {
-			LAYOUT.slotQueue.push(slot);
-		}
-	} else {
-		fadeInNextText();
+	static UpdateGhostText() {
+		
 	}
-};
-const clearFadeText = (slot) => {
-	if (Number.isInteger(slot)) {
-		const $slotText = $(`#slot-${slot}-text`);
-		$slotText.stop().fadeOut({
-			duration: 200,
-			queue: false,
-			complete() { $slotText.text("") }
-		});
-	} else {
-		$(".slot-text").fadeOut({
-			duration: 200,
-			queue: false,
-			complete() { $(this).text("") }
-		});
-	}
-};
-const initFadeText = () => {
-	if (LAYOUT.interval) {
-		clearInterval(LAYOUT.interval);
-	}
-	LAYOUT.interval = setInterval(fadeInNextText, CONSTANTS.timing.cardTextInterval);
-	// fadeInNextText();
-};
-const updateSlotText = (slot, isResettingInterval = true) => {
-	if (Number.isInteger(slot)) {
-		LAYOUT[slot].fadeText = [];
-		const {mainCard, shiftCard, isFaceUp} = LAYOUT[slot];
-		const [$mainTitle, $mainKeyword, $shiftTitle] = [
-			$(`#card-${slot}-title`),
-			$(`#card-${slot}-keyword`),
-			$(`#card-${slot}-shiftTitle`)
-		];
-		if (mainCard && isFaceUp) {
-			if (typeof mainCard.details === "object") { // Contains fading keywords
-				LAYOUT[slot].fadeText.push(...Object.entries(READINGDATA.textCategories)
-					.filter(([category, isActive]) => isActive)
-					.map(([category]) => mainCard.details[category])
-					.flat());
-			}
-			if ("suit" in mainCard) { // Minor Arcana: Display Title on hover.
-				$mainTitle.fadeOut(200, () => {
-					$mainTitle.text(mainCard.name);
-					$mainTitle.fadeIn(200);
-				});
-			} else {
-				$mainTitle.fadeOut(200, () => {
-					$mainTitle.text("");
-				});
-			}
-			if (shiftCard) { // One of the three "divine" cards that ask to draw another.
-				if (typeof shiftCard.details === "object") { // Contains fading keywords
-					LAYOUT[slot].fadeText.push(...Object.entries(READINGDATA.textCategories)
-						.filter(([category, isActive]) => isActive)
-						.map(([category]) => shiftCard.details[category])
-						.flat());
-				}
-				if ("suit" in shiftCard) { // Minor Arcana: Display Title on hover.
-					$shiftTitle.fadeOut(200, () => {
-						$shiftTitle.text(shiftCard.name);
-						$shiftTitle.fadeIn(200);
-					});
-				} else {
-					$shiftTitle.fadeOut(200, () => {
-						$shiftTitle.text("");
-					});
-				}
-				// Combine both cards into a single keyword block
-				$mainKeyword.fadeOut(200, () => {
-					$mainKeyword.html([
-						shiftCard.keyword,
-						mainCard.keyword
-					].join("<br>"));
-					$mainKeyword.fadeIn(200);
-				});
-			} else {
-				$shiftTitle.fadeOut(200, () => {
-					$shiftTitle.text("");
-				});
-				// Fade in the single card's keyword alone
-				if (["Archon", "Death Angel"].includes(mainCard.affiliation)) { // Major Arcana: Split into two lines
-					$mainKeyword.fadeOut(200, () => {
-						$mainKeyword.html(mainCard.keyword.split(/\s+of\s+/).join("<br>of "));
-						$mainKeyword.fadeIn(200);
-					});
-				} else if (mainCard.affiliation !== "Divine") { // Otherwise, just single-line as normal.
-					$mainKeyword.fadeOut(200, () => {
-						$mainKeyword.text(mainCard.keyword);
-						$mainKeyword.fadeIn(200);
-					});
-				} else {
-					$mainTitle.fadeOut(200, () => {
-						$mainTitle.text("");
-					});
-				}
-			}
-		} else {
-			$mainTitle.fadeOut(200, () => {
-				$mainTitle.text("");
-			});
-			$mainKeyword.fadeOut(200, () => {
-				$mainKeyword.text("");
-			});
-			$shiftTitle.fadeOut(200, () => {
-				$shiftTitle.text("");
-			});
-		}
-	} else {
-		for (let i = 1; i <= 5; i++) {
-			updateSlotText(i, false);
-		}
-	}
-	if (isResettingInterval) {
-		initFadeText();
-	}
-};
 
-// ████████ CONTROL: Deck & Card Manipulation ████████
-const initialize = () => {
-	DECK.length = 0;
-	DECK.push(...[
-		// Gather Major Arcana
-		...TAROTDATA["major-arcana"],
-		// Gather Minor Arcana
-		...["crescents", "eyes", "hourglasses", "roses", "skulls"]
-			.map((suit) => TAROTDATA["minor-arcana"][suit].slice(1))
-			.flat()
-	]);
-	shuffle(DECK);
-	LAYOUT = JSON.parse(JSON.stringify(CONSTANTS.initialLayout));
-	clearFadeText();
-	updateSlot();
-};
-const updateSlot = (slot) => {
-	if (Number.isInteger(slot)) {
-		updateSlotImage(slot);
-		updateSlotText(slot);
-	} else {
-		for (let i = 1; i <= 5; i++) {
-			updateSlot(i);
-		}
-	}
-};
-
-const getNextCard = () => DECK.shift();
-const dealCards = (slot, isShifting = false) => {
-	if (Number.isInteger(slot)) {
-		const cardData = getNextCard();
-		LAYOUT[slot][isShifting ? "shiftCard" : "mainCard"] = cardData;
-		LAYOUT[slot].isFaceUp = isShifting;
-	} else {
-		for (let i = 1; i <= 5; i++) {
-			dealCards(i);
-		}
-		updateSlot();
-		updateSlotOpacity();
-	}
-};
-function flipCard(cardElem) {
-	const slot = parseInt(cardElem.id.replace(/\D/g, ""));
-	if (DEBUG.isTestingMajorArcana && slot === 5) {
-		LAYOUT[slot].mainCard = {
-			...TAROTDATA["major-arcana"][0]
+	static get DEFAULTS() {
+		const {grid} = CONSTANTS;
+		return {
+			layout: {
+				1: {card: false, shiftCard: false, pos: CONSTANTS.slotPos[1], isFaceUp: false, ghostText: false, promptText: false},
+				2: {card: false, shiftCard: false, pos: CONSTANTS.slotPos[2], isFaceUp: false, ghostText: false, promptText: false},
+				3: {card: false, shiftCard: false, pos: CONSTANTS.slotPos[3], isFaceUp: false, ghostText: false, promptText: false},
+				4: {card: false, shiftCard: false, pos: CONSTANTS.slotPos[4], isFaceUp: false, ghostText: false, promptText: false},
+				5: {card: false, shiftCard: false, pos: CONSTANTS.slotPos[5], isFaceUp: false, ghostText: false, promptText: false}
+			}
 		};
+	};
+	
+	get layout() { return this._layout }
+	get nextEmptySlot() {
+		return [1, 2, 3, 4, 5].find((slot) => this.layout[slot].card === false);
 	}
-	const {mainCard} = LAYOUT[slot];
-	if (mainCard) {
-		LAYOUT[slot].isFaceUp = true;
-		if (mainCard.isDrawingShiftCard) {
-			setTimeout(() => {
-				LAYOUT[slot].shiftCard = mainCard;
-				let nextCard = getNextCard();
-				while (nextCard.isDrawingShiftCard) {
-					nextCard = getNextCard();
-				}
-				LAYOUT[slot].mainCard = nextCard;
-				LAYOUT[slot].mainCard.isFaceUp = true;
-				updateSlot(slot);
-			}, 1000);
+	get nextFaceDownSlot() {
+		return [1, 2, 3, 4, 5].find((slot) => this.layout[slot].card && this.layout[slot].isFaceUp === false);
+	}
+	get deck() { return this._deck }
+	get template() { return this._template ?? false }
+	set template(template) {
+		if (template.toLowerCase() in TEMPLATEDATA) {
+			this._template = template.toLowerCase();
+			for (const [slot, prompt] of Object.entries(TEMPLATEDATA[template])) {
+				this.layout[slot].card.updatePromptText(prompt);
+			}
 		}
 	}
-	updateSlot(slot);
-	setTimeout(updateSlotOpacity, 1500);
+	
+	_isGhostCatValid(category) { return $(`#ghost-text-controls #${category.toLowerCase()}`)?.is(':checked') }
+	get ghostCategories() { return CONSTANTS.ghostTextCategories.filter((cat) => this._isGhostCatValid(cat)) }
+	
+	constructor() {		
+		this._initTable();
+	}
+
+	// <div id="card-1" class="tarot-card tarot-card-main">
+	// <div id="card-1-shifted" class="tarot-card tarot-card-shifted">
+	// <span class="ghost-text ghost-text-card-1"> (multiples)
+	// <span id="card-1-title" class="tarot-card-title tarot-card-main-title">
+	// <span id="card-1-shifted-title" class="tarot-card-title tarot-card-shifted-title">
+	// <span id="card-1-keyword" class="tarot-card-keyword tarot-card-main-keyword">
+	// <span id="card-1-shifted-keyword" class="tarot-card-keyword tarot-card-main-keyword">
+	
+	_resetLayout() { this._layout = Table.DEFAULTS.layout }
+	_resetDeck() { this._deck = new TarotDeck() }
+	_clearTable() {	$(".canvas-layer *").remove() }
+	async _initTable() {
+		gsap.set(".canvas-layer", {
+			xPercent: -50,
+			yPercent: -50,
+			...CONSTANTS.slotPos[1]
+		});
+		this._clearTable();
+		this._resetLayout();
+		this._resetDeck();
+		
+		// Create empty spaces for cards to be dealt to
+		[1, 2, 3, 4, 5].forEach((slot) => {
+			const slotElem = $("<div class=\"empty-slot-bg\"></div>").appendTo("#under-layer")[0];
+			gsap.set(slotElem, {
+				xPercent: -50,
+				yPercent: -50,
+				...this.layout[slot].pos,
+				scale: 1.05,
+				height: CONSTANTS.card.height,
+				width: CONSTANTS.card.width
+			});
+		});
+		
+		// Fade in canvas layers, but maintain lower scale for card dealing
+		gsap.effects.fadeInTo65(".canvas-layer").then(() => this.deck.circleFan());
+	}
+}
+class TarotDeck {
+	static Get() { return (TarotDeck._Deck = TarotDeck._Deck ?? new TarotDeck()) }
+	static GetCard(cardElem) { return TarotDeck.Get()._cards[parseInt(cardElem.dataset.cardNum)] }
+	
+	constructor() {
+		this._deck = [
+			// Gather Major Arcana
+			...TAROTDATA["major-arcana"],
+			// Gather Minor Arcana
+			...["crescents", "eyes", "hourglasses", "roses", "skulls"]
+				.map((suit) => TAROTDATA["minor-arcana"][suit].slice(1))
+				.flat()			
+		];
+		if (DEBUG.isLimitingDeckSize > 0) {
+			deck = deck.slice(0, DEBUG.isLimitingDeckSize);
+		}
+		TarotDeck._Deck = this;
+	}
+	
+	get table() { return Table.Get() }
+	get layout() { return this.table.layout }
+	get cards() { return (this._cards = this._cards ?? this._shuffleDeck()) }
+	
+	_shuffleDeck() {
+		return shuffle(this._deck)
+			.map((cardData, cardNum, deck) => new TarotCard(cardData, cardNum, {
+				x: this.layout[1].pos.x + (cardNum * CONSTANTS.deckOffset / deck.length),
+				y: this.layout[1].pos.y + (cardNum * CONSTANTS.deckOffset / deck.length)
+			}));
+	}
+	
+	circleFan() {
+		gsap.effects.cardOrbitRotation();
+		gsap.effects.dealCircleFan();
+		Table.Phase = "CardOrbit";
+	}
+
+	deal(cardElem) {
+		const card = TarotDeck.GetCard(cardElem);
+		const slot = this.table.nextEmptySlot;
+		if (slot) {
+			this.layout[slot].card = card;
+			card.slot = slot;
+			const cardState = Flip.getState(cardElem, "outlineColor,outlineWidth");
+			gsap.set("#control-layer", {zIndex: 100});
+			$(cardElem).appendTo("#control-layer");
+			gsap.set(cardElem, {
+				rotation: 0,
+				scale: 1,
+				boxShadow: "rgb(255 166 33) 0px 0px 0px",
+				...Table.Get().layout[slot].pos
+			});
+			Flip.from(cardState, {
+				duration: 2,
+				ease: "expo.out",
+				absolute: true,
+				nested: true,
+				prune: true,
+				scale: true,
+				onComplete() {
+					$(cardElem).appendTo("#card-layer");
+					if (slot === 5) {
+						gsap.set("#control-layer", {zIndex: null});
+						gsap.killTweensOf(".canvas-layer");
+						gsap.effects.explodeOutOverLayer() }
+				}
+			});
+		}
+	}
+}
+class TarotCard {
+	constructor(cardData, cardNum, {x, y, slot, ...params} = {}) {
+		this._data = cardData;
+		this.cardNum = cardNum;
+		this.height = CONSTANTS.card.height;
+		this.width = CONSTANTS.card.width;
+		this._cardBack = getImgCSS(`card-back-${gsap.utils.random([1, 2, 3, 4])}.webp`);
+		if (slot) {
+			this.slot = slot;
+		} else if (x && y) {
+			this.x = x;
+			this.y = y;
+		}
+		this._cardElem = $(`<div class="tarot-card tarot-card-main" data-card-num="${this.cardNum}"></div>`).appendTo("#over-layer")[0];
+		gsap.set(this.cardElem, {
+			xPercent: -50,
+			yPercent: -50,
+			x: this.x,
+			y: this.y,
+			height: this.height,
+			width: this.width,
+			background: this.image,
+			...params
+		});
+	}
+	
+	get cardElem() { return this._cardElem ?? false }
+	get slot() { return this._slot }
+	set slot(slotNum) { 
+		this._slot = slotNum;
+		this.x = Table.Get().layout[slotNum].pos.x;
+		this.y = Table.Get().layout[slotNum].pos.y;
+	}
+	get image() { 
+		if (this.isFaceUp) {
+			return getImgCSS(this._data.imgfile);
+		} else {
+			return this._cardBack;
+		}
+	}
+	get isFaceUp() { return Table.Get().layout[this.slot]?.isFaceUp }
+	set isFaceUp(v) {
+		Table.Get().layout[this.slot].isFaceUp = Boolean(v);
+	}
+	get numSlotsBehind() { 
+		if (this.isFaceUp || !Table.Get().nextFaceDownSlot) {
+			return 0;
+		} else {
+			return Math.max(0, this.slot - Table.Get().nextFaceDownSlot)
+		}
+	}
+	get slotOpacity() { return CONSTANTS.slotStyles[this.numSlotsBehind].opacity }
+		
+	updateSlotStyle() {
+		gsap.to(this.cardElem, {
+			duration: 1,
+			ease: "expo",
+			...CONSTANTS.slotStyles[this.numSlotsBehind]
+		});
+		if (this.slot === Table.Get().nextFaceDownSlot) {
+			$(this.cardElem).click(this.flip.bind(this));
+			$(this.cardElem).hover(this.glowOn.bind(this), this.glowOff.bind(this));
+		}
+	}
+	
+	flip(event) {
+		if (Table.Phase === "CardsDealt" && this.slot === Table.Get().nextFaceDownSlot) {
+			event.preventDefault();
+			// $(this.cardElem).off("click mouseenter");
+			this.isFaceUp = true;
+			gsap.to(this.cardElem, {
+				duration: 0,
+				ease: "circ",
+				background: this.image
+			});
+			Object.values(Table.MainCards).forEach((card) => card.updateSlotStyle());
+			Table.UpdateGhostText();
+			if (this.slot === 5) {
+				gsap.to("#card-layer", {
+					x: `-=${Table.Get().layout[2].pos.x - 0.5 * CONSTANTS.card.width - CONSTANTS.padding.x}px`,
+					duration: 2,
+					ease: "expo4"
+				});
+			}
+		}
+	}
+	
+	glowOn(event) {
+		if (["CardsDealt", "CardsRevealed"].includes(Table.Phase)) {
+			if (this.isFaceUp) {
+				event.preventDefault();
+				gsap.set("#card-layer", {overflow: "hidden"});
+				gsap.set(this.cardElem, {zIndex: 1000});
+				gsap.to(this.cardElem, {
+					duration: 0.5,
+					ease: "power4.inOut",
+					scale: 3,
+					// ...CONSTANTS.slotPos[1]
+				});
+			} else if (this.slot === Table.Get().nextFaceDownSlot) {
+				event.preventDefault();
+				gsap.to(
+					[1, 2, 3, 4, 5].slice(Table.Get().nextFaceDownSlot)
+						.map((slot) => Table.MainCards[slot].cardElem),
+					{
+						duration: 0.5,
+						ease: "expo",
+						opacity: 0.1 // function(i) { return 0.5 * CONSTANTS.slotStyles[i + 1].opacity }			
+					}
+				);
+				gsap.to(this.cardElem, {
+					duration: 0.5,
+					ease: "power4.inOut",
+					boxShadow: "rgb(0 255 0) 0px 0px 30px",
+					scale: 1.2
+				});
+			}
+		}
+	}
+	
+	glowOff(event) {
+		if (["CardsDealt", "CardsRevealed"].includes(Table.Phase)) {
+			event.preventDefault();
+			gsap.set("#card-layer", {overflow: "visible"});
+			gsap.set("#card-layer > .tarot-card", {zIndex: null});
+			gsap.to(Object.values(Table.MainCards).map((card) => card.cardElem), {
+				duration: 0.5,
+				ease: "power4.inOut",
+				boxShadow: "rgb(0 255 0) 0px 0px 0px",
+				scale: 1,
+				opacity: function(i) { return Table.MainCards[i + 1].slotOpacity },
+				// x: function(i) { return CONSTANTS.slotPos[i + 1].x },
+				// y: function(i) { return CONSTANTS.slotPos[i + 1].y }
+			});
+		}
+	}
+
 }
 
 $(document).ready(() => {
-	initialize();
-	$("#reset").click(initialize);
-	$("#deal").click(dealCards);
-	$(".tarot-card:not(.shifted)").click(function flip() { flipCard(this) });
+	Table.Initialize();
+	console.log({
+		gsap,
+		Draggable,
+		Flip,
+		Table,
+		TarotDeck,
+		TarotCard
+	});
 });

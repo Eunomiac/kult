@@ -1,122 +1,74 @@
 @font-face {
   font-family: Infidel;
-  src: url(../assets/fonts/Infidel-C.ttf); }
+  src: url(../assets/fonts/infidel.ttf); }
 
 @font-face {
-  font-family: 'Alverata Informal W01';
-  src: url("../assets/fonts/Alverata Informal W01 Regular.ttf"); }
+  font-family: Alverata;
+  src: url("../assets/fonts/alverata.ttf"); }
+
+@font-face {
+  font-family: 'Caslon Antique';
+  src: url("../assets/fonts/caslon-antique.ttf"); }
 
 html {
-  height: 100%; }
-  html body {
-    font-family: 'Alverata Informal W01';
-    background: black; }
-    html body #tarot-layout {
-      display: grid;
-      width: -webkit-min-content;
-      width: -moz-min-content;
-      width: min-content;
-      padding: 20px;
-      padding-bottom: 38.33333px;
-      padding-top: 38.33333px;
-      grid-template-columns: repeat(3, 240.95238px);
-      grid-template-rows: repeat(3, 275px);
-      grid-row-gap: 50px;
-      grid-column-gap: 5px;
-      background-color: rgba(0, 0, 0, 0.2); }
-      html body #tarot-layout .tarot-slot {
-        --glow-color: rgb(255, 0, 0);
-        --glow-blur: 0px;
-        --glow-size: 10px;
-        position: relative;
-        display: grid;
-        grid-template-columns: repeat(6, 40.15873px); }
-        html body #tarot-layout .tarot-slot#slot-1 {
-          grid-column: 2 / 3;
-          grid-row: 2 / 3; }
-        html body #tarot-layout .tarot-slot#slot-2 {
-          grid-column: 1 / 2;
-          grid-row: 2 / 3; }
-        html body #tarot-layout .tarot-slot#slot-3 {
-          grid-column: 2 / 3;
-          grid-row: 1 / 2; }
-        html body #tarot-layout .tarot-slot#slot-4 {
-          grid-column: 3 / 4;
-          grid-row: 2 / 3; }
-        html body #tarot-layout .tarot-slot#slot-5 {
-          grid-column: 2 / 3;
-          grid-row: 3 / 4; }
-        html body #tarot-layout .tarot-slot .tarot-card {
-          position: relative;
-          grid-column: 2 / 6;
-          grid-row: 1 / 2;
-          border: 3px solid black;
-          border-radius: 25px;
-          background-image: var(--bg-image);
-          background-size: contain;
-          background-position: center;
-          z-index: 2;
-          -webkit-filter: drop-shadow(0 0 var(--glow-size) var(--glow-color)) blur(var(--glow-blur));
-          filter: drop-shadow(0 0 var(--glow-size) var(--glow-color)) blur(var(--glow-blur)); }
-          html body #tarot-layout .tarot-slot .tarot-card.shifted {
-            grid-column: 1 / 5;
-            top: 18.33333px;
-            z-index: 1;
-            -webkit-filter: drop-shadow(0 0 var(--glow-size) var(--glow-color));
-            filter: drop-shadow(0 0 var(--glow-size) var(--glow-color)); }
-            html body #tarot-layout .tarot-slot .tarot-card.shifted.hidden {
-              display: none; }
-            html body #tarot-layout .tarot-slot .tarot-card.shifted:hover {
-              z-index: 3; }
-            html body #tarot-layout .tarot-slot .tarot-card.shifted:not(.hidden) + .tarot-card:not(.shifted) {
-              grid-column: 3 / 7;
-              top: -18.33333px; }
-          html body #tarot-layout .tarot-slot .tarot-card .card-title {
-            position: absolute;
-            display: block;
-            opacity: 1;
-            color: white;
-            text-align: center;
-            -webkit-transform-origin: left;
-            -ms-transform-origin: left;
-            transform-origin: left;
-            -webkit-transform: scaleX(0.7);
-            -ms-transform: scaleX(0.7);
-            transform: scaleX(0.7);
-            width: calc(100% / 0.7);
-            font-size: 24px;
-            font-family: Infidel;
-            font-variant: small-caps;
-            text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
-            bottom: -25px;
-            pointer-events: none;
-            -webkit-transition: 0.5s;
-            -o-transition: 0.5s;
-            transition: 0.5s;
-            white-space: nowrap; }
-          html body #tarot-layout .tarot-slot .tarot-card:not(:hover) .card-title {
-            opacity: 0; }
-          html body #tarot-layout .tarot-slot .tarot-card .card-keyword {
-            position: absolute;
-            color: red;
-            text-align: center;
-            width: calc(100% + 2 * 25px);
-            margin-left: -25px;
-            font-size: 22px;
-            line-height: 22px;
-            font-family: Infidel;
-            text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
-            top: -20px;
-            pointer-events: none;
-            white-space: nowrap; }
-        html body #tarot-layout .tarot-slot .slot-text {
-          position: absolute;
-          display: none;
-          pointer-events: none;
-          color: gold;
-          text-align: center;
-          width: 240.95238px;
-          font-size: 18px;
-          font-family: "Alverata Informal W01";
-          text-shadow: 0 0 5px black, 0 0 5px black;
-          z-index: 1000; }
+  position: absolute;
+  -webkit-transform-origin: center center;
+  -ms-transform-origin: center center;
+  transform-origin: center center;
+  pointer-events: none; }
+
+body {
+  display: block;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  overflow: hidden;
+  pointer-events: none; }
+  body * {
+    position: absolute;
+    -webkit-transform-origin: center center;
+    -ms-transform-origin: center center;
+    transform-origin: center center;
+    pointer-events: none; }
+  body .canvas-layer {
+    display: block;
+    height: 100%;
+    width: 100%;
+    pointer-events: none; }
+    body .canvas-layer#debug-layer {
+      z-index: 10000; }
+    body .canvas-layer#over-layer {
+      z-index: 40;
+      -webkit-filter: drop-shadow(30px 30px 15px black);
+      filter: drop-shadow(30px 30px 15px black); }
+    body .canvas-layer#control-layer {
+      z-index: 30; }
+    body .canvas-layer#card-layer {
+      z-index: 20;
+      -webkit-filter: drop-shadow(6px 6px 4px rgba(0, 0, 0, 0.5));
+      filter: drop-shadow(6px 6px 4px rgba(0, 0, 0, 0.5)); }
+    body .canvas-layer#under-layer {
+      z-index: 10;
+      -webkit-filter: drop-shadow(6px 6px 4px rgba(0, 0, 0, 0.5));
+      filter: drop-shadow(6px 6px 4px rgba(0, 0, 0, 0.5)); }
+      body .canvas-layer#under-layer .empty-slot-bg {
+        display: none;
+        background: rgba(0, 0, 0, 0.3);
+        -webkit-box-shadow: inset 0 0 10px black, inset 0 0 50px black;
+        box-shadow: inset 0 0 10px black, inset 0 0 50px black;
+        border-radius: 25px;
+        -webkit-filter: blur(4px);
+        filter: blur(4px);
+        opacity: 0.8; }
+    body .canvas-layer#background-layer {
+      height: 500%;
+      width: 500%;
+      background: url(../assets/images/table-bg.webp);
+      background-size: 400px 400px; }
+    body .canvas-layer .tarot-card {
+      display: block;
+      background-repeat: no-repeat;
+      background-size: 100% 100% !important;
+      outline: 0px solid transparent;
+      border-radius: 25px;
+      background-color: black !important; }
