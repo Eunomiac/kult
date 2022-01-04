@@ -9,12 +9,11 @@ import {gsap, Draggable, Flip, InertiaPlugin, SlowMo, RoughEase} from "./externa
 import U from "./utilities.js";
 import C from "./constants.js";
 import {SessionData, SetPhase, Update} from "./kult-tarot.js";
-import Table from "./table.js";
 import TarotCard from "./tarot-card.js";
 
 export default class TarotDeck {
 	static GetCard(cardElem) { return SessionData.deck?.cards.find((card) => card.cardNum === parseInt(cardElem.dataset.cardNum)) }
-	
+
 	static Initialize() {
 	}
 
@@ -26,12 +25,12 @@ export default class TarotDeck {
 			// Gather Minor Arcana
 			...["crescents", "eyes", "hourglasses", "roses", "skulls"]
 				.map((suit) => C.TAROTDATA["minor-arcana"][suit].slice(1))
-				.flat()			
+				.flat()
 		];
 		gsap.utils.shuffle(this._deck);
 		this._deckType = deckType;
 	}
-		
+
 	get x() { return this._x }
 	set x(v) { this._x = v }
 	get y() { return this._y }
@@ -48,12 +47,12 @@ export default class TarotDeck {
 	get id() { return `deck-box-${this.type}` }
 	get isMain() { return this.session.deck && this.session.deck.type === this.type }
 	get cardBack() { return (this._cardBack = this._cardBack ?? U.getImgCSS(`${this.type}/card-back-${gsap.utils.random(1, C.numCardBacksByType[this.type], 1)}.webp`)) }
-	
+
 	render(rowNum) {
 		const $deckBox = U.make3dBox({
 			id: this.id,
 			classes: "deck-box",
-			dimensions: {x: C.card.width, y: C.card.height, z: C.deckHeight },
+			dimensions: {x: C.card.width, y: C.card.height, z: C.deckHeight},
 			faces: {
 				bottom: "linear-gradient(#222, #000)",
 				right: "linear-gradient(#222, #000)",
@@ -89,7 +88,7 @@ export default class TarotDeck {
 			ease: "none"
 		}, 0);
 	}
-	
+
 	onHover(event) {
 		console.log("Hover On");
 		if (!this.session.inTransition) {
@@ -97,25 +96,25 @@ export default class TarotDeck {
 			this._hoverAnim.play();
 		}
 	}
-	
+
 	offHover(event) {
 		event.preventDefault();
 		this._hoverAnim.reverse();
 	}
-	
+
 	onClick(event) {
 		if (!this.session.inTransition) {
 			event.preventDefault();
 			SetPhase(C.phases.cardsInOrbit, {deck: this});
 		}
 	}
-	
+
 	async initMainDeck() {
 		const tl = gsap.timeline();
 		this.x = C.slotPos[1].x;
 		this.y = C.slotPos[1].y;
 		this.z = -0.4 * C.deckHeight;
-			
+
 		tl.to(`.deck-box:not(#${this.id})`, {
 			opacity: 0,
 			ease: "sine.inOut",
@@ -147,7 +146,7 @@ export default class TarotDeck {
 		}, 0);
 		return tl;
 	}
-	
+
 	async renderCards() {
 		this._cards = this.deck.map((cardData, cardNum, deck) => new TarotCard(cardData, cardNum, this));
 		this.cards.forEach((card) => card.render());
@@ -172,13 +171,13 @@ export default class TarotDeck {
 			height: "100%",
 			width: "100%"
 		});
-		
+
 		$(".tarot-card-main").each((i, elem) => $(elem).appendTo($(`#rotation-container-${U.randInt(0, 1)}`)));
 		const [xCenter, yCenter] = [this.x, this.y];
 		const radius = C.deckRadiusPercent * (yCenter - C.padding.y);
 		const stepAngle = 360 / (this.cards.length / 2);
 		const stepOffset = C.deckOffset / this.cards.length;
-		
+
 		const tl = gsap.timeline();
 		tl.to(".tarot-card-main", {
 			x(cardNum, cardElem) { return xCenter + (radius * U.sinOf(stepAngle * cardNum)) + gsap.utils.random(-150, 150) },
@@ -286,7 +285,8 @@ export default class TarotDeck {
 					if (slot === 5) {
 						// gsap.set("#control-layer", {zIndex: null});
 						gsap.killTweensOf(".canvas-layer");
-						gsap.effects.explodeOutOverLayer() }
+						gsap.effects.explodeOutOverLayer();
+					}
 				}
 			});
 		}

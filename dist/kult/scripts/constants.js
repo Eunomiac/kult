@@ -12,11 +12,11 @@ const C = {
 	numCardBacksByType: {
 		"kult-red": 4,
 		"kult-official": 1,
-		moon: 4,
-		wendigo: 3,
-		eye: 6,
-		lunar: 1,
-		keys: 6, // 20,
+		"moon": 4,
+		"wendigo": 3,
+		"eye": 6,
+		"lunar": 1,
+		"keys": 6 // 20,
 		// desolate: 10
 	},
 	padding: {x: 20, y: 20},
@@ -27,7 +27,7 @@ const C = {
 	},
 	card: {
 		aspectRatio: 1.712,
-		get height() { return ((window.innerHeight - (2 * C.padding.y)) / 3 - C.spacing.y) },
+		get height() { return (window.innerHeight - (2 * C.padding.y)) / 3 - C.spacing.y },
 		get width() { return this.height / this.aspectRatio }
 	},
 	deckHeight: 50,
@@ -50,7 +50,7 @@ const C = {
 				keyword: "Awakening to",
 				summary: "One of the three most powerful cards in the Kult Tarot, Anthropos represents the glorious potential of humanity's lost divinity against the forces holding us captive. Anthropos is a powerful sign that this reading favours humanity in its struggle against both the Archons and the Death Angels.",
 				note: "Because of the unique significance of Anthropos, a second card has been drawn and paired with it to reveal how the power of Anthropos manifests in the context of this reading.",
-				ghostText: {				
+				ghostText: {
 					individual: [
 						"an Awakened Man",
 						"a single mother feels divinity ignite in her heart",
@@ -81,7 +81,7 @@ const C = {
 					creature: [
 						"a monster unexpectedly demonstrates humanity",
 						"the ghost of a lost ally returns to offer aid",
-						"an agent of the divine turn traitors"					
+						"an agent of the divine turn traitors"
 					],
 					item: [
 						"a lie detector that works, but not on humans",
@@ -113,7 +113,7 @@ const C = {
 						"a secret path",
 						"a dark vault",
 						"the temple of a strict faith",
-						"a dark street",
+						"a dark street"
 					],
 					organization: [
 						"a dead civilization",
@@ -125,12 +125,12 @@ const C = {
 						"a connection to the lost Demiurge Itself",
 						"stillness and death",
 						"hidden secrets",
-						"someone is watching",
+						"someone is watching"
 					],
 					creature: [
 						"beasts of Metropolis",
 						"a great Power that is sleeping",
-						"an enslaved god",
+						"an enslaved god"
 					],
 					item: [
 						"Machinery of Death and Rebirth",
@@ -161,7 +161,7 @@ const C = {
 					],
 					organization: [
 						"free wills behind the Veil",
-						"a nomadic cult of ritual killers",
+						"a nomadic cult of ritual killers"
 					],
 					situation: [
 						"a direct connection to Astaroth",
@@ -2803,7 +2803,7 @@ const C = {
 			5: "This card tells us of another power the artifact has."
 		}
 	}
-}
+};
 C.slotPos = {
 	get 1() {
 		return {

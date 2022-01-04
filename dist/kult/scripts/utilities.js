@@ -12,7 +12,7 @@ import C from "./constants.js";
 // ████████ CONFIGURATION ████████
 const CONFIG = {
 	globalContainerSelector: "body"
-}
+};
 
 // ▮▮▮▮▮▮▮[HELPERS] Internal Functions, Data & References Used by Utility Functions ▮▮▮▮▮▮▮
 const _noCapWords = [ // Regexp tests that should not be capitalized when converting to title case.
@@ -747,33 +747,6 @@ const merge = (target, source, {isMergingArrays = true, isOverwritingArrays = tr
 
 	return target;
 };
-const expand = (obj) => {
-	const expObj = {};
-	for (let [key, val] of Object.entries(obj)) {
-		if (getType(val) === "Object") {
-			val = expand(val);
-		}
-		setProperty(expObj, key, val);
-	}
-	return expObj;
-};
-const flatten = (obj) => {
-	const flatObj = {};
-	for (const [key, val] of Object.entries(obj)) {
-		if (getType(val) === "Object") {
-			if (isObjectEmpty(val)) {
-				flatObj[key] = val;
-			} else {
-				for (const [subKey, subVal] of Object.entries(flatten(val))) {
-					flatObj[`${key}.${subKey}`] = subVal;
-				}
-			}
-		} else {
-			flatObj[key] = val;
-		}
-	}
-	return flatObj;
-};
 
 // ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████
 const getDynamicFunc = (funcName, func, context) => {
@@ -867,8 +840,8 @@ const reparent = (elem, newParent) => {
 const make3dBox = ({id, classes, dimensions, faces, parentElem}) => {
 	id = id ?? "box";
 	classes = [classes ?? ""].flat().filter((cls) => Boolean(cls)).join(" ");
-  parentElem = parentElem ?? $("body")[0];
-  
+	parentElem = parentElem ?? $("body")[0];
+
 	// Default styles applied to all elements
 	const baseStyles = {
 		position: "absolute",
@@ -879,83 +852,83 @@ const make3dBox = ({id, classes, dimensions, faces, parentElem}) => {
 		backgroundSize: "100% 100%",
 		backgroundColor: "black"
 	};
-	
-  // Create Wrapper
-  const $wrapper = $(`<div id=${id} class="${classes}"></div>`).appendTo($(parentElem));
-  gsap.set($wrapper, {
+
+	// Create Wrapper
+	const $wrapper = $(`<div id=${id} class="${classes}"></div>`).appendTo($(parentElem));
+	gsap.set($wrapper, {
 		...baseStyles,
 		height: dimensions.y,
-    width: dimensions.x,
+		width: dimensions.x,
 		x: 0.5 * dimensions.x,
 		y: 0.5 * dimensions.y,
 		z: 0.5 * dimensions.z,
 		background: "none"
-  });
-  
-  // Determine face style data
-  const styleData = {
-    top: {
+	});
+
+	// Determine face style data
+	const styleData = {
+		top: {
 			...baseStyles,
 			height: dimensions.z,
-      width: dimensions.x,
-      rotationX: 90,
-      x: 0.5 * dimensions.x,
-      background: faces.top
-    },
-    bottom: {
+			width: dimensions.x,
+			rotationX: 90,
+			x: 0.5 * dimensions.x,
+			background: faces.top
+		},
+		bottom: {
 			...baseStyles,
-      height: dimensions.z,
-      width: dimensions.x,
-      rotationX: 90,
-      rotationY: 180,
-      x: 0.5 * dimensions.x,
-      y: dimensions.y,
-      background: faces.bottom,
+			height: dimensions.z,
+			width: dimensions.x,
+			rotationX: 90,
+			rotationY: 180,
+			x: 0.5 * dimensions.x,
+			y: dimensions.y,
+			background: faces.bottom,
 			boxShadow: "0 0 25px black, 0 0 25px black"
-    },
-    left: {
+		},
+		left: {
 			...baseStyles,
-      height: dimensions.y,
-      width: dimensions.z,
-      rotationY: -90,
-      y: 0.5 * dimensions.y,
-      background: faces.left
-    },
-    right: {
+			height: dimensions.y,
+			width: dimensions.z,
+			rotationY: -90,
+			y: 0.5 * dimensions.y,
+			background: faces.left
+		},
+		right: {
 			...baseStyles,
-      height: dimensions.y,
-      width: dimensions.z,
-      rotationY: 90,
-      x: dimensions.x,
-      y: 0.5 * dimensions.y,
-      background: faces.right
-    },
-    front: {
+			height: dimensions.y,
+			width: dimensions.z,
+			rotationY: 90,
+			x: dimensions.x,
+			y: 0.5 * dimensions.y,
+			background: faces.right
+		},
+		front: {
 			...baseStyles,
-      height: dimensions.y,
-      width: dimensions.x,
-      x: 0.5 * dimensions.x,
-      y: 0.5 * dimensions.y,
-      z: 0.5 * dimensions.z,
-      background: faces.front
-    },
-    back: {
+			height: dimensions.y,
+			width: dimensions.x,
+			x: 0.5 * dimensions.x,
+			y: 0.5 * dimensions.y,
+			z: 0.5 * dimensions.z,
+			background: faces.front
+		},
+		back: {
 			...baseStyles,
-      height: dimensions.y,
-      width: dimensions.x,
-      x: 0.5 * dimensions.x,
-      y: 0.5 * dimensions.y,
-      z: -0.5 * dimensions.z,
-      rotationY: 180,
-      background: faces.back
-    }
-  }
-	
-	Object.keys(faces).forEach((face) => {		
-      const $elem = $(`<div class="face-${face}"></div>`).appendTo($wrapper);
-      gsap.set($elem, styleData[face]);
+			height: dimensions.y,
+			width: dimensions.x,
+			x: 0.5 * dimensions.x,
+			y: 0.5 * dimensions.y,
+			z: -0.5 * dimensions.z,
+			rotationY: 180,
+			background: faces.back
+		}
+	};
+
+	Object.keys(faces).forEach((face) => {
+		const $elem = $(`<div class="face-${face}"></div>`).appendTo($wrapper);
+		gsap.set($elem, styleData[face]);
 	});
-	
+
 	return $wrapper;
 };
 // ░░░░░░░[GreenSock]░░░░ Wrappers for GreenSock Functions ░░░░░░░
@@ -984,7 +957,7 @@ export default {
 	signNum, padNum, stringifyNum, verbalizeNum, ordinalizeNum, romanizeNum,
 	// ░░░░░░░ Content ░░░░░░░
 	loremIpsum, randWord,
-	
+
 	// ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
 	isIn, isInExact,
 
@@ -1007,7 +980,6 @@ export default {
 	cloneObj, partition,
 	objMap, objFilter, objForEach,
 	remove, replace, merge,
-	expand, flatten,
 
 	// ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████
 	getDynamicFunc,
@@ -1020,7 +992,7 @@ export default {
 	getGSAngleDelta,
 	convertCoords, getNewPos, getGlobalPos, reparent,
 	make3dBox,
-	
+
 	// ░░░░░░░ GreenSock ░░░░░░░
 	gsap, get, set
 };
