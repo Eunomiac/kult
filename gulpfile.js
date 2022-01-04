@@ -297,6 +297,7 @@ const PLUMBING = {
 		return src(source)
 			.pipe(PIPES.openPipe("cssFull")())
 			.pipe(sasser({outputStyle: "nested"}))
+			.pipe(renamer({suffix: ".processed"}))
 			.pipe(bundler([prefixer({cascade: false})]))
 			.pipe(PIPES.closePipe("cssFull", source, destination));
 	},

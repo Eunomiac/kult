@@ -1,0 +1,96 @@
+
+@font-face {
+	font-family: Infidel;
+	src: url(../assets/fonts/infdisplay:.ttf);
+}
+
+@font-face {
+	font-family: Alverata;
+	src: url('../assets/fonts/alverata.ttf');
+}
+
+@font-face {
+	font-family: 'Caslon Antique';
+	src: url('../assets/fonts/caslon-antique.ttf');
+}
+
+html {
+	position: absolute;
+	transform-origin: center center;
+	pointer-events: none;
+	background: rgb(0, 0, 0);
+}
+
+body {
+	margin: 0;
+	
+	#blackout-layer {
+		display: block;
+		position: fixed;
+		height: 1000%;
+		width: 1000%;
+		// transform: translate(-50%, -50%) translate3d(50vw, 50vh, 500px);
+		background: black;
+		pointer-events: none;
+		z-index: 1000000;
+	}
+	
+	.master-layer {
+		display: block;
+		position: fixed;
+		height: 100vh;
+		width: 100vw;
+		pointer-events: none;
+		perspective: 800px;
+		transform-style: preserve-3d;
+		perspective-origin: center center;
+		
+		
+		.canvas-layer {
+			display: block;
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			pointer-events: none;
+			transform-style: preserve-3d;
+			transform: translate(-50%, -50%) translate3d(50vw, 50vh, -300px) rotateX(45deg);
+			
+			* { // For all child elements of canvas layers:	
+				position: absolute;
+				pointer-events: none;
+				transform-style: preserve-3d;
+			}
+			
+			// &#card-layer, &#under-layer { filter: blur(5px) brightness(0.65) }
+			
+			&#under-layer {
+				height: 500%;
+				width: 500%;
+				background: radial-gradient(transparent, black 25%);
+			}
+			
+			&#over-layer .rotation-container {
+				height: 100%;
+				width: 100%;
+				
+				.tarot-card-main { box-shadow: 30px 30px 30px rgba(0, 0, 0, 0.7); } // filter: drop-shadow(30px 30px 10px rgba(0,0,0,0.7)) }
+			}
+			
+			&#background-layer {
+				height: 500%;
+				width: 500%;
+				background: black url(../assets/images/table-bg-2.webp) center/400px 400px repeat border-box;
+				// background: black;
+				// background-image: url(https://www.textures.com/system/gallery/photos/Floors/Checkerboard/137831/FloorsCheckerboard0055_9_350.jpg) !important;
+			}
+			
+			.tarot-card {
+				display: block;
+				background-repeat: no-repeat;
+				background-size: 100% 100% !important;
+				outline: 0px solid transparent;
+				border-radius: 25px;
+			}
+		}
+	}
+}

@@ -47,6 +47,30 @@
         "editor.formatOnSave": false
 		},
 		"files.exclude": {
+			"**/.git": false,
+			"**/.svn": false,
+			"**/.hg": false,
+			"**/CVS": false,
+			"**/.DS_Store": false,
+			"**/Thumbs.db": false,
+			"README.md": false,
+			".prettierrc.js": false,
+			".npmignore": false,
+			".htmlhintrc": false,
+			".gitignore": false,
+			".eslintrc.js": false,
+			".eslintignore": false,
+			"gulpfile.js": false,
+			"LICENSE.txt": false,
+			"package.json": false,
+			"stylelint.config.js": false,
+			"dist": false,
+			"node_modules": false,
+			"scripts/external": false,
+			"css": false,
+			".vscode": false
+		},
+		"explorerExclude.backup": {
 			"**/.git": true,
 			"**/.svn": true,
 			"**/.hg": true,
@@ -60,7 +84,7 @@
 			".gitignore": true,
 			".eslintrc.js": true,
 			".eslintignore": true,
-			"gulpfile.js": true,
+			"gulpfile.js": false,
 			"LICENSE.txt": true,
 			"package.json": true,
 			"stylelint.config.js": true,
@@ -70,7 +94,6 @@
 			"css": true,
 			".vscode": true
 		},
-		"explorerExclude.backup": null,
 		
     
     // ████████[EXTENSION]  #REGION FOLDING FOR VS CODE ████████

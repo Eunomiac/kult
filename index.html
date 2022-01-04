@@ -4,18 +4,22 @@
 		<title>Tarot Card Reader for KULT: Divinity Lost</title>
 		<!--  Styles  -->
 		<link rel="stylesheet" href="scss/kult-tarot.processed.css">
+		<link rel="stylesheet" href="css/kult-tarot.css">
 		
 		<!-- Scripts -->
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script type="module" src="scripts/kult-tarot.mjs"></script>
+		<script type="module" src="scripts/kult-tarot.js"></script>
 	</head>
   
 	<body>
-		<section id="debug-layer" class="canvas-layer"></section>
-		<section id="over-layer" class="canvas-layer"></section>
-		<section id="control-layer" class="canvas-layer"></section>
-		<section id="card-layer" class="canvas-layer"></section>
-		<section id="under-layer" class="canvas-layer"></section>	
-		<section id="background-layer" class="canvas-layer"></section>			
+		<div id="blackout-layer"></div>
+		<section id="intro-section"></section>
+		<section id="reading-section" class="master-layer">
+			<section id="background-layer" class="canvas-layer"></section>
+			<section id="under-layer" class="canvas-layer"></section>	
+			<section id="card-layer" class="canvas-layer"></section>
+			<section id="over-layer" class="canvas-layer"></section>
+			<section id="control-layer" class="canvas-layer"></section>
+		</section>
 	</body>  
 </html>
