@@ -5,14 +5,14 @@
 |*     ▌██████████████████░░░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░░░███████████████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
-import {gsap, Draggable, Flip, InertiaPlugin, SlowMo, RoughEase} from "./external/greensock/all.js";
+import {gsap, Flip, MotionPathPlugin, RoughEase} from "./external/greensock/all.js";
 import U from "./utilities.js";
 import C from "./constants.js";
-// import Table from "./table.js";
+import DEBUG from "./debug.js";
 import TarotDeck from "./tarot-deck.js";
 import TarotCard from "./tarot-card.js";
 
-gsap.registerPlugin(Draggable, Flip, InertiaPlugin, SlowMo, RoughEase);
+gsap.registerPlugin(Flip, MotionPathPlugin, RoughEase);
 
 // ▮▮▮▮▮▮▮[UTILITY] Utility Functions ▮▮▮▮▮▮▮
 
@@ -98,7 +98,7 @@ const SessionData = {
 
 const SetPhase = (phase, data) => {
 	phase = phase in C.phases ? C.phases[phase] : phase;
-	if (Object.values(C.phase).includes(phase)) {
+	if (Object.values(C.phases).includes(phase)) {
 		SessionData.phase = phase;
 		console.log(`*** SWITCHING PHASE TO: ${phase}`);
 		switch (phase) {
@@ -179,17 +179,17 @@ const InitializeDomElements = () => {
 		},
 		rotationX: 80,
 		// opacity: 1,
-		// scale(i, elem) {
-		// 	switch (elem.id) {
-		// 		case "background-layer":
-		// 		case "under-layer":
-		// 		case "card-layer":
-		// 		case "over-layer": // return 3;
-		// 		case "blackout-layer":
-		// 		case "control-layer":
-		// 		default: return 1;
-		// 	}
-		// },
+		scale(i, elem) {
+			switch (elem.id) {
+				case "background-layer":
+				case "under-layer":
+				case "card-layer":
+				case "over-layer": return 3;
+				case "blackout-layer":
+				case "control-layer":
+				default: return 1;
+			}
+		},
 		immediateRender: true
 	});
 
@@ -227,12 +227,12 @@ const Initialize = () => {
 	initDeckSelection();
 };
 
+console.clear();
 InitializeDomElements();
-$(document).ready(Initialize); /*
 $(document).ready(() => {
+	Initialize();
 	// DEBUG.initialize();
-	Table.Initialize();
-}); */
+});
 
 export {
 	InitializeDomElements,

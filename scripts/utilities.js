@@ -878,8 +878,7 @@ const make3dBox = ({id, classes, dimensions, faces, parentElem}) => {
 			rotationY: 180,
 			x: 0.5 * dimensions.x,
 			y: dimensions.y,
-			background: faces.bottom,
-			boxShadow: "0 0 25px black, 0 0 25px black"
+			background: faces.bottom
 		},
 		left: {
 			...baseStyles,
@@ -915,7 +914,8 @@ const make3dBox = ({id, classes, dimensions, faces, parentElem}) => {
 			y: 0.5 * dimensions.y,
 			z: -0.5 * dimensions.z,
 			rotationY: 180,
-			background: faces.back
+			background: faces.back,
+			boxShadow: "0 0 25px black, 0 0 25px black"
 		}
 	};
 

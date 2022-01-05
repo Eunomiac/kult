@@ -36,59 +36,6 @@ export default class TarotCard {
 													 return tl;
 												 }
 		});
-		gsap.registerEffect({name: "cardWanderHoverOn",
-																							effect: (target) => {
-																								[target] = [target].flat();
-																								const cardState = Flip.getState(target, "boxShadow");
-																								const {x, y} = MotionPathPlugin.convertCoordinates($(target).parent()[0], "#control-layer", {x: gsap.getProperty(target, "x"), y: gsap.getProperty(target, "y")});
-																								$(target).appendTo("#control-layer");
-																								gsap.set(target, {
-																									rotationZ: 0,
-																									scale: 3,
-																									boxShadow: "rgb(255 166 33) 0px 0px 10px",
-																									x,
-																									y,
-																									z: 500
-																								});
-																								const cardInst = TarotDeck.GetCard(target);
-																								cardInst._hoverTimeline = Flip.from(cardState, {
-																									duration: 0.5,
-																									ease: "power2.out",
-																									absolute: true,
-																									nested: true,
-																									prune: true,
-																									scale: true
-																								});
-																								return cardInst._hoverTimeline;
-																							}
-		});
-		gsap.registerEffect({name: "cardWanderHoverOff",
-																							effect: (target) => {
-																								[target] = [target].flat();
-																								const cardInst = TarotDeck.GetCard(target);
-																								return cardInst._hoverTimeline.reverse();
-
-																								// 													// $(target).data("state", Flip.getState(target, "boxShadow"));
-																								// 													const cardState = Flip.getState(target, "boxShadow");
-																								// 													const {x, y} = MotionPathPlugin.convertCoordinates("#control-layer", "#rotation-container", {x: gsap.getProperty(target, "x"), y: gsap.getProperty(target, "y")});
-																								// 													$(target).appendTo("#rotation-container");
-																								// 													gsap.set(target, {
-																								// 														rotationZ: -1 * gsap.getProperty("#rotation-container", "rotationZ"),
-																								// 														scale: 1,
-																								// 														boxShadow: "none",
-																								// 														x, y,
-																								// 														z: 200 + gsap.utils.random(0, 100)
-																								// 													});
-																								// 													return Flip.from(cardState, {
-																								// 														duration: 0.5,
-																								// 														ease: "power2.out",
-																								// 														absolute: true,
-																								// 														nested: true,
-																								// 														prune: true,
-																								// 														scale: true
-																								// 													});
-																							}
-		});
 	}
 
 	constructor(cardData, cardNum, deck) {
@@ -172,6 +119,7 @@ export default class TarotCard {
 		event.preventDefault();
 		switch (SessionData.phase) {
 			case "cardsInOrbit": {
+				gsap.killTweensOf(this.cardElem);
 				this._origPos = {
 					x: gsap.getProperty(this.cardElem, "x"),
 					y: gsap.getProperty(this.cardElem, "y"),
@@ -180,34 +128,15 @@ export default class TarotCard {
 				[this._origParent] = $(this.cardElem).parent();
 				const [newParent] = $("#control-layer");
 				const {x, y} = MotionPathPlugin.convertCoordinates(this._origParent, newParent, {x: gsap.getProperty(this.cardElem, "x"), y: gsap.getProperty(this.cardElem, "y")});
-				const {z} = gsap.getProperty(this.cardElem, "z") + gsap.getProperty(newParent, "z") - gsap.getProperty(this._origParent, "z");
-				// const cardState = Flip.getState(this.cardElem, "boxShadow");
-				// const {x, y} = MotionPathPlugin.convertCoordinates(this._origParent, newParent, {x: gsap.getProperty(this.cardElem, "x"), y: gsap.getProperty(this.cardElem, "y")});
+				// const z = gsap.getProperty(this.cardElem, "z") + gsap.getProperty(newParent, "z") - gsap.getProperty(this._origParent, "z");
 				$(this.cardElem).appendTo(newParent);
-				return gsap.fromTo(this.cardElem, {x, y, z}, {
-					rotationZ: -45,
+				return gsap.fromTo(this.cardElem, {x, y, /*z,*/ rotationZ: 0}, {
+					rotationX: -45,
 					scale: 3,
 					boxShadow: "rgb(255 166 33) 0px 0px 10px",
 					duration: 0.5,
 					ease: "power2.out"
 				});
-
-				// gsap.set(this.cardElem, {
-				// 	rotationZ: -45,
-				// 	scale: 3,
-				// 	x,
-				// 	y/* ,
-				// 	z: 500 */
-				// });
-				// Flip.from(cardState, {
-				// 	duration: 0.5,
-				// 	ease: "power2.out",
-				// 	absolute: true,
-				// 	nested: true,
-				// 	prune: true,
-				// 	scale: true
-				// });
-				// break;
 			}
 			case "cardsDealt": {
 				const posData = {};
@@ -235,7 +164,9 @@ export default class TarotCard {
 						...posData,
 						scale: 3,
 						duration: 0.5,
-						ease: "power4.inOut"
+						ease: "power4.inOut",
+						callbackScope: this,
+						onComplete(i, elem) { gsap.effects.cardWander(this.cardElem) }
 					});
 				} else if (this.slot === SessionData.nextFaceDownSlot) {
 					this._hoverTimeline = gsap.to(this.cardElem, {
@@ -258,10 +189,11 @@ export default class TarotCard {
 			case "cardsInOrbit": {
 				$(this.cardElem).appendTo(this._origParent);
 				const {x, y} = MotionPathPlugin.convertCoordinates($(this.cardElem).parent()[0], this._origParent, {x: gsap.getProperty(this.cardElem, "x"), y: gsap.getProperty(this.cardElem, "y")});
-				const {z} = gsap.getProperty(this.cardElem, "z") + gsap.getProperty(this._origParent, "z") - gsap.getProperty($(this.cardElem).parent()[0], "z");
+				// const z = gsap.getProperty(this.cardElem, "z") + gsap.getProperty(this._origParent, "z") - gsap.getProperty($(this.cardElem).parent()[0], "z");
+				const rotationZ = -1 * gsap.getProperty(this._origParent, "rotationZ");
 				$(this.cardElem).appendTo(this._origParent);
-				return gsap.fromTo(this.cardElem, {x, y, z}, {
-					rotationZ: 0,
+				return gsap.fromTo(this.cardElem, {x, y, /*z,*/ rotationZ}, {
+					rotationX: 0,
 					scale: 1,
 					boxShadow: "none",
 					duration: 0.5,

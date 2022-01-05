@@ -5,9 +5,14 @@
 |*     ▌██████████████████░░░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░░░███████████████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
+import {gsap, Flip, MotionPathPlugin, RoughEase} from "./external/greensock/all.js";
 import {InitializeDomElements, Initialize} from "./kult-tarot.js";
+import U from "./utilities.js";
+import C from "./constants.js";
+import TarotDeck from "./tarot-deck.js";
+import TarotCard from "./tarot-card.js";
 
-export default {
+const DEBUG = {
 	isTestingMajorArcana: true,
 	// isLimitingDeckSize: 10,
 	FUNCS: {
@@ -59,7 +64,7 @@ export default {
 			});
 
 		// Store global variables and classes on layer:
-		$debugLayer.data({gsap, Draggable, Flip, TarotDeck, TarotCard});
+		$debugLayer.data({gsap, Flip, MotionPathPlugin, TarotDeck, TarotCard});
 
 		// Create display container:
 		const $displayContainer = $("<div id=\"display-container\"></div>")
@@ -133,3 +138,5 @@ export default {
 		}
 	}
 };
+
+export default DEBUG;

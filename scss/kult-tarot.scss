@@ -73,7 +73,8 @@ body {
 				height: 100%;
 				width: 100%;
 				
-				.tarot-card-main { box-shadow: 30px 30px 30px rgba(0, 0, 0, 0.7); } // filter: drop-shadow(30px 30px 10px rgba(0,0,0,0.7)) }
+				// .tarot-card-main { box-shadow: 30px 30px 30px rgba(0, 0, 0, 0.7); }
+				.tarot-card-main { filter: drop-shadow(30px 30px 10px rgba(0,0,0,0.7)); }
 			}
 			
 			&#background-layer {

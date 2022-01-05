@@ -64,8 +64,8 @@ body {
         height: 100%;
         width: 100%; }
         body .master-layer .canvas-layer#over-layer .rotation-container .tarot-card-main {
-          -webkit-box-shadow: 30px 30px 30px rgba(0, 0, 0, 0.7);
-          box-shadow: 30px 30px 30px rgba(0, 0, 0, 0.7); }
+          -webkit-filter: drop-shadow(30px 30px 10px rgba(0, 0, 0, 0.7));
+          filter: drop-shadow(30px 30px 10px rgba(0, 0, 0, 0.7)); }
       body .master-layer .canvas-layer#background-layer {
         height: 500%;
         width: 500%;

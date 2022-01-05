@@ -66,20 +66,67 @@ export default class TarotDeck {
 		[this._deckElem] = $deckBox;
 		this._hoverAnim = gsap.timeline({paused: true});
 		this._hoverAnim.to(this.deckElem, {
-			// x: C.slotPos[1].x, // - 0.5 * C.card.width,
-			y: `+=${(rowNum === 1 ? 1.5 : 0.5) * U.pInt(C.card.height)}`,
-			z: 350,
-			scale: 2,
-			rotationX: -45,
-			boxShadow: "0 0 60px red",
+			z: "+=100",
+			scale: 1.5,
 			duration: 0.5,
 			ease: "power.inOut"
 		});
-		this._hoverAnim.to(`#${this.id} > .face-bottom`, {
+		this._hoverAnim.to(`#${this.id} > .face-back`, {
 			boxShadow: "none",
 			duration: 0.25,
 			ease: "none"
 		}, 0);
+		this._hoverAnim.to(`#${this.id} > .face-front`, {
+			boxShadow: "0 0 150px lime",
+			duration: 0.5,
+			ease: "power.inOut"
+		}, 0);
+		this._shakeAnim = gsap.timeline({
+			repeat: -1,
+			yoyo: true,
+			paused: true
+		})
+		// 	.to(this.deckElem, {
+		// 	rotationX: "+=10",
+		// 	duration: 1,
+		// 	ease: "rough({ strength: 2, points: 100, template: none, taper: none, randomize: true, clamp: false })"
+		// }, 0).to(this.deckElem, {
+		// 	rotationX: "-=20",
+		// 	duration: 2,
+		// 	ease: "rough({ strength: 2, points: 100, template: none, taper: none, randomize: true, clamp: false })"
+		// }, 0.33).to(this.deckElem, {
+		// 	rotationY: "+=10",
+		// 	duration: 1,
+		// 	ease: "rough({ strength: 2, points: 100, template: none, taper: none, randomize: true, clamp: false })"
+		// }, 0).to(this.deckElem, {
+		// 	rotationY: "-=20",
+		// 	duration: 2,
+		// 	ease: "rough({ strength: 2, points: 100, template: none, taper: none, randomize: true, clamp: false })"
+		// }, 0.33).to(this.deckElem, {
+		// 	rotationZ: "+=10",
+		// 	duration: 1,
+		// 	ease: "rough({ strength: 2, points: 100, template: none, taper: none, randomize: true, clamp: false })"
+		// }, 0).to(this.deckElem, {
+		// 	rotationZ: "-=20",
+		// 	duration: 2,
+		// 	ease: "rough({ strength: 2, points: 100, template: none, taper: none, randomize: true, clamp: false })"
+		// }, 0.33);
+		
+		// this._hoverAnim.to(this.deckElem, {
+		// 	// x: C.slotPos[1].x, // - 0.5 * C.card.width,
+		// 	y: `+=${(rowNum === 1 ? 1.5 : 0.5) * U.pInt(C.card.height)}`,
+		// 	z: 350,
+		// 	scale: 2,
+		// 	rotationX: -45,
+		// 	boxShadow: "0 0 60px red",
+		// 	duration: 0.5,
+		// 	ease: "power.inOut"
+		// });
+		// this._hoverAnim.to(`#${this.id} > .face-bottom`, {
+		// 	boxShadow: "none",
+		// 	duration: 0.25,
+		// 	ease: "none"
+		// }, 0);
 	}
 
 	onHover(event) {
@@ -87,11 +134,13 @@ export default class TarotDeck {
 		if (!this.session.inTransition) {
 			event.preventDefault();
 			this._hoverAnim.play();
+			this._shakeAnim.play();
 		}
 	}
 
 	offHover(event) {
 		event.preventDefault();
+		this._shakeAnim.restart().pause();
 		this._hoverAnim.reverse();
 	}
 
@@ -127,15 +176,11 @@ export default class TarotDeck {
 		}, 1.5);
 		tl.to(".canvas-layer", {
 			scale: 0.65,
+			rotationX: 25,
 			ease: "power",
 			duration: 5,
 			callbackScope: this,
 			onComplete() { return this.renderCards().then(this.circleFan.bind(this)) }
-		}, 0);
-		tl.to(".canvas-layer:not(#control-layer)", {
-			rotationX: 25,
-			duration: 5,
-			ease: "power"
 		}, 0);
 		return tl;
 	}
@@ -145,10 +190,10 @@ export default class TarotDeck {
 		this.cards.forEach((card) => card.render());
 		return gsap.to(".tarot-card-main", {
 			opacity: 1,
-			duration: 0.5,
+			duration: 0,
 			stagger: {
-				amount: 0.05,
-				from: "end"
+				each: 0.05,
+				from: "start"
 			}
 		});
 	}
@@ -193,17 +238,27 @@ export default class TarotDeck {
 				SessionData.inTransition = false;
 			}
 		});
-		tl.to("#rotation-container-0, #rotation-container-1 > .tarot-card-main", {
-			rotationZ: "+=360",
+		tl.to("#rotation-container-0", {
+			rotation: "+=360",
 			duration: 150,
 			repeat: -1,
-			ease: "none"
+			ease: "none",
+			onUpdate() {
+				return gsap.set("#rotation-container-0 > .tarot-card-main", {
+					rotationZ: -1 * gsap.getProperty("#rotation-container-0", "rotationZ")
+				});
+			}
 		}, 1);
-		tl.to("#rotation-container-1, #rotation-container-0 > .tarot-card-main", {
+		tl.to("#rotation-container-1", {
 			rotationZ: "-=360",
 			duration: 150,
 			repeat: -1,
-			ease: "none"
+			ease: "none",
+			onUpdate() {
+				return gsap.set("#rotation-container-1 > .tarot-card-main", {
+					rotationZ: -1 * gsap.getProperty("#rotation-container-1", "rotationZ")
+				});
+			}
 		}, 1);
 		return tl;
 		// return gsap.to("#rotation-container > .tarot-card-main", {
