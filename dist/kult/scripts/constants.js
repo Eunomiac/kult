@@ -30,8 +30,8 @@ const C = {
 		"wendigo": 3,
 		"eye": 6,
 		"lunar": 1,
-		"keys": 20
-		// desolate: 10
+		"keys": 20,
+		"desolate": 5
 	},
 	padding: {x: 20, y: 20},
 	spacing: {x: 100, y: 30},
