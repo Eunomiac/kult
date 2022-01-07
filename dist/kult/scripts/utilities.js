@@ -837,6 +837,20 @@ const reparent = (elem, newParent) => {
 	}
 	console.log(dbData);
 };
+const getPixels = (amount, unit) => {
+	switch (unit) {
+		case "vh": {
+			const vh = window.innerHeight / 100;
+			return amount * vh;
+		}
+		case "vw": {
+			const vw = window.innerWidth / 100;
+			return amount * vw;
+		}
+
+	}
+	return null;
+};
 const make3dBox = ({id, classes, dimensions, faces, parentElem}) => {
 	id = id ?? "box";
 	classes = [classes ?? ""].flat().filter((cls) => Boolean(cls)).join(" ");
@@ -862,7 +876,7 @@ const make3dBox = ({id, classes, dimensions, faces, parentElem}) => {
 		x: 0.5 * dimensions.x,
 		y: 0.5 * dimensions.y,
 		z: 0.5 * dimensions.z,
-		background: "none"
+		backgroundColor: "transparent"
 	});
 
 	// Determine face style data
@@ -918,14 +932,14 @@ const make3dBox = ({id, classes, dimensions, faces, parentElem}) => {
 			x: 0.5 * dimensions.x,
 			y: 0.5 * dimensions.y,
 			z: -0.5 * dimensions.z,
-			rotationY: 180,
-			background: faces.back,
-			boxShadow: "0 0 25px black, 0 0 25px black"
+			// rotationY: 180,
+			background: faces.back
+			// boxShadow: "0 0 25px black, 0 0 25px black"
 		}
 	};
 
 	Object.keys(faces).forEach((face) => {
-		const $elem = $(`<div class="face-${face}"></div>`).appendTo($wrapper);
+		const $elem = $(`<div class="face face-${face}"></div>`).appendTo($wrapper);
 		gsap.set($elem, styleData[face]);
 	});
 
@@ -991,6 +1005,7 @@ export default {
 	formatAsClass,
 	getGSAngleDelta,
 	convertCoords, getNewPos, getGlobalPos, reparent,
+	getPixels,
 	make3dBox,
 
 	// ░░░░░░░ GreenSock ░░░░░░░

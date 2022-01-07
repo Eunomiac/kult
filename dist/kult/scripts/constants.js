@@ -9,6 +9,20 @@ const C = {
 	imgPath: "https://raw.githubusercontent.com/Eunomiac/kult/main/assets/images/",
 	bgTable: "table-bg.webp",
 	bgEmptySlot: "linear-gradient(202deg, rgb(0, 0, 0), rgb(100, 100, 100))",
+	splashTexts: [
+		[
+			"TRUST YOUR INSTINCTS",
+			"Tarot is not connected to logic. It is connected to the subconscious and your instincts. Each card is a key to unlock your mind. If you get a strong impression of a card’s meaning without consulting its description – trust your instincts. There is no right or wrong interpretation. Experiment with the Tarot cards and discover how they can be used to serve your story."
+		],
+		[
+			"ADOPT THE MINDSET",
+			"You should be in the right mindset when utilizing the Tarot cards. The ritual is important, not to attract supernatural attentions, but rather to encourage your subconscious to engage with the cards as creative inspiration, as a way to unlock the labyrinths of your imagination. So take a moment to clear your mind. Take a few deep breaths. Center your thoughts on the dark potential of the KULT universe."
+		],
+		[
+			"FOCUS ON YOUR QUESTION",
+			"About what in your campaign are you hoping to find guidance? Perhaps an important NPC feels underdeveloped; perhaps you'd like an evocative location to hide a cult; perhaps you wish to know what Higher Power pulls the strings of a newly-arrived stranger, and why. Your question should be as focused and as narrow as you can make it --- but no narrower. Write your question below, then choose one of the five reading templates that best suits the insight you seek."
+		]
+	],
 	numCardBacksByType: {
 		"kult-red": 4,
 		"kult-official": 1,
@@ -16,7 +30,7 @@ const C = {
 		"wendigo": 3,
 		"eye": 6,
 		"lunar": 1,
-		"keys": 6 // 20,
+		"keys": 20
 		// desolate: 10
 	},
 	padding: {x: 20, y: 20},
@@ -41,6 +55,7 @@ const C = {
 		cardsRevealed: "cardsRevealed"
 	},
 	ghostTextCategories: ["individual", "location", "organization", "situation", "creature", "item"],
+	ghostTextHorizSpan: 200,
 	TAROTDATA: {
 		"major-arcana": [
 			{
@@ -79,9 +94,9 @@ const C = {
 						"a divine plan fails catastrophically"
 					],
 					creature: [
-						"a monster unexpectedly demonstrates humanity",
+						"a monster demonstrates unexpected humanity",
 						"the ghost of a lost ally returns to offer aid",
-						"an agent of the divine turn traitors"
+						"an agent of the divine turns traitor"
 					],
 					item: [
 						"a lie detector that works, but not on humans",
@@ -134,8 +149,9 @@ const C = {
 					],
 					item: [
 						"Machinery of Death and Rebirth",
-						"scrawled map to a lost city",
-						"an artifact of Metropolis"
+						"a scrawled map to a lost city",
+						"an artifact of Metropolis",
+						"a padlock covered in blood"
 					]
 				},
 				isDrawingShiftCard: true,
@@ -152,7 +168,7 @@ const C = {
 					individual: [
 						"a kid with an Illusion-shattering viral video",
 						"an epileptic who shouts Truths during his seizures",
-						"a philanthropist whose gifts corrupt the recipient"
+						"a philanthropist whose gifts are corrupting"
 					],
 					location: [
 						"Inferno",
@@ -161,27 +177,29 @@ const C = {
 					],
 					organization: [
 						"free wills behind the Veil",
-						"a nomadic cult of ritual killers"
+						"a nomadic cult of ritual killers",
+						"a sadistic, aggressive corporation",
+						"horribly mistreated employees"
 					],
 					situation: [
 						"a direct connection to Astaroth",
-						"the will of the Inferno manifests",
-						"the Black Sun",
+						"the will of Inferno made manifest",
+						"a solar eclipse",
 						"entwined wills, master and slave",
 						"unimaginable suffering",
-						"senseless beauty",
+						"horrible beauty",
 						"a growing power",
 						"spreading cracks in the Illusion"
 					],
 					creature: [
-						"that which grows from death",
+						"that which comes from death",
 						"a pulsating, growing thing",
 						"an Infernal infestation"
 					],
 					item: [
 						"Machinery of Death and Rebirth",
 						"the Spiked Wheel",
-						"the last missive from a destroyed world"
+						"one last message from a destroyed world"
 					]
 				},
 				isDrawingShiftCard: true,
@@ -584,7 +602,7 @@ const C = {
 					value: 1,
 					keyword: "Vortex",
 					summary: "The very source of creation, dreams, and the ever transforming chaos that has its source deep in Limbo.",
-					details: {
+					ghostText: {
 						individual: [
 							"a world-changing visionary",
 							"a dangerous demagogue",
@@ -628,7 +646,7 @@ const C = {
 					value: 2,
 					keyword: "Creation",
 					summary: "Creation is the raw godly power to shape the world and to turn thought and dream into something inspiring.",
-					details: {
+					ghostText: {
 						individual: [
 							"an inspired photographer",
 							"a renowned architect",
@@ -682,7 +700,7 @@ const C = {
 					value: 3,
 					keyword: "Undoing",
 					summary: "Undoing is part of the natural cycle of collapse and obliteration of ideas, structures, bodies, dreams, and whole worlds.",
-					details: {
+					ghostText: {
 						individual: [
 							"a cold-hearted hitman",
 							"a war criminal in hiding",
@@ -740,7 +758,7 @@ const C = {
 					value: 4,
 					keyword: "Transformation",
 					summary: "Transformation is a state of extreme change and metamorphosis.",
-					details: {
+					ghostText: {
 						individual: [
 							"a reckless plastic surgeon",
 							"a method actor",
@@ -791,7 +809,7 @@ const C = {
 					value: 5,
 					keyword: "Connection",
 					summary: "Connection of intertwined structures, wills, or something that might hinder you or help you on your way.",
-					details: {
+					ghostText: {
 						individual: [
 							"a greedy fixer",
 							"a silver-tongued lobbyist",
@@ -851,7 +869,7 @@ const C = {
 					value: 6,
 					keyword: "Merging",
 					summary: "Merging of ideas, bodies, and minds. Two things become one.",
-					details: {
+					ghostText: {
 						individual: [
 							"a good-hearted priest",
 							"conjoined twins",
@@ -902,7 +920,7 @@ const C = {
 					value: 7,
 					keyword: "Reflection",
 					summary: "Reflections can reveal the truth, be deceptive or may mirror a person or a place.",
-					details: {
+					ghostText: {
 						individual: [
 							"an identical twin",
 							"a deceptive medium",
@@ -953,7 +971,7 @@ const C = {
 					value: 8,
 					keyword: "Repetition",
 					summary: "Repetition can be an endless loop, a recurring theme, Déjà vu, or something you can't escape.",
-					details: {
+					ghostText: {
 						individual: [
 							"a postman who reads the mail",
 							"a jaded phone sex operator",
@@ -1005,7 +1023,7 @@ const C = {
 					value: 9,
 					keyword: "Stillness",
 					summary: "Stillness represents apathy, tranquility and a situation that seems to be unchanging.",
-					details: {
+					ghostText: {
 						individual: [
 							"a calm and soothing guru",
 							"a chain-smoking housewife who has given up",
@@ -1055,43 +1073,44 @@ const C = {
 					value: 1,
 					keyword: "Elysium",
 					summary: "Elysium is the very core of the Illusion and the intricate machinery that keeps you in chains.",
-					details: {
+					ghostText: {
 						individual: [
-							"Powerful politician",
-							"Leader of the clergy",
-							"Top ranking military",
-							"Owner of multi-billion dollar company",
-							"Media profile with high credibility"
+							"a powerful politician",
+							"a leader of the clergy",
+							"a top-ranking military officer",
+							"the owner of multi-billion dollar company",
+							"a highly-credible media personality"
 						],
 						location: [
-							"Government building",
-							"Cathedral",
-							"Historical monument",
-							"Occupied land",
-							"Religious capital"
+							"a nondescript government building",
+							"an ornate cathedral",
+							"a treasured historical monument",
+							"occupied land",
+							"holy ground"
 						],
 						organization: [
-							"Cult within the Army",
-							"The Sleeping Masses",
-							"Secret society among the top politicians"
+							"a cult within the Army",
+							"the sleeping masses",
+							"a secret society among top politicians"
 						],
 						situation: [
-							"Cultural values",
-							"Family gatherings",
-							"Traditions and national holidays"
+							"oppressive cultural values",
+							"a family gathering",
+							"a national holiday",
+							"stifling social traditions"
 						],
 						creature: [
-							"Lictors",
-							"The Invisible Principles",
-							"Guardians of the Illusion"
+							"a Lictor",
+							"the invisible Principles",
+							"a guardians of the Illusion"
 						],
 						item: [
-							"Book of laws",
-							"Political propaganda",
-							"Flag of the Nation",
-							"Blindfold",
-							"Sedative",
-							"A PDF with the US Constitution"
+							"a book of laws",
+							"political propaganda",
+							"the flag of the nation",
+							"a blindfold",
+							"an illegal sedative",
+							"a PDF of the US Constitution"
 						]
 					},
 					imgfile: "minor-eyes-1.webp"
@@ -1102,48 +1121,48 @@ const C = {
 					value: 2,
 					keyword: "Imprisonment",
 					summary: "Imprisonment of your body, soul, and mind.",
-					details: {
+					ghostText: {
 						individual: [
-							"Police officer",
-							"Warden",
-							"Headmaster",
-							"Informer",
-							"Secret agent",
-							"Prison guard",
-							"Committed attorney",
-							"Strict judge"
+							"a police officer",
+							"a prison warden",
+							"a school headmaster",
+							"an informant",
+							"a secret agent",
+							"a prison guard",
+							"a dedicated attorney",
+							"a strict judge"
 						],
 						location: [
-							"High security prison",
-							"Detention cell",
-							"High school",
-							"Bank office",
-							"Lending office"
+							"a maximum-security prison",
+							"a detention cell",
+							"a high school",
+							"a bank manager's office",
+							"a lending office"
 						],
 						organization: [
-							"Law enforcers",
-							"The School system",
-							"The bank system",
-							"The Judicial system"
+							"law enforcement",
+							"the local school system",
+							"the banking system",
+							"the judicial system"
 						],
 						situation: [
-							"Bills that need to be payed",
-							"Debts",
-							"Wanted",
-							"Educated",
-							"Declared an enemy of the state"
+							"bills that need to be paid",
+							"mounting debt",
+							"an arrest warrant is issued",
+							"indoctrination through education",
+							"an enemy of the state declared"
 						],
 						creature: [
-							"Eldermensch",
-							"Lictors"
+							"an eldermensch",
+							"a Lictor"
 						],
 						item: [
-							"Handcuffs",
-							"Wheelchair",
-							"List of strict rules",
-							"Security camera",
-							"Surveillance drone",
-							"Folded Education grades"
+							"a set of handcuffs",
+							"an old wheelchair",
+							"a list of strict rules",
+							"a security camera",
+							"a surveillance drone",
+							"a crumpled school report card"
 						]
 					},
 					imgfile: "minor-eyes-2.webp"
@@ -1154,42 +1173,42 @@ const C = {
 					value: 3,
 					keyword: "Faith",
 					summary: "Faith that gives you purpose, but makes you blind.",
-					details: {
+					ghostText: {
 						individual: [
-							"TV-Preacher",
-							"PR-Person",
-							"Enthralled housewife",
-							"Diehard atheist",
-							"Football supporter",
-							"Street preacher"
+							"a television preacher",
+							"a public relations consultant",
+							"an enthralled housewife",
+							"a diehard atheist",
+							"a football supporter",
+							"a street preacher"
 						],
 						location: [
-							"Secluded temple",
-							"Old church",
-							"Sport arena",
-							"Grandiose monument"
+							"a secluded temple",
+							"an old church",
+							"a sports arena",
+							"a grandiose monument"
 						],
 						organization: [
-							"Religious sect",
-							"Marxist Group",
-							"Terror cell"
+							"a religious sect",
+							"a Marxist group",
+							"a terror cell"
 						],
 						situation: [
-							"Ceremony",
-							"Sport event",
-							"Prayer",
-							"Purging ritual",
-							"Money donation"
+							"an occult ceremony",
+							"a sporting event",
+							"a group prayer",
+							"a purging ritual",
+							"a charitable donation"
 						],
 						creature: [
-							"Angels of Chokmah"
+							"an angel of Chokmah"
 						],
 						item: [
-							"Rusty nail from the cross of Jesus",
-							"Religious garments",
-							"Brass pin",
-							"Propaganda poster of Vladimir Putin",
-							"First edition of On the Origin of Species by Charles Darwin"
+							"a rusty nail from the cross of Jesus",
+							"religious garments",
+							"a brass pin",
+							"a propaganda poster of Vladimir Putin",
+							"a first-edition copy of 'On the Origin of Species'"
 						]
 					},
 					imgfile: "minor-eyes-3.webp"
@@ -1200,53 +1219,54 @@ const C = {
 					value: 4,
 					keyword: "Distractions",
 					summary: "Distractions in everyday life that make you blind to the Truth.",
-					details: {
+					ghostText: {
 						individual: [
-							"Intrusive telephone salesman",
-							"The hot teenager next door",
-							"Street peddler",
-							"Charismatic internet celebrity",
-							"Famous actor",
-							"Gossiping neighbor"
+							"an intrusive telephone salesman",
+							"the hot teenager next door",
+							"a street peddler",
+							"a charismatic internet celebrity",
+							"a famous actor",
+							"the neighborhood gossip"
 						],
 						location: [
-							"Movie theater",
-							"Shopping mall",
-							"Vacation resort",
-							"Strip club"
+							"a movie theater",
+							"a shopping mall",
+							"a vacation resort",
+							"a strip club"
 						],
 						organization: [
-							"Advertising Agency",
-							"Fashion house",
-							"Fast food chain"
+							"an advertising agency",
+							"a fashion boutique",
+							"employees of a fast-food restaurant"
 						],
 						situation: [
-							"Social Media Scandals",
-							"TV shows",
-							"The News",
-							"Podcasts",
+							"a social media scandal",
+							"endless new television shows",
+							"the twenty-four hour news cycle",
+							"podcasts",
 							"Twitch streaming",
-							"Commercials",
-							"Phone calls",
-							"Sudden sounds",
-							"The latest moral panic",
-							"Family dinners",
-							"Political discussions"
+							"commercials",
+							"unimportant phone calls",
+							"a sudden sound that proves to be nothing",
+							"the latest moral panic",
+							"a family dinner",
+							"a heated political discussion"
 						],
 						creature: [
-							"Mancipium, Creature of Passion",
-							"Something that is disguised as an ordinary person",
-							"Creature of Madness",
-							"Tiphareth's servants"
+							"Mancipium",
+							"a creature of passion",
+							"it certainly looks human...",
+							"a creature of madness",
+							"a servant of Tiphareth"
 						],
 						item: [
-							"Smartphone",
-							"Video games",
-							"Internet Forums",
-							"Porn",
-							"Billboards",
-							"Cheap alcohol",
-							"Stay fit magazine"
+							"a cluttered smartphone",
+							"a video game",
+							"an Internet forum",
+							"pornography",
+							"a roadside billboard",
+							"cheap alcohol",
+							"a stay-fit magazine"
 						]
 					},
 					imgfile: "minor-eyes-4.webp"
@@ -1257,50 +1277,51 @@ const C = {
 					value: 5,
 					keyword: "Division",
 					summary: "Division keeps us occupied with endless struggles.",
-					details: {
+					ghostText: {
 						individual: [
-							"Online agitator",
-							"Alt-right member",
-							"Man hating feminist",
-							"Imam in the Salafi movement",
-							"Self righteous university student",
-							"Extreme nationalist",
-							"Conservative psychologist",
-							"Shunned writer",
-							"Holocaust denier"
+							"an online agitator",
+							"a member of the alt-right",
+							"a man-hating feminist",
+							"an imam in the Salafi movement",
+							"a self-righteous university student",
+							"an extreme nationalist",
+							"a conservative psychologist",
+							"a shunned writer",
+							"a Holocaust denier"
 						],
 						location: [
-							"Social media",
-							"Online forums",
+							"a turbulent social media community",
+							"a hostile online forum",
 							"Youtube",
-							"Basement hideout",
-							"Discreet meeting place",
-							"Conference rooms"
+							"a basement hideout",
+							"a discreet meeting place",
+							"a quiet conference room"
 						],
 						organization: [
-							"Minority ethnic group",
-							"Right wing party",
-							"Online hate group",
-							"Conspiracy theorists"
+							"a minority ethnic group",
+							"a right-wing political party",
+							"an online hate group",
+							"conspiracy theorists"
 						],
 						situation: [
-							"Political rally",
-							"Harassment",
-							"Death threats",
-							"Arson",
-							"Hate speech",
-							"Heated debates"
+							"a political rally",
+							"ongoing harassment",
+							"repeated death threats",
+							"an arson",
+							"the spread of hate speech",
+							"a debate turns violent"
 						],
 						creature: [
-							"Servants of Hareb Serap and Gamichicoth"
+							"a servant of Hareb-Serap",
+							"a servant of Gamichicoth"
 						],
 						item: [
-							"Hate propaganda",
-							"Racist pamphlets",
-							"The SCUM manifesto",
-							"Provocative song on Spotify",
-							"Essay about Foucault",
-							"Cartoon making fun of a religious prophet"
+							"a pamphlet of hate propaganda",
+							"a racist screed",
+							"the SCUM Manifesto",
+							"a provocative song on Spotify",
+							"an essay about Foucault",
+							"a cartoon parody of a religious icon"
 						]
 					},
 					imgfile: "minor-eyes-5.webp"
@@ -1311,50 +1332,50 @@ const C = {
 					value: 6,
 					keyword: "Rebellion",
 					summary: "Rebellion and struggle against the ruling order.",
-					details: {
+					ghostText: {
 						individual: [
-							"Stubborn loner",
-							"Teenager with an attitude",
-							"Criminal",
-							"Charismatic political leader",
-							"Mafia boss",
-							"Violent neo-nazi",
-							"Gang member",
-							"YouTube Critic",
-							"Hacker",
-							"Anarchist"
+							"a stubborn loner",
+							"a teenager with an attitude",
+							"an unrepentant criminal",
+							"a charismatic political maverick",
+							"a mafia boss",
+							"a violent neo-nazi",
+							"a gang member",
+							"a prolific YouTube critic",
+							"a black-hat hacker",
+							"an anarchist"
 						],
 						location: [
-							"Occupied house",
-							"Underground Club",
-							"Home of a survivalist",
-							"Secret hideout",
-							"Bar outside town"
+							"a house occupied by squatters",
+							"an underground club",
+							"the trapped home of a survivalist",
+							"a secret hideout",
+							"a bar well outside of town"
 						],
 						organization: [
-							"Guerrilla",
-							"Punk band",
-							"Extremist group",
-							"Animal Rights movement"
+							"a guerrilla force",
+							"a punk rock band",
+							"an extremist group",
+							"an animal rights group"
 						],
 						situation: [
-							"Revolution",
-							"Riot",
-							"Concert",
-							"Political rally",
-							"Demonstration"
+							"a revolution",
+							"a riot",
+							"a riotous rock concert",
+							"a political rally",
+							"a public demonstration"
 						],
 						creature: [
-							"Angels of Malkuth",
-							"Azghoul"
+							"an angel of Malkuth",
+							"an Azghoul"
 						],
 						item: [
-							"Pamphlet with Propaganda",
-							"Spray can",
-							"Communist manifesto",
-							"Threatening letter",
-							"Steel tipped boots",
-							"Placard"
+							"a pamphlet decrying media propaganda",
+							"a spray can",
+							"the Communist Manifesto",
+							"a threatening letter",
+							"steel-tipped boots",
+							"an offensive placard"
 						]
 					},
 					imgfile: "minor-eyes-6.webp"
@@ -1365,53 +1386,51 @@ const C = {
 					value: 7,
 					keyword: "Madness",
 					summary: "Madness that overwhelms and tears apart, but may also grant insight.",
-					details: {
+					ghostText: {
 						individual: [
-							"Distraught patient",
-							"Sadistic orderly",
-							"Deluded jazz musician",
-							"Girl who is kept hidden",
-							"Boy without a mouth",
-							"Wild eyed mathematician",
-							"Veterinarian who performs cruel experiments"
+							"a distraught medical patient",
+							"a sadistic orderly",
+							"a deluded jazz musician",
+							"a girl who is kept hidden",
+							"a boy without a mouth",
+							"a wild-eyed mathematician",
+							"a veterinarian who performs cruel experiments"
 						],
 						location: [
-							"Insane asylum",
-							"Isolation cell",
-							"Decrepit house",
-							"Apartment with torn down wallpapers"
+							"an insane asylum",
+							"an isolation cell",
+							"a decrepit house",
+							"an apartment with torn-down wallpaper"
 						],
 						organization: [
-							"The Fools",
-							"Psychological Institute",
-							"Sect in the trailer park"
+							"fools",
+							"a psychological institute",
+							"a sect in a trailer park"
 						],
 						situation: [
-							"Psychosis",
-							"Severe depression",
-							"Schizophrenia",
-							"PTSD",
-							"Anxiety",
-							"Panic Attacks",
-							"Neurosis",
-							"Paranoia",
-							"Aggressive behavior",
-							"Multiple personalities",
-							"Mob mentality",
-							"Mass delusion"
+							"sudden psychosis",
+							"severe depression",
+							"the onset of schizophrenia",
+							"a panic attack",
+							"an encounter with a phobia",
+							"reasons for paranoia",
+							"unexplained aggression",
+							"multiple personalities in conflict",
+							"mob mentality assumes control",
+							"a mass delusion descends"
 						],
 						creature: [
-							"Creature of Madness"
+							"a creature of madness"
 						],
 						item: [
-							"A half burned doll",
-							"Patient journal",
-							"Pharmaceutical drugs",
-							"Straitjacket",
-							"Scribbles on a city map",
-							"Symbols burned into human skin",
-							"Notes hidden inside a book about female hysteria",
-							"Envelope with 10 bottle caps"
+							"a half-burned doll",
+							"a mental patient's journal",
+							"psychoactive pharmaceuticals",
+							"a straitjacket",
+							"disturbing scribbles on a city map",
+							"symbols burned into human skin",
+							"notes hidden inside a book about 'female hysteria'",
+							"an envelope holding ten bottle caps"
 						]
 					},
 					imgfile: "minor-eyes-7.webp"
@@ -1422,43 +1441,42 @@ const C = {
 					value: 8,
 					keyword: "Visions",
 					summary: "Visions that may bring insight, but may also lead you astray.",
-					details: {
+					ghostText: {
 						individual: [
-							"Oracle in the suburbs",
-							"Self proclaimed prophet",
-							"Inspired Architect",
-							"Eccentric video artist",
-							"CEO of fast growing IT company",
-							"Mental patient"
+							"an oracle in the suburbs",
+							"a self-proclaimed prophet",
+							"an inspired architect",
+							"an eccentric video artist",
+							"the CEO of a fast-growing IT company",
+							"a prescient mental patient"
 						],
 						location: [
-							"Old temple",
-							"Carnival",
-							"Smoky opium den",
-							"Asylum",
-							"Techno Club",
-							"Graffiti in parking garage"
+							"an old temple",
+							"the carnival",
+							"a smoky opium den",
+							"an asylum",
+							"a techno club",
+							"graffiti in a parking garage"
 						],
 						organization: [
-							"Dream Interpreters",
-							"Pilgrims"
+							"dream interpreters"
 						],
 						situation: [
-							"Nightmarish visions",
-							"Clear insights",
-							"Prophecy",
-							"Eyes gouged out",
-							"Rumors that speak of the Truth"
+							"nightmarish visions",
+							"a clear insight",
+							"a prophecy is revealed",
+							"eyes gouged out",
+							"rumors that speak of the Truth"
 						],
 						creature: [
-							"Being born of nightmares and visions",
-							"Augur"
+							"a being born of nightmares and visions",
+							"an Augur"
 						],
 						item: [
-							"Super 8 Camera",
-							"LSD",
-							"Decorated clay pot",
-							"Webpage"
+							"a Super-8 camera",
+							"a sheet of LSD tabs",
+							"a decorated clay pot",
+							"an honest webpage"
 						]
 					},
 					imgfile: "minor-eyes-8.webp"
@@ -1469,45 +1487,45 @@ const C = {
 					value: 9,
 					keyword: "Enlightenment",
 					summary: "The road that may lead you towards Enlightenment and Awakening.",
-					details: {
+					ghostText: {
 						individual: [
-							"Amature philosopher",
-							"Magician",
-							"Savvy technician",
-							"Dedicated body modder",
-							"Scientist on the verge of discovery",
-							"Homeless beneath a bridge",
-							"University student",
-							"Broadminded bartender"
+							"an amature philosopher",
+							"a magician with real power",
+							"a savvy technician",
+							"a dedicated body modder",
+							"a scientist on the verge of a major discovery",
+							"a homeless man beneath a bridge",
+							"a university student",
+							"a broadminded bartender"
 						],
 						location: [
-							"Road into the unknown",
-							"Twisted staircase",
-							"High tech lab",
-							"University"
+							"a road to the unknown",
+							"a twisted staircase",
+							"a high-tech laboratory",
+							"a university"
 						],
 						organization: [
-							"A Cult that serves Malkuth",
-							"Research institute",
-							"Architect firm"
+							"a Cult that serves Malkuth",
+							"a research institute",
+							"an architecture firm"
 						],
 						situation: [
-							"Initiation ritual",
-							"Science fair",
-							"Sect Meeting"
+							"an initiation ritual",
+							"a science fair",
+							"a sect meeting"
 						],
 						creature: [
-							"Child of the Night",
-							"Awakened human",
+							"a child of the night",
+							"an Awakened human",
 							"Amentoraz"
 						],
 						item: [
-							"Map of unknown origin",
-							"Old floppy disc",
-							"Diary with mad scribbles",
-							"Forgotten blog",
-							"Ladder",
-							"Flashlight"
+							"a map of unknown origins",
+							"an old floppy disc",
+							"a diary of mad scribbles",
+							"a long-forgotten blog",
+							"a ladder",
+							"a flashlight"
 						]
 					},
 					imgfile: "minor-eyes-9.webp"
@@ -1521,43 +1539,43 @@ const C = {
 					value: 1,
 					keyword: "Achlys",
 					summary: "Achlys represents nothingness, infinity, the void, but also the obliteration of the very soul.",
-					details: {
+					ghostText: {
 						individual: [
-							"Severely depressed soul",
-							"Person in extreme apathy",
-							"Coma patient",
-							"Self destructive misanthrope",
-							"Priest who has lost his faith",
-							"Prisoner kept in total isolation",
-							"Careless deep sea diver"
+							"a severely-depressed soul",
+							"an extremely apathetic individual",
+							"a coma patient",
+							"a self-destructive misanthrope",
+							"a priest who has lost his faith",
+							"a prisoner kept in total isolation",
+							"a careless deep-sea diver"
 						],
 						location: [
-							"The vacuum of space",
-							"A deep well",
-							"Black still waters",
-							"Sensory deprivation tank",
-							"Bottomless mire",
-							"Depth of the ocean",
-							"Isolation cell with black walls"
+							"the vacuum of space",
+							"a deep well",
+							"black, still waters",
+							"a sensory deprivation tank",
+							"a bottomless mire",
+							"the depths of the ocean",
+							"an isolation cell with black walls"
 						],
 						organization: [
-							"Cult that worships She Who Waits Below"
+							"a cult that worships She Who Waits Below"
 						],
 						situation: [
-							"Total destruction of what makes a person",
-							"Dissolved into atoms",
-							"Maelstrom that drags you down into the deep"
+							"the total destruction of what makes a person",
+							"dissolved into atoms",
+							"a maelstrom that drags you down into the deep"
 						],
 						creature: [
-							"Children of the Underworld",
-							"Phantom"
+							"children of the Underworld",
+							"a phantom"
 						],
 						item: [
-							"Sensory deprivation tank",
-							"Inkwell filled with black ink",
-							"Syringe with a lethal injection",
-							"The number π burned into leather",
-							"Suicide note"
+							"a sensory deprivation tank",
+							"an inkwell filled with black ink",
+							"a syringe for a lethal injection",
+							"the number π burned into leather",
+							"a suicide note"
 						]
 					},
 					imgfile: "minor-hourglasses-1.webp"
@@ -1568,46 +1586,46 @@ const C = {
 					value: 2,
 					keyword: "Future",
 					summary: "Future revolves around things yet to come as well as potential that has yet not been unleashed.",
-					details: {
+					ghostText: {
 						individual: [
-							"Suburban fortune teller",
-							"Professor in predictive analytics",
-							"Reckless gambler",
-							"Infant from unknown parents",
-							"Stock broker",
-							"Young prospect",
-							"Tireless gardener",
-							"Sportsman aiming for the elite league",
-							"Aspiring politician",
-							"Tech genius"
+							"a suburban fortune teller",
+							"a professor in predictive analytics",
+							"a reckless gambler",
+							"an infant whose parents are unknown",
+							"a stock broker",
+							"a young up-and-comer",
+							"a tireless gardener",
+							"a sportsman aiming for the elite league",
+							"an aspiring politician",
+							"a tech genius"
 						],
 						location: [
-							"Orphanage",
-							"Highway being built",
-							"Construction site"
+							"an orphanage",
+							"a highway under construction",
+							"a construction site"
 						],
 						organization: [
-							"Future analysts",
-							"Investment company",
-							"Technical university"
+							"futures analysts",
+							"an investment company",
+							"a technical university"
 						],
 						situation: [
-							"Prediction",
-							"Complicated plots",
-							"Tarot reading",
-							"Fundraising event",
-							"Online crowdfunder"
+							"a prediction",
+							"complicated plots",
+							"a Tarot reading",
+							"a fundraising event",
+							"an online crowdfunder"
 						],
 						creature: [
-							"Being from the future",
-							"The Eyeless One"
+							"a being from the future",
+							"the Eyeless One"
 						],
 						item: [
-							"Old pocket watch",
-							"A diary filled with predictions",
-							"A seed that has not yet been planted",
-							"A blueprint of a skyscraper",
-							"A biological weapon"
+							"an old pocket watch",
+							"a diary filled with predictions",
+							"a seed that has yet to be planted",
+							"a blueprint of a skyscraper",
+							"a biological weapon"
 						]
 					},
 					imgfile: "minor-hourglasses-2.webp"
@@ -1618,43 +1636,43 @@ const C = {
 					value: 3,
 					keyword: "Past",
 					summary: "Past revolves around things that have already occurred and now come back, or could be discovered, if you look in the right place.",
-					details: {
+					ghostText: {
 						individual: [
-							"Nostalgic old-timer",
-							"Bitter antique dealer",
-							"Archaeologist who can't stop talking",
-							"Hobby historian",
-							"Dedicated chronicler",
-							"Member of a retro subculture"
+							"a nostalgic old-timer",
+							"a bitter antiques dealer",
+							"an archaeologist who can't stop talking",
+							"a hobby historian",
+							"a dedicated chronicler",
+							"a member of a retro subculture"
 						],
 						location: [
-							"Forgotten museum",
-							"Ruins deep in the wilderness",
-							"Overgrown graveyard",
-							"Dusty archives",
-							"Old battlefield",
-							"University library",
-							"Family homestead"
+							"a forgotten museum",
+							"ruins deep in the wilderness",
+							"an overgrown graveyard",
+							"dusty archives",
+							"an old battlefield",
+							"a university library",
+							"a family homestead"
 						],
 						organization: [
-							"Center for genealogy studies",
-							"Archaeological society",
-							"Online vintage subculture group"
+							"a center for genealogy studies",
+							"an archaeological society",
+							"an online vintage subculture group"
 						],
 						situation: [
-							"Archaeological dig",
-							"Interrogation"
+							"an archaeological dig",
+							"an interrogation"
 						],
 						creature: [
-							"Being from a time long passed",
-							"Ancient creature from the Underworld",
-							"Forgotten god"
+							"a being from a time long passed",
+							"an ancient creature from the Underworld",
+							"a forgotten god"
 						],
 						item: [
-							"Book with family history",
-							"A chalice from the Middle Ages",
-							"A photo of people long since dead",
-							"A folded birth certificate"
+							"a book of a family's history",
+							"a chalice from the Middle Ages",
+							"a photo of people long dead",
+							"a folded birth certificate"
 						]
 					},
 					imgfile: "minor-hourglasses-3.webp"
@@ -1665,48 +1683,48 @@ const C = {
 					value: 4,
 					keyword: "Space",
 					summary: "Space represents someone or something that travels forward through space towards a goal or is always in motion.",
-					details: {
+					ghostText: {
 						individual: [
-							"Hard working truck driver",
-							"Philosophical backpacker",
-							"Cheating airline pilot",
-							"Restless lover",
-							"Tattered drifter",
-							"Psychopathic hitchhiker",
-							"Trustworthy taxi driver",
-							"Marathon runner with many secrets",
-							"Escaped convict",
-							"Child that has run away from home"
+							"a hard-working truck driver",
+							"a philosophical backpacker",
+							"a cheating airline pilot",
+							"a restless lover",
+							"a tattered drifter",
+							"a psychopathic hitchhiker",
+							"a trustworthy taxi driver",
+							"a marathon runner with many secrets",
+							"an escaped convict",
+							"a child that has run away from home"
 						],
 						location: [
-							"Endless highway",
-							"Railway",
-							"Slow flowing river",
-							"Freight elevator"
+							"an endless highway",
+							"railroad tracks",
+							"a slowly-flowing river",
+							"a freight elevator"
 						],
 						organization: [
-							"Moving company",
-							"Shipping company",
-							"Human trafficking syndicate"
+							"a moving company",
+							"a shipping company",
+							"a human trafficking syndicate"
 						],
 						situation: [
-							"Boat trip",
-							"Train ride",
-							"Hunt",
-							"Speeding car",
-							"Information being transferred",
-							"Electrical lines"
+							"a boat trip",
+							"a train ride",
+							"a hunt",
+							"a speeding car",
+							"the transfer of information",
+							"humming power lines"
 						],
 						creature: [
-							"The Crazed Dancers",
-							"The God of the Highways",
-							"Being that can teleport"
+							"the crazed dancers",
+							"the God of the Highways",
+							"a being that can teleport"
 						],
 						item: [
-							"Phone with GPS info",
-							"Water bottle",
-							"Pair of shoes",
-							"Passport"
+							"a phone with intact GPS info",
+							"a water bottle",
+							"a pair of shoes",
+							"a passport"
 						]
 					},
 					imgfile: "minor-hourglasses-4.webp"
@@ -1717,44 +1735,44 @@ const C = {
 					value: 5,
 					keyword: "Borderland",
 					summary: "Borderland is the place between two worlds or two states of being, or where Time and Space meet the physical world.",
-					details: {
+					ghostText: {
 						individual: [
-							"Bought customs agent",
-							"Immigrant with split personality",
-							"Foreign diplomat",
-							"Child entering puberty",
-							"AIDS patient close to death",
-							"Urban shaman"
+							"a corrupt customs agent",
+							"an immigrant with a split personality",
+							"a foreign diplomat",
+							"a child entering puberty",
+							"an AIDS patient close to death",
+							"an urban shaman"
 						],
 						location: [
-							"Place where the illusion is weak",
-							"Overgrown riverbank",
-							"Border control",
-							"High wall",
-							"Embassy building"
+							"a place where the Illusion is weak",
+							"an overgrown riverbank",
+							"a border control post",
+							"a high wall",
+							"an embassy building"
 						],
 						organization: [
-							"Cult that guards the borderland"
+							"a cult that guards the borderland"
 						],
 						situation: [
-							"Existing between two worlds",
-							"An uncertain loyalty",
-							"Deal between two powers",
-							"Half awake",
-							"Between life and death",
-							"Status quo",
-							"Standoff"
+							"existing between two worlds",
+							"uncertain loyalties",
+							"a deal between two powers",
+							"only half awake",
+							"between life and death",
+							"the status quo",
+							"a standoff"
 						],
 						creature: [
-							"Borderliner"
+							"a Borderliner"
 						],
 						item: [
-							"Letter of introduction",
-							"Identity papers",
-							"Compass",
-							"Carpet knife",
-							"Folded map",
-							"Diplomatic passport"
+							"a letter of introduction",
+							"identity papers",
+							"a compass",
+							"a carpet knife",
+							"a folded map",
+							"a diplomatic passport"
 						]
 					},
 					imgfile: "minor-hourglasses-5.webp"
@@ -1765,42 +1783,42 @@ const C = {
 					value: 6,
 					keyword: "Hidden",
 					summary: "Hidden represents something that is obscured and hidden from view. It is strongly tied to the city of Ktonor in the Underworld.",
-					details: {
+					ghostText: {
 						individual: [
-							"Undercover agent",
-							"Illegal immigrant",
-							"Escaped prisoner",
-							"Inside man",
-							"Camouflaged soldier"
+							"an undercover agent",
+							"an illegal immigrant",
+							"an escaped prisoner",
+							"an inside man",
+							"a camouflaged soldier"
 						],
 						location: [
 							"Ktonor",
-							"Hidden sanctuary",
-							"Dusty vault",
-							"Panic room",
-							"Secret passage",
-							"Unknown trail in the wilderness",
-							"Smuggling route",
-							"Safehouse"
+							"a hidden sanctuary",
+							"a dusty vault",
+							"a panic room",
+							"a secret passage",
+							"an unknown trail in the wilderness",
+							"a smuggling route",
+							"a safehouse"
 						],
 						organization: [
-							"Spy agency",
-							"Secret hobo community"
+							"a spy agency",
+							"a secret hobo community"
 						],
 						situation: [
-							"Undercover operation",
-							"Staying away from trouble",
-							"Hidden meanings in conversations"
+							"an undercover operation",
+							"staying away from trouble",
+							"hidden meanings in conversations"
 						],
 						creature: [
-							"Child of the Underworld",
-							"Invisible Monster"
+							"a child of the Underworld",
+							"an invisible monster"
 						],
 						item: [
-							"Key to safehouse",
-							"Map to secret route",
-							"Ancient artifact",
-							"Buried secrets"
+							"the key to a safehouse",
+							"a map of a secret route",
+							"an ancient artifact",
+							"buried secrets"
 						]
 					},
 					imgfile: "minor-hourglasses-6.webp"
@@ -1811,33 +1829,33 @@ const C = {
 					value: 7,
 					keyword: "Labyrinth",
 					summary: "Labyrinth is a maze filled with dangers and confusion, and is tied to the Underworld.",
-					details: {
+					ghostText: {
 						individual: [
-							"Mathematician working on an unsolvable problem",
-							"Mental patient that understands aspects of the Truth",
-							"Cave explorer",
-							"Psychologist mapping the minds of serial killers",
-							"Old woman obsessed with puzzles and riddles"
+							"a mathematician working on an unsolvable problem",
+							"a mental patient that understands aspects of the Truth",
+							"a cave explorer",
+							"a psychologist mapping the minds of serial killers",
+							"an old woman obsessed with puzzles and riddles"
 						],
 						location: [
-							"Sewer system",
-							"Twisting alleyways",
-							"Hedge maze",
-							"Dark cellar",
-							"Network of caves",
-							"Subway tunnels",
-							"Favela"
+							"the sewers",
+							"twisting alleyways",
+							"a hedge maze",
+							"a dark cellar",
+							"a network of caves",
+							"subway tunnels",
+							"a Brazillian Favela"
 						],
 						organization: [
-							"Cult worshipping the creatures of the Underworld"
+							"a cult worshipping the creatures of the Underworld"
 						],
 						situation: [
-							"Losing direction",
-							"Confusion",
-							"Ambush",
-							"Ending up on a place one did not expect",
-							"Walking in circles",
-							"Strange echos"
+							"losing one's direction",
+							"abject confusion",
+							"an ambush out of nowhere",
+							"ending up in an unexpected place",
+							"walking in circles",
+							"strange echoes"
 						],
 						creature: [
 							"Cairath",
@@ -1845,9 +1863,9 @@ const C = {
 							"Gransangthir"
 						],
 						item: [
-							"Old compass from sailing vessel",
-							"1000 piece puzzle",
-							"Code written by a madman"
+							"the compass from an old sailing vessel",
+							"a thousand-piece jigsaw puzzle",
+							"a cypher written by a madman"
 						]
 					},
 					imgfile: "minor-hourglasses-7.webp"
@@ -1858,38 +1876,38 @@ const C = {
 					value: 8,
 					keyword: "Crossroad",
 					summary: "Crossroad is connected to two distinct paths, a choice that has to be made and two very different outcomes.",
-					details: {
+					ghostText: {
 						individual: [
-							"Woman running from her past",
-							"Pressured politician",
-							"Girl considering an abortion",
-							"Bitter marriage counselor"
+							"a woman running from her past",
+							"a pressured politician",
+							"a girl considering an abortion",
+							"a bitter marriage counselor"
 						],
 						location: [
-							"Crossroad",
-							"Road leading off the highway",
-							"Railway station",
-							"Stairs leading down to the subway"
+							"at a crossroad",
+							"a road leading off the highway",
+							"a railway station",
+							"stairs leading down into the subway"
 						],
 						organization: [
-							"Fertility clinic",
-							"Betting company"
+							"a fertility clinic",
+							"a betting company"
 						],
 						situation: [
-							"Important choice",
-							"A tough dilemma",
-							"A break up",
-							"A shout that may not be heard",
-							"Child playing with a gun"
+							"a choice more important than it appears",
+							"an impossible decision",
+							"a bad break-up",
+							"a scream that goes unheard",
+							"a child playing with a gun"
 						],
 						creature: [
-							"Pact-weaver",
-							"The Swap Dealer"
+							"a pact-weaver",
+							"the Swap Dealer"
 						],
 						item: [
-							"A letter with life changing information",
-							"A Backpack",
-							"Slot machine"
+							"a letter with life-changing information",
+							"a backpack",
+							"a slot machine"
 						]
 					},
 					imgfile: "minor-hourglasses-8.webp"
@@ -1900,40 +1918,40 @@ const C = {
 					value: 9,
 					keyword: "Gate",
 					summary: "Gate represents a threshold or obstacle that must be crossed or be protected.",
-					details: {
+					ghostText: {
 						individual: [
-							"Security guard",
-							"Self taught locksmith",
-							"Driven hacker",
-							"Middle manager with a rejecting nature"
+							"a security guard",
+							"a self-taught locksmith",
+							"a driven hacker",
+							"a hard-to-please middle-manager"
 						],
 						location: [
-							"Bank vault",
-							"Door to an abandoned building",
-							"Passageway beneath a bridge",
-							"Manhole",
-							"Portal to another world"
+							"a bank vault",
+							"a door to an abandoned building",
+							"a passageway beneath a bridge",
+							"a manhole",
+							"a portal to another world"
 						],
 						organization: [
-							"Bank",
-							"Border guards",
-							"Cults that has sworn to protect a secret"
+							"the bank",
+							"border guards",
+							"a cult that has sworn to protect a secret"
 						],
 						situation: [
-							"Something that needs to be opened",
-							"Something protected",
-							"Someone who keeps many secrets",
-							"Forgotten memories"
+							"something that needs to be opened",
+							"unexpected security measures",
+							"someone who keeps many secrets",
+							"forgotten memories surface"
 						],
 						creature: [
-							"Guardian",
-							"Opener of Ways"
+							"a guardian",
+							"an opener of ways"
 						],
 						item: [
-							"Encrypted file",
-							"Book written in unknown language",
-							"Padlock",
-							"A red pill"
+							"an encrypted file",
+							"a book written in an unknown language",
+							"a padlock",
+							"a red pill"
 						]
 					},
 					imgfile: "minor-hourglasses-9.webp"
@@ -1947,7 +1965,7 @@ const C = {
 					value: 1,
 					keyword: "Gaia",
 					summary: "Gaia is the Untamed Wilderness, that which cannot be controlled, the primal hunger and raw emotions.",
-					details: {
+					ghostText: {
 						individual: [
 							"Madman more animal than man",
 							"Neo-pagan nature worshiper",
@@ -1989,7 +2007,7 @@ const C = {
 					value: 2,
 					keyword: "Birth",
 					summary: "Birth represents what comes out of passion, the start of something new, a soul merged into flesh.",
-					details: {
+					ghostText: {
 						individual: [
 							"Strict midwife",
 							"Depressed mother",
@@ -2035,7 +2053,7 @@ const C = {
 					value: 3,
 					keyword: "Survival",
 					summary: "Survival represents the will to go on against all odds, the survival of the fittest and conquering difficulties by pure iron will.",
-					details: {
+					ghostText: {
 						individual: [
 							"Hillbilly survivalist with an iron will",
 							"Special forces soldier",
@@ -2080,7 +2098,7 @@ const C = {
 					value: 4,
 					keyword: "Growth",
 					summary: "Growth represents things that gain power and expand, be it will, body, or nature.",
-					details: {
+					ghostText: {
 						individual: [
 							"Boy with physical deformations",
 							"Dedicated bodybuilder",
@@ -2124,7 +2142,7 @@ const C = {
 					value: 5,
 					keyword: "Predator",
 					summary: "Predator represents the hunter, the one that is hungry and preys on the weak.",
-					details: {
+					ghostText: {
 						individual: [
 							"Influential film mogul",
 							"Manipulative femme fatale",
@@ -2173,7 +2191,7 @@ const C = {
 					value: 6,
 					keyword: "Swarm",
 					summary: "Swarm represents a gathering, a collective mind, a mob swallowed by passion and acting as one.",
-					details: {
+					ghostText: {
 						individual: [
 							"Devoted follower",
 							"Animal trainer",
@@ -2221,7 +2239,7 @@ const C = {
 					value: 7,
 					keyword: "Prey",
 					summary: "Prey represents the victim of passion or be the target for some enemy or dangerous situation.",
-					details: {
+					ghostText: {
 						individual: [
 							"Celebrity terrorized by a ruthless stalker",
 							"Blackmailed family man",
@@ -2264,7 +2282,7 @@ const C = {
 					value: 8,
 					keyword: "Obsession",
 					summary: "Obsession represents the grip when passion has gotten hold of you and you cannot control it but are a victim to its influence.",
-					details: {
+					ghostText: {
 						individual: [
 							"Voyeuristic photographer",
 							"Eccentric art collector",
@@ -2307,7 +2325,7 @@ const C = {
 					value: 9,
 					keyword: "Love",
 					summary: "Love is a bond that can be stronger than death. It can give you strength and purpose, but also drag you down and be your doom.",
-					details: {
+					ghostText: {
 						individual: [
 							"Man with a broken heart",
 							"Hopeless romantic",
@@ -2362,7 +2380,7 @@ const C = {
 					value: 1,
 					keyword: "Metropolis",
 					summary: "Metropolis represents mankind's ancestral home, the Eternal City and the very core of the Demiurge's Machinery.",
-					details: {
+					ghostText: {
 						individual: [
 							"Mourning widow",
 							"Janitor who works in an empty factory",
@@ -2409,7 +2427,7 @@ const C = {
 					value: 2,
 					keyword: "Forgetfulness",
 					summary: "Forgetfulness represents that which has faded from memory. It is strongly connected to the cycle of rebirth and the Oubliettes of Forgetfulness in Metropolis.",
-					details: {
+					ghostText: {
 						individual: [
 							"Hypnotist",
 							"Senior citizen",
@@ -2462,7 +2480,7 @@ const C = {
 					value: 3,
 					keyword: "Remnants",
 					summary: "Remnants represents that which has been left behind after death, destruction, or transition.",
-					details: {
+					ghostText: {
 						individual: [
 							"Pragmatic archaeologist",
 							"Eccentric descendant",
@@ -2505,7 +2523,7 @@ const C = {
 					value: 4,
 					keyword: "Spirit",
 					summary: "Spirit represents the psyche, the immaterial essence and the machinery that chains the divine soul.",
-					details: {
+					ghostText: {
 						individual: [
 							"Sophisticated medium with a rich clientele",
 							"Girl in the suburb who sees \"ghosts",
@@ -2546,7 +2564,7 @@ const C = {
 					value: 5,
 					keyword: "Transition",
 					summary: "Transition represents the crossing from life to death or into another form of existence.",
-					details: {
+					ghostText: {
 						individual: [
 							"Methodical and well prepared hitman",
 							"Executioner who barely can keep it together",
@@ -2589,7 +2607,7 @@ const C = {
 					value: 6,
 					keyword: "Flesh",
 					summary: "Flesh represents the body as a shell after death or as a prison of a soul that should have been released.",
-					details: {
+					ghostText: {
 						individual: [
 							"Morbid surgeon that takes trophies",
 							"Insane young man that keeps the body of his dead father tied to a bed in the attic",
@@ -2629,7 +2647,7 @@ const C = {
 					value: 7,
 					keyword: "Weapon",
 					summary: "Weapon represents the tool that brings death. That which brings forth a transition through violence.",
-					details: {
+					ghostText: {
 						individual: [
 							"Vigilante in the suburbs armed with silenced pistol",
 							"Russian mafia enforcer",
@@ -2677,7 +2695,7 @@ const C = {
 					value: 8,
 					keyword: "Suffering",
 					summary: "Suffering represents the pain that comes with death and the cleansing of the soul. It is strongly connected to the cycle of rebirth and the Oubliettes of Suffering in Inferno.",
-					details: {
+					ghostText: {
 						individual: [
 							"Self mutilating prophet",
 							"Professional dominatrix",
@@ -2722,7 +2740,7 @@ const C = {
 					value: 9,
 					keyword: "Inferno",
 					summary: "Inferno represents the shadow of Metropolis, the many hells and Citadels and the realm from which the will of Astaroth flows.",
-					details: {
+					ghostText: {
 						individual: [
 							"Tattoo artist who binds the clients to Inferno",
 							"Charismatic cult leader who hands out razor blades",

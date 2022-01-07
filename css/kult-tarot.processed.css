@@ -63,9 +63,6 @@ body {
       body .master-layer .canvas-layer#over-layer .rotation-container {
         height: 100%;
         width: 100%; }
-        body .master-layer .canvas-layer#over-layer .rotation-container .tarot-card-main {
-          -webkit-filter: drop-shadow(30px 30px 10px rgba(0, 0, 0, 0.7));
-          filter: drop-shadow(30px 30px 10px rgba(0, 0, 0, 0.7)); }
       body .master-layer .canvas-layer#background-layer {
         height: 500%;
         width: 500%;
@@ -73,6 +70,20 @@ body {
       body .master-layer .canvas-layer .tarot-card {
         display: block;
         background-repeat: no-repeat;
-        background-size: 100% 100% !important;
-        outline: 0px solid transparent;
+        background-position: center center;
         border-radius: 25px; }
+      body .master-layer .canvas-layer .ghost-text {
+        color: gold;
+        text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black;
+        font-family: "Alverata";
+        font-size: 24px;
+        font-weight: normal;
+        text-align: center;
+        -webkit-filter: drop-shadow(20px 20px 10px black);
+        filter: drop-shadow(20px 20px 10px black); }
+        body .master-layer .canvas-layer .ghost-text.ghost-banner {
+          color: white;
+          text-shadow: 0 0 5px white, 0 0 15px white, 0 0 25px white;
+          font-family: "Caslon Antique";
+          font-size: 52px;
+          font-weight: normal; }

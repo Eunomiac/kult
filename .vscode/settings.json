@@ -60,7 +60,7 @@
 			".gitignore": true,
 			".eslintrc.js": true,
 			".eslintignore": true,
-			"gulpfile.js": true,
+			"gulpfile.js": false,
 			"LICENSE.txt": true,
 			"package.json": true,
 			"stylelint.config.js": true,

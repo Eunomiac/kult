@@ -186,7 +186,8 @@ const BANNERTEMPLATE = {
 };
 const BUILDFILES = {
 	js: {
-		"./dist/kult/scripts/": ["scripts/**/*.mjs", "scripts/**/*.js"]
+		"./dist/kult/scripts/": ["scripts/**/*.mjs", "scripts/**/*.js"],
+		"./dist/kult/": ["kult.js"]
 	},
 	css: {
 		"./dist/kult/css/": ["scss/**/*.scss"],

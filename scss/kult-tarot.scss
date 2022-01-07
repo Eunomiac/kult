@@ -61,6 +61,10 @@ body {
 				transform-style: preserve-3d;
 			}
 			
+			&#control-layer {
+				// transform: translate(-50%, -50%) translate3d(50vw, 50vh, 0px) rotateX(0) scale(0.5) !important;
+				// outline: 2px dotted cyan !important;
+			}
 			// &#card-layer, &#under-layer { filter: blur(5px) brightness(0.65) }
 			
 			&#under-layer {
@@ -74,7 +78,7 @@ body {
 				width: 100%;
 				
 				// .tarot-card-main { box-shadow: 30px 30px 30px rgba(0, 0, 0, 0.7); }
-				.tarot-card-main { filter: drop-shadow(30px 30px 10px rgba(0,0,0,0.7)); }
+				// .tarot-card-main { filter: drop-shadow(30px 30px 10px rgba(0,0,0,0.7)); }
 			}
 			
 			&#background-layer {
@@ -88,9 +92,26 @@ body {
 			.tarot-card {
 				display: block;
 				background-repeat: no-repeat;
-				background-size: 100% 100% !important;
-				outline: 0px solid transparent;
+				background-position: center center;
 				border-radius: 25px;
+			}
+			
+			.ghost-text {
+				color: gold;
+				text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black;
+				font-family: "Alverata";
+				font-size: 24px;
+				font-weight: normal;
+				text-align: center;
+				filter: drop-shadow(20px 20px 10px black);
+				
+				&.ghost-banner {
+					color: white;
+					text-shadow: 0 0 5px white, 0 0 15px white, 0 0 25px white;
+					font-family: "Caslon Antique";
+					font-size: 52px;
+					font-weight: normal;
+				}
 			}
 		}
 	}

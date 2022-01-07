@@ -1,7 +1,7 @@
 import {gsap, Flip, MotionPathPlugin, RoughEase} from "./external/greensock/all.js";
 import U from "./utilities.js";
 import C from "./constants.js";
-import {SessionData, SetPhase, Update} from "./kult-tarot.js";
+import {SessionData, SetPhase, Update} from "../kult.js";
 import TarotDeck from "./tarot-deck.js";
 
 export default class TarotCard {
@@ -64,8 +64,12 @@ export default class TarotCard {
 	get slot() { return this._slot }
 	set slot(slotNum) {
 		this._slot = slotNum;
-		this.x = C.slotPos[slotNum].x;
-		this.y = C.slotPos[slotNum].y;
+		this._x = C.slotPos[slotNum].x;
+		this._y = C.slotPos[slotNum].y;
+		this._z = 0;
+	}
+	get angle() {
+		return this._startAngle ? U.getAngleDelta(this._startAngle, gsap.getProperty($(this.cardElem).parent()[0], "rotationZ")) : false;
 	}
 	get image() {
 		if (this.isFaceUp) {
@@ -85,16 +89,29 @@ export default class TarotCard {
 			return Math.max(0, this.slot - SessionData.nextFaceDownSlot);
 		}
 	}
+	get validGhostTexts() {
+		if (!this.isFaceUp) { return [] }
+		return Object.entries(this._data.ghostText)
+			.filter(([cat, texts]) => SessionData.ghostText.categories[cat])
+			.map(([cat, texts]) => texts)
+			.flat();
+	}
+	updatePos() {
+		this._x = gsap.getProperty(this.cardElem, "x");
+		this._y = gsap.getProperty(this.cardElem, "y");
+		this._z = gsap.getProperty(this.cardElem, "z");
+		[this._parentContainer] = $(this.cardElem).parent();
+	}
 
 	_onClick(event) {
 		if (SessionData.inTransition) { return false }
 		switch (SessionData.phase) {
-			case C.cardsInOrbit: {
+			case "cardsInOrbit": {
 				event.preventDefault();
-				// deal to table;
+				this.deal();
 				return true;
 			}
-			case C.cardsDealt: {
+			case "cardsDealt": {
 				event.preventDefault();
 				if (this.slot === SessionData.nextFaceDownSlot) {
 					this.flip();
@@ -119,24 +136,33 @@ export default class TarotCard {
 		event.preventDefault();
 		switch (SessionData.phase) {
 			case "cardsInOrbit": {
-				gsap.killTweensOf(this.cardElem);
-				this._origPos = {
-					x: gsap.getProperty(this.cardElem, "x"),
-					y: gsap.getProperty(this.cardElem, "y"),
-					z: gsap.getProperty(this.cardElem, "z")
-				};
-				[this._origParent] = $(this.cardElem).parent();
-				const [newParent] = $("#control-layer");
-				const {x, y} = MotionPathPlugin.convertCoordinates(this._origParent, newParent, {x: gsap.getProperty(this.cardElem, "x"), y: gsap.getProperty(this.cardElem, "y")});
-				// const z = gsap.getProperty(this.cardElem, "z") + gsap.getProperty(newParent, "z") - gsap.getProperty(this._origParent, "z");
-				$(this.cardElem).appendTo(newParent);
-				return gsap.fromTo(this.cardElem, {x, y, /*z,*/ rotationZ: 0}, {
-					rotationX: -45,
-					scale: 3,
-					boxShadow: "rgb(255 166 33) 0px 0px 10px",
-					duration: 0.5,
-					ease: "power2.out"
-				});
+				if (/rotation-container/.test($(this.cardElem).parent()[0].id)) {
+					gsap.killTweensOf([this.cardElem, $(this.cardElem).parent()]);
+					this.updatePos();
+					this._hoverAngle = parseInt(this.angle);
+					this._hoverAnim = gsap.to(this.cardElem, {
+						z: Math.abs(this._hoverAngle) > 115 ? 400 : 250,
+						width: 1.5 * C.card.width,
+						height: Math.abs(this._hoverAngle) > 115 ? C.card.height + U.getPixels(50, "vh") : 1.25 * C.card.height,
+						backgroundColor: "transparent",
+						rotationX: -15,
+						filter: "brightness(1.5) saturate(1.5) drop-shadow(30px 30px 10px rgba(0,0,0,0.7))",
+						// outline: "5px solid orange",
+						// boxShadow: "0 0 10px orange, 0 0 10px orange, 0 0 10px orange, 0 0 10px orange",
+						ease: "power2.out",
+						duration: 0.5,
+						callbackScope: this,
+						onStart() {
+							// gsap.set(`.tarot-card-main:not(#${this.id})`, {pointerEvents: "none"});
+							if (Math.abs(this._hoverAngle) > 115) {
+								gsap.set(this.cardElem, {backgroundPosition: "center bottom"});
+							} else {
+								gsap.set(this.cardElem, {backgroundPosition: "center center"});
+							}
+						}
+					});
+				}
+				break;
 			}
 			case "cardsDealt": {
 				const posData = {};
@@ -173,7 +199,7 @@ export default class TarotCard {
 						z: "+=50",
 						duration: 0.5,
 						ease: "power4.inOut",
-						boxShadow: "rgb(0 255 0) 0px 0px 30px",
+						boxShadow: "rgb(0 255 0) 0px 0px 50px",
 						scale: 1.2
 					});
 				}
@@ -187,38 +213,42 @@ export default class TarotCard {
 		event.preventDefault();
 		switch (SessionData.phase) {
 			case "cardsInOrbit": {
-				$(this.cardElem).appendTo(this._origParent);
-				const {x, y} = MotionPathPlugin.convertCoordinates($(this.cardElem).parent()[0], this._origParent, {x: gsap.getProperty(this.cardElem, "x"), y: gsap.getProperty(this.cardElem, "y")});
-				// const z = gsap.getProperty(this.cardElem, "z") + gsap.getProperty(this._origParent, "z") - gsap.getProperty($(this.cardElem).parent()[0], "z");
-				const rotationZ = -1 * gsap.getProperty(this._origParent, "rotationZ");
-				$(this.cardElem).appendTo(this._origParent);
-				return gsap.fromTo(this.cardElem, {x, y, /*z,*/ rotationZ}, {
-					rotationX: 0,
-					scale: 1,
-					boxShadow: "none",
-					duration: 0.5,
-					ease: "power2.out"
-				});
+				if (/rotation-container/.test($(this.cardElem).parent()[0].id)) {
+					return gsap.to(this.cardElem, {
+						z() { return 150 + gsap.utils.random(0, 50) },
+						width: C.card.width,
+						height: C.card.height,
+						backgroundColor: "transparent",
+						rotationX: 0,
+						filter: "brightness(0.4) saturate(0.5) drop-shadow(30px 30px 10px rgba(0,0,0,0.7))",
+						outline: "none",
+						boxShadow: "none",
+						ease: "power2.out",
+						duration: 0.5,
+						delay: 0.25,
+						callbackScope: this,
+						onComplete() {
+							// gsap.set(".tarot-card-main", {pointerEvents: "all"});
+							gsap.set(this.cardElem, {backgroundPosition: "center center"});
+							if (/rotation-container/.test($(this.cardElem).parent()[0].id)) {
+								gsap.effects.cardWander(this.cardElem);
+							}
+							gsap.killTweensOf(".rotation-container");
+							gsap.effects.slowRotate("#rotation-container-0", {
+								rotationZ: "+=360",
+								delay: 0
+							});
+							gsap.effects.slowRotate("#rotation-container-1", {
+								rotationZ: "-=360",
+								delay: 0
+							});
+						}
+					});
+				}
+				return false;
 			}
-			// 	const cardState = Flip.getState(this.cardElem, "boxShadow");
-			// 	$(this.cardElem).appendTo(this._origParent);
-			// 	gsap.set(this.cardElem, {
-			// 		...this._origPos,
-			// 		rotationZ: -1 * gsap.getProperty(this._origParent, "rotationZ"),
-			// 		scale: 1,
-			// 		boxShadow: "none"
-			// 	});
-			// 	Flip.from(cardState, {
-			// 		duration: 0.5,
-			// 		ease: "power2.out",
-			// 		absolute: true,
-			// 		nested: true,
-			// 		prune: true,
-			// 		scale: true
-			// 	});
-			// 	break;
-			// }
-			case "cardsDealt": return this._hoverTimeline?.reverse();
+			case "cardsDealt":
+			case "cardsRevealed": return this._hoverTimeline?.reverse();
 			default: return false;
 		}
 	}
@@ -233,30 +263,81 @@ export default class TarotCard {
 			z: this.z,
 			height: this.height,
 			width: this.width,
-			background: this.image,
+			backgroundImage: this.image,
+			backgroundSize: `${this.width}px ${this.height}px`,
 			pointerEvents: "all",
 			opacity: 0,
 			immediateRender: true
 		});
-		// $(this.cardElem).click(this._onClick.bind(this));
-		// $(this.cardElem).hover(this._onHover.bind(this), this._offHover.bind(this));
+		$(this.cardElem).click(this._onClick.bind(this));
+		$(this.cardElem).hover(this._onHover.bind(this), this._offHover.bind(this));
 	}
 
+	deal() {
+		const slot = SessionData.nextEmptySlot;
+		if (slot) {
+			SessionData.layout[slot].card = this;
+			this.slot = slot;
+			gsap.to(this.cardElem, {
+				rotationX: 0,
+				z: 400,
+				duration: 0.25,
+				ease: "expo.in",
+				callbackScope: this,
+				onStart() {
+					gsap.set(".tarot-card-main", {pointerEvents: slot === 5 ? "none" : "all"});
+				},
+				onComplete() {
+					gsap.killTweensOf(this.cardElem);
+					const cardState = Flip.getState(this.cardElem, "boxShadow, filter, rotationZ");
+					$(this.cardElem).appendTo("#card-layer");
+					gsap.set(this.cardElem, {
+						rotationZ: 0,
+						z: 0,
+						height: C.card.height,
+						width: C.card.width,
+						scale: 1,
+						boxShadow: "none",
+						filter: "brightness(1) saturate(1) drop-shadow(5px 5px 5px rgba(0,0,0,0.4))",
+						...SessionData.layout[slot].pos
+					});
+					Flip.from(cardState, {
+						duration: 2,
+						ease: "expo.out",
+						absolute: true,
+						nested: true,
+						prune: true,
+						scale: true,
+						callbackScope: this,
+						onComplete() {
+							gsap.set(this.cardElem, {backgroundPosition: "center center"});
+							if (slot === 5) {
+								gsap.killTweensOf(".canvas-layer, .canvas-layer *");
+								gsap.set(".tarot-card-main", {pointerEvents: "all"});
+								SetPhase(C.phases.cardsDealt);
+							}
+						}
+					});
+				}
+			});
+
+		}
+	}
 	flip(event) {
 		$(this.cardElem).off("click mouseenter");
 		this.isFaceUp = true;
+		SessionData.ghostText.slotBins[this.slot] = this.validGhostTexts;
 		gsap.to(this.cardElem, {
 			duration: 0,
 			ease: "circ",
-			background: this.image
+			backgroundImage: this.image,
+			callbackScope: this,
+			onComplete() {
+				if (this.slot === 5) {
+					this._hoverTimeline?.reverse();
+					SetPhase(C.phases.cardsRevealed);
+				}
+			}
 		});
-		if (this.slot === 5) {
-			gsap.to("#card-layer", {
-				x: `-=${SessionData.layout[2].pos.x - 0.5 * C.card.width - C.padding.x}px`,
-				duration: 2,
-				ease: "expo4"
-			});
-		}
 	}
-
 }
