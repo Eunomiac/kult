@@ -49,6 +49,132 @@ const C = {
 	},
 	ghostTextCategories: ["individual", "location", "organization", "situation", "creature", "item"],
 	ghostTextHorizSpan: 200,
+	styleMap: {
+		"divine": {
+			title: {
+				color: "#ffffff",
+				fontFamily: "Caslon Antique",
+				fontSize: 52,
+				textShadow: "0 0 8px black",
+				textTransform: "uppercase",
+				fontWeight: "bold"
+			},
+			get subTitle() {
+				return {
+					...this.title,
+					fontSize: 28
+				};
+			}
+		},
+		"archon": {
+			title: {
+				color: "#978100",
+				fontFamily: "Caslon Antique",
+				fontSize: 44,
+				textShadow: "0 0 2px #ffd700",
+				fontWeight: "bold"
+			},
+			get subTitle() {
+				return {
+					...this.title,
+					fontSize: 18,
+					color: "black"
+				};
+			}
+		},
+		"death angel": {
+			get title() {
+				return {
+					...C.styleMap.archon.title,
+					color: "#aa0000",
+					textShadow: "0 0 2px #ff0000",
+					fontWeight: "bold"
+				};
+			},
+			get subTitle() {
+				return {
+					...C.styleMap.archon.subTitle,
+					textShadow: "0 0 2px #ff0000"
+				};
+			}
+		},
+		"crescents": {
+			title: {
+				color: "black",
+				fontFamily: "Infidel",
+				fontSize: 36,
+				textShadow: "0 0 2px #93ecff",
+				textTransform: "uppercase",
+				fontWeight: "bold"
+			},
+			get subTitle() {
+				return {
+					...this.title,
+					color: "#93ecff",
+					textShadow: "0 0 2px black",
+					fontSize: 14,
+					textTransform: "none",
+					fontVariant: "small-caps"
+				};
+			}
+		},
+		"eyes": {
+			get title() {
+				return {
+					...C.styleMap.crescents.title,
+					textShadow: "0 0 2px #ffd05d"
+				};
+			},
+			get subTitle() {
+				return {
+					...C.styleMap.crescents.subTitle,
+					color: "#ffd05d"
+				};
+			}
+		},
+		"hourglasses": {
+			get title() {
+				return {
+					...C.styleMap.crescents.title,
+					textShadow: "0 0 2px #bc8446"
+				};
+			},
+			get subTitle() {
+				return {
+					...C.styleMap.crescents.subTitle,
+					color: "#bc8446"
+				};
+			}
+		},
+		"roses": {
+			get title() {
+				return {
+					...C.styleMap.crescents.title,
+					textShadow: "0 0 2px #ff6c1b"
+				};
+			},
+			get subTitle() {
+				return {
+					...C.styleMap.crescents.subTitle,
+					color: "#ff6c1b"
+				};
+			}
+		},
+		"skulls": {
+			get title() {
+				return {
+					...C.styleMap.crescents.title,
+					textShadow: "0 0 2px #daffad"
+				};
+			},
+			get subTitle() {
+				return {
+					...C.styleMap.crescents.subTitle,
+					color: "#daffad"
+				};
+			}
+		}
+	},
 	TAROTDATA: {
 		"major-arcana": [
 			{

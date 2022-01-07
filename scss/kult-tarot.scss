@@ -1,7 +1,7 @@
 
 @font-face {
 	font-family: Infidel;
-	src: url(../assets/fonts/infdisplay:.ttf);
+	src: url('../assets/fonts/infidel.ttf');
 }
 
 @font-face {
@@ -19,6 +19,16 @@ html {
 	transform-origin: center center;
 	pointer-events: none;
 	background: rgb(0, 0, 0);
+}
+
+.master-layer.show-pop-text .pop-container {
+	background: rgba(255, 255, 255, 0.25) !important;
+	outline: 2px dotted white !important;
+}
+
+.master-layer.show-ghost-text .ghost-container {
+	background: rgba(0, 255, 255, 0.25) !important;
+	outline: 2px dotted rgb(0, 255, 255) !important;
 }
 
 body {

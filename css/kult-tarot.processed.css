@@ -1,6 +1,6 @@
 @font-face {
   font-family: Infidel;
-  src: url(../assets/fonts/infdisplay:.ttf); }
+  src: url("../assets/fonts/infidel.ttf"); }
 
 @font-face {
   font-family: Alverata;
@@ -17,6 +17,14 @@ html {
   transform-origin: center center;
   pointer-events: none;
   background: black; }
+
+.master-layer.show-pop-text .pop-container {
+  background: rgba(255, 255, 255, 0.25) !important;
+  outline: 2px dotted white !important; }
+
+.master-layer.show-ghost-text .ghost-container {
+  background: rgba(0, 255, 255, 0.25) !important;
+  outline: 2px dotted cyan !important; }
 
 body {
   margin: 0; }

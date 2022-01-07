@@ -100,6 +100,69 @@ gsap.registerEffect({
 			.timeScale(gsap.utils.random(0.8, 1.2)); // - timeToStaggerTargets);
 	}
 });
+gsap.registerEffect({
+	name: "splashPopText",
+	extendTimeline: true,
+	defaults: {
+		duration: 5,
+		ease: "expo.inOut",
+		delay: 0
+	},
+	effect: (targets, config = {}) => {
+		gsap.set(targets, {filter: "blur(0px) drop-shadow(20px 20px 10px black)"});
+		const [popContainer] = $(targets[0]).parents("div.pop-container");
+		const [cardElem] = $(popContainer).parent();
+		const cardInst = TarotDeck.GetCard(cardElem);
+		const timeToStaggerTargets = (0.1 * targets.length) / 2;
+		return gsap.timeline({delay: config.delay, onComplete() { cardInst.isShowingPopText = false }})
+			.to(popContainer, {
+				z: "+=100",
+				scale: 3,
+				duration: config.duration + timeToStaggerTargets,
+				ease: "slow(0.1, 1, false)"
+			})
+			.fromTo(targets, {
+				filter: "blur(20px) drop-shadow(20px 20px 30px black)"
+			}, {
+				filter: "blur(0px) drop-shadow(20px 20px 10px black)",
+				duration: (0.2 * config.duration) / 2,
+				ease: config.ease,
+				stagger: {
+					amount: 0.5,
+					ease: "none",
+					start: "edges"
+				}
+			}, 0)
+			.from(targets, {
+				duration: 0.1,
+				opacity: 0,
+				ease: "none",
+				stagger: {
+					each: 0.02,
+					ease: "power2",
+					start: "center"
+				}
+			}, 0)
+			.to(targets, {
+				filter: "blur(30px) drop-shadow(20px 20px 30px black)",
+				duration: (0.2 * config.duration) / 2,
+				ease: config.ease,
+				stagger: {
+					amount: 0.5,
+					ease: "none",
+					from: "center",
+					onComplete() {
+						gsap.to(this.targets()[0], {
+							duration: 0.1,
+							opacity: 0,
+							ease: "none",
+							clearProps: "filter"
+						});
+					}
+				}
+			}, config.duration - (0.2 * config.duration) / 2 + timeToStaggerTargets - 0.5);
+	}
+});
 // gsap.registerEffect({
 // 	name: "slowBob",
 // 	effect: (targets, config) => {
@@ -184,29 +247,70 @@ const SessionData = {
 };
 
 const initGhostTextTimer = (stagger = 5, duration = 10) => {
-	if (SessionData.ghostText.intervalTimer) {
-		stopGhostText();
-	}
+	stopGhostText();
 	function showNextGhostText() {
+		SessionData.ghostText.timer = gsap.delayedCall(stagger, showNextGhostText);
 		const [slot, text] = SessionData.ghostText.next || [];
 		if (text) {
 			ghostText(slot, text, duration);
 		}
 	}
-	SessionData.ghostText.intervalTimer = setInterval(showNextGhostText, stagger * 1000);
+	showNextGhostText();
 };
 
 const stopGhostText = () => {
-	clearInterval(SessionData.ghostText.intervalTimer);
-	SessionData.ghostText.intervalTimer = null;
+	SessionData.ghostText.timer?.kill();
+	delete SessionData.ghostText.timer;
 	gsap.to(".ghost-text", {
 		opacity: 0,
-		duration: 0.5,
+		duration: 0.25,
 		onComplete(i, elem) {
 			$(elem).remove();
 		}
 	});
 };
+
+function ghostPopText(text, card, yPercent, z = 0, {css = {}, vars = {}} = {}) {
+	card.isShowingPopText = true;
+	// First create the internal text element, to measure its width.
+	const $textElem = $("<span class=\"pop-text\"></span>")
+		.text(text)
+		.appendTo(card.cardElem);
+	gsap.set($textElem, {
+		whiteSpace: "nowrap",
+		...css,
+		textAlign: "center"
+	});
+	const textWidth = parseInt(gsap.getProperty($textElem[0], "width", "px"));
+	// const textHeight = parseInt(gsap.getProperty($textElem[0], "height", "px"));
+	// gsap.set($ghostElem, {
+	// 	backgroundColor: "rgba(255, 0, 0, 0.2)",
+	// 	outline: "1px dotted red"
+	// });
+
+	// Now create the container to control translation animations
+	const $textContainer = $(`<div class="pop-container pop-container-slot-${card.slot}"></div>`)
+		.append($textElem)
+		.appendTo(card.cardElem);
+	gsap.set($textContainer, {
+		display: "block",
+		xPercent: -50,
+		yPercent: -50,
+		// height: textHeight,
+		width: textWidth,
+		position: "absolute",
+		pointerEvents: "none",
+		transformOrigin: "50% 50%",
+		x: C.card.width / 2,
+		y: C.card.height * (yPercent / 100),
+		z,
+		rotationX: -25,
+		// backgroundColor: "rgba(0, 255, 255, 0.2)",
+		// outline: "2px dotted cyan"
+	});
+	const split = new SplitText($textElem[0], {type: "chars,words,lines"});
+	gsap.effects.splashPopText(split.chars, vars).then(() => $($textContainer).remove());
+}
 
 function ghostBanner(text, {x, y, z} = {}) {
 	x = x ?? C.slotPos[1].x;
@@ -241,7 +345,7 @@ function ghostText(slot, text, duration) {
 	// 	backgroundColor: "rgba(255, 0, 0, 0.2)",
 	// 	outline: "1px dotted red"
 	// });
-	console.log({ghostWidth, ghostHeight});
+
 	// Now create the container to control translation animations
 	const $ghostContainer = $(`<div class="ghost-container ghost-container-slot-${slot}"></div>`)
 		.append($ghostElem)
@@ -446,7 +550,6 @@ const InitializeDomElements = () => {
 		scale: 1,
 		immediateRender: true
 	});
-	// transform: translate(-50%, -50%) translate3d(50vw, 50vh, 0px) rotateX(0) scale(0.5) !important;
 
 	// Build Decks
 	const deckTypes = Object.keys(C.numCardBacksByType);
@@ -477,6 +580,25 @@ const InitializeDomElements = () => {
 };
 
 const Initialize = () => {
+	// Add invisible debug button
+	$("<button id=\"start-debug\"></button>")
+		.prependTo("#debug-layer")
+		.click(() => {
+			console.log("CLICKED!");
+			DEBUG.initialize();
+		});
+	gsap.set("#start-debug", {
+		position: "absolute",
+		top: 0,
+		left: 0,
+		height: 50,
+		width: 50,
+		border: "none",
+		outline: "none",
+		opacity: 0,
+		pointerEvents: "all"
+	});
+
 	// Initialize deck and card classes
 	TarotDeck.Initialize();
 	TarotCard.Initialize();
@@ -491,7 +613,6 @@ console.clear();
 InitializeDomElements();
 $(document).ready(() => {
 	Initialize();
-	// DEBUG.initialize();
 });
 
 export {
@@ -499,5 +620,6 @@ export {
 	Initialize,
 	SessionData,
 	SetPhase,
-	Update
+	Update,
+	ghostPopText
 };

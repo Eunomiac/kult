@@ -16,6 +16,80 @@ const DEBUG = {
 	isTestingMajorArcana: true,
 	// isLimitingDeckSize: 2,
 	FUNCS: {
+		"To Orbit": [() => {
+			gsap.globalTimeline.timeScale(10);
+			gsap.delayedCall(5, () => {
+				const deck = SessionData.decks[2];
+				SetPhase(C.phases.cardsInOrbit, {deck});
+				gsap.delayedCall(13, () => {
+					gsap.globalTimeline.timeScale(1);
+				});
+			});
+		}, () => {
+			gsap.globalTimeline.timeScale(10);
+			gsap.delayedCall(5, () => {
+				const deck = SessionData.decks[2];
+				deck._deck = deck._deck.filter((deckData) => !("suit" in deckData) || ["Crescents", "Eyes", "Hourglasses"].includes(deckData.suit));
+				SetPhase(C.phases.cardsInOrbit, {deck});
+				gsap.delayedCall(13, () => {
+					gsap.globalTimeline.timeScale(1);
+				});
+			});
+		}, "black", "white"],
+		"To Dealt": [() => {
+			gsap.globalTimeline.timeScale(10);
+			gsap.delayedCall(5, () => {
+				const deck = SessionData.decks[2];
+				SetPhase(C.phases.cardsInOrbit, {deck});
+				gsap.delayedCall(13, () => {
+					SessionData.deck.cards.slice(0, 5).forEach((card) => card.deal());
+					gsap.delayedCall(13, () => {
+						gsap.globalTimeline.timeScale(1);
+					});
+				});
+			});
+		}, () => {
+			gsap.globalTimeline.timeScale(10);
+			gsap.delayedCall(5, () => {
+				const deck = SessionData.decks[2];
+				deck._deck = deck._deck.filter((deckData) => !("suit" in deckData) || ["Crescents", "Eyes", "Hourglasses"].includes(deckData.suit));
+				SetPhase(C.phases.cardsInOrbit, {deck});
+				gsap.delayedCall(13, () => {
+					SessionData.deck.cards.slice(0, 5).forEach((card) => card.deal());
+					gsap.delayedCall(13, () => {
+						gsap.globalTimeline.timeScale(1);
+					});
+				});
+			});
+		}, "black", "white"],
+		"To Revealed": [() => {
+			gsap.globalTimeline.timeScale(10);
+			gsap.delayedCall(5, () => {
+				const deck = SessionData.decks[2];
+				SetPhase(C.phases.cardsInOrbit, {deck});
+				gsap.delayedCall(13, () => {
+					SessionData.deck.cards.slice(0, 5).forEach((card) => card.deal());
+					gsap.delayedCall(13, () => {
+						Object.values(SessionData.layout).forEach(({card}) => card.flip());
+						gsap.globalTimeline.timeScale(1);
+					});
+				});
+			});
+		}, () => {
+			gsap.globalTimeline.timeScale(10);
+			gsap.delayedCall(5, () => {
+				const deck = SessionData.decks[2];
+				deck._deck = deck._deck.filter((deckData) => !("suit" in deckData) || ["Crescents", "Eyes", "Hourglasses"].includes(deckData.suit));
+				SetPhase(C.phases.cardsInOrbit, {deck});
+				gsap.delayedCall(13, () => {
+					SessionData.deck.cards.slice(0, 5).forEach((card) => card.deal());
+					gsap.delayedCall(13, () => {
+						Object.values(SessionData.layout).forEach(({card}) => card.flip());
+						gsap.globalTimeline.timeScale(1);
+					});
+				});
+			});
+		}, "black", "white"],
 		"RotX": [() => gsap.set(".canvas-layer:not(#control-layer)", {rotationX: "+=5"}), () => gsap.set(".canvas-layer:not(#control-layer)", {rotationX: "-=5"}), "#ff66d9"],
 		"RotY": [() => gsap.set(".canvas-layer:not(#control-layer)", {rotationY: "+=5"}), () => gsap.set(".canvas-layer:not(#control-layer)", {rotationY: "-=5"}), "#ff66d9"],
 		"RotZ": [() => gsap.set(".canvas-layer:not(#control-layer)", {rotationZ: "+=5"}), () => gsap.set(".canvas-layer:not(#control-layer)", {rotationZ: "-=5"}), "#ff66d9"],
@@ -77,6 +151,8 @@ const DEBUG = {
 		"G-Width": [() => gsap.set(".ghost-zone", {width: "+=5"}), () => gsap.set(".ghost-zone", {width: "-=5"}), "lime"],
 		"G-Scale": [gsap.set(".ghost-zone", {scale: gsap.getProperty("#ghost-slot-1", "scale") * 1.1}), () => gsap.set(".ghost-zone", {scale: gsap.getProperty("#ghost-slot-1", "scale") / 1.1}), "lime"],
 		"G-RotX": [() => gsap.set(".ghost-zone", {rotationX: "+=5"}), () => gsap.set(".ghost-zone", {rotationX: "-=5"}), "lime"],
+		"PopText": [() => $("#reading-section").toggleClass("show-pop-text"), null, "white"],
+		"GhostText": [() => $("#reading-section").toggleClass("show-ghost-text"), null, "white"],
 	},
 	DATADISPLAYS: {
 		get PERSPECTIVE() { return [U.roundNum(gsap.getProperty("#reading-section", "perspective")), "#4da6ff"] },
@@ -172,14 +248,17 @@ const DEBUG = {
 	gsap, ExpoScaleEase, Flip, MotionPathPlugin, RoughEase, SlowMo, SplitText,
 	TarotDeck, TarotCard,
 	initialize: () => {
-		// Fetch debug layer
-		const $debugLayer = $("#debug-layer");
+		// Fetch debug layer & kill everything inside it.
+		const $debugLayer = $("#debug-layer"); // .children().remove();
 	
 		// Store debug data on debug layer for console retrieval:
 		DEBUG.SessionData = SessionData;
 		DEBUG.SetPhase = SetPhase;
 		DEBUG.Update = Update;
 		$debugLayer.data({DB: DEBUG});
+
+		console.log("INITIALIZING DEBUG");
+		console.log($debugLayer[0]);
 		
 		// Log .canvas-layer data for deltas comparison:
 		DEBUG.startVals = {

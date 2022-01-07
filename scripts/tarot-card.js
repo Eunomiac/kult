@@ -1,7 +1,7 @@
 import {gsap, Flip, MotionPathPlugin, RoughEase} from "./external/greensock/all.js";
 import U from "./utilities.js";
 import C from "./constants.js";
-import {SessionData, SetPhase, Update} from "../kult.js";
+import {SessionData, SetPhase, Update, ghostPopText} from "../kult.js";
 import TarotDeck from "./tarot-deck.js";
 
 export default class TarotCard {
@@ -51,6 +51,7 @@ export default class TarotCard {
 	}
 
 	get deck() { return this._deck }
+	get data() { return this._data }
 	get x() { return (this._x = this._x ?? this.deck.x) }
 	get y() { return (this._y = this._y ?? this.deck.y) }
 	get z() { return (this._z = this._z ?? this.deck.z) }
@@ -61,6 +62,13 @@ export default class TarotCard {
 	get cardNum() { return this._cardNum }
 	get cardElem() { return this._cardElem ?? false }
 	get cardBack() { return (this._cardBack = this._cardBack ?? U.getImgCSS(`${this.deck.type}/card-back-${gsap.utils.random(1, C.numCardBacksByType[this.deck.type], 1)}.webp`)) }
+
+	get name() { return this.data.name }
+	get suit() { return (this.data.suit ?? "major-arcana").toLowerCase() }
+	get affiliation() { return (this.data.affiliation ?? this.suit).toLowerCase() }
+	get arcana() { return this.suit === "major-arcana" ? "major" : "minor" }
+	get keyword() { return this.data.keyword }
+
 	get slot() { return this._slot }
 	set slot(slotNum) {
 		this._slot = slotNum;
@@ -140,20 +148,19 @@ export default class TarotCard {
 					gsap.killTweensOf([this.cardElem, $(this.cardElem).parent()]);
 					this.updatePos();
 					this._hoverAngle = parseInt(this.angle);
-					this._hoverAnim = gsap.to(this.cardElem, {
+					this._hoverAnim = gsap.fromTo(this.cardElem, {
+						filter: "none"
+					}, {
 						z: Math.abs(this._hoverAngle) > 115 ? 400 : 250,
 						width: 1.5 * C.card.width,
 						height: Math.abs(this._hoverAngle) > 115 ? C.card.height + U.getPixels(50, "vh") : 1.25 * C.card.height,
 						backgroundColor: "transparent",
-						rotationX: -15,
+						rotationX: Math.abs(this._hoverAngle) > 115 ? -15 : 0,
 						filter: "brightness(1.5) saturate(1.5) drop-shadow(30px 30px 10px rgba(0,0,0,0.7))",
-						// outline: "5px solid orange",
-						// boxShadow: "0 0 10px orange, 0 0 10px orange, 0 0 10px orange, 0 0 10px orange",
 						ease: "power2.out",
 						duration: 0.5,
 						callbackScope: this,
 						onStart() {
-							// gsap.set(`.tarot-card-main:not(#${this.id})`, {pointerEvents: "none"});
 							if (Math.abs(this._hoverAngle) > 115) {
 								gsap.set(this.cardElem, {backgroundPosition: "center bottom"});
 							} else {
@@ -164,44 +171,78 @@ export default class TarotCard {
 				}
 				break;
 			}
-			case "cardsDealt": {
-				const posData = {};
+			case "cardsDealt":
+			case "cardsRevealed": {
 				if (this.isFaceUp) {
-					switch (this.slot) {
-						case 2: {
-							posData.x = `+=${C.card.width / 3}`;
-							break;
+					if (this.isShowingPopText) { return false }
+					const {title: titleStyles, subTitle: subTitleStyles} = C.styleMap[this.affiliation];
+					titleStyles.textShadow = U.repeatJoin(titleStyles.textShadow, 4, ", ");
+					subTitleStyles.textShadow = U.repeatJoin(subTitleStyles.textShadow, 2, ", ");
+					if (this.arcana === "major") {
+						// Display the card NAME (title, top) and KEYWORD (title & subtitle, bottom)
+						const [surKeyword, keyword] = this.keyword.split(/\s+of\s+/);
+						ghostPopText(this.name, this, 0, 25, {css: titleStyles});
+						if (keyword) {
+							ghostPopText(`${surKeyword} of`, this, 95, 120, {
+								css: subTitleStyles
+							}, {delay: 0.5});
+							ghostPopText(keyword, this, 105, 100, {
+								css: titleStyles
+							}, {delay: 0.75});
+						} else {
+							ghostPopText(surKeyword, this, 105, 100, {
+								css: subTitleStyles
+							}, {delay: 0.5});
 						}
-						case 3: {
-							posData.y = `+=${C.card.height / 3}`;
-							break;
-						}
-						case 4: {
-							posData.x = `-=${C.card.width / 3}`;
-							break;
-						}
-						case 5: {
-							posData.y = `-=${C.card.height / 3}`;
-							break;
-						}
-						// no default
+					} else {
+						// Display card KEYWORD (title, top) and NAME (subtitle, bottom)
+						ghostPopText(this.keyword, this, 0, 25, {css: titleStyles});
+						ghostPopText(`the ${this.name}`, this, 95, 25, {css: subTitleStyles});
+						return;
+						const [numText, suitText] = this.name.split(/\s+of\s+/);
+						ghostPopText(numText, this, 95, 100, {
+							css: subTitleStyles
+						}, {delay: 0.5});
+						ghostPopText("of", this, 103, 100, {
+							css: {
+								...subTitleStyles,
+								fontSize: subTitleStyles.fontSize / 2
+							}
+						}, {delay: 0.7});
+						ghostPopText(suitText, this, 105, 100, {
+							css: subTitleStyles
+						}, {delay: 0.9});
 					}
-					this._hoverTimeline = gsap.to(this.cardElem, {
-						...posData,
-						scale: 3,
-						duration: 0.5,
-						ease: "power4.inOut",
-						callbackScope: this,
-						onComplete(i, elem) { gsap.effects.cardWander(this.cardElem) }
-					});
+
+					// this._hoverTimeline = gsap.to(this.cardElem, {
+					// 	...{
+					// 		1: {},
+					// 		2: {x: `+=${C.card.width / 3}`},
+					// 		3: {y: `+=${C.card.height / 3}`},
+					// 		4: {x: `-=${C.card.width / 3}`},
+					// 		5: {y: `-=${C.card.height / 3}`}
+					// 	}[this.slot],
+					// 	scale: 3,
+					// 	duration: 0.5,
+					// 	ease: "power4.inOut"
+					// });
 				} else if (this.slot === SessionData.nextFaceDownSlot) {
-					this._hoverTimeline = gsap.to(this.cardElem, {
-						z: "+=50",
-						duration: 0.5,
-						ease: "power4.inOut",
-						boxShadow: "rgb(0 255 0) 0px 0px 50px",
-						scale: 1.2
-					});
+					this._hoverTimeline = gsap.timeline()
+						.to(this.cardElem, {
+							z: "+=50",
+							duration: 0.5,
+							ease: "power4.inOut",
+							// boxShadow: "rgb(0 255 0) 0px 0px 50px",
+							scale: 1.2
+						}, 0)
+						.fromTo(`.tarot-card-main:not(#${this.id})`, {
+							filter: "none"
+						}, {
+							filter: "brightness(0.7) saturate(0.3)",
+							scale: 0.8,
+							duration: 0.5,
+							ease: "power4.inOut"
+						}, 0);
 				}
 			}
 			// no default
@@ -297,8 +338,8 @@ export default class TarotCard {
 						height: C.card.height,
 						width: C.card.width,
 						scale: 1,
-						boxShadow: "none",
-						filter: "brightness(1) saturate(1) drop-shadow(5px 5px 5px rgba(0,0,0,0.4))",
+						boxShadow: "5px 5px 5px rgba(0,0,0,0.4)",
+						filter: "none",
 						...SessionData.layout[slot].pos
 					});
 					Flip.from(cardState, {
@@ -324,7 +365,7 @@ export default class TarotCard {
 		}
 	}
 	flip(event) {
-		$(this.cardElem).off("click mouseenter");
+		// $(this.cardElem).off("click mouseenter");
 		this.isFaceUp = true;
 		SessionData.ghostText.slotBins[this.slot] = this.validGhostTexts;
 		gsap.to(this.cardElem, {

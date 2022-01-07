@@ -344,8 +344,9 @@ const regExtract = (ref, pattern, flags = "u") => {
 	return isGrouping ? matches.slice(1) : matches.pop();
 };
 
-// ░░░░░░░[Formatting]░░░░ Hyphenation, Pluralization, "a"/"an" Fixing ░░░░░░░
+// ░░░░░░░[Formatting]░░░░ Repetition, Hyphenation, Pluralization, "a"/"an" Fixing ░░░░░░░
 const parseArticles = (str) => `${str}`.replace(/\b(a|A)\s([aeiouAEIOU])/gu, "$1n $2");
+const repeatJoin = (str, numRepeats, delim = " ") => new Array(numRepeats).fill(str).join(delim);
 const pluralize = (singular, num, plural) => {
 	if (pFloat(num) === 1) { return singular }
 	return plural ?? `${singular.replace(/y$/, "ie").replace(/s$/, "se")}s`;
@@ -962,7 +963,7 @@ export default {
 	uCase, lCase, sCase, tCase,
 	// ░░░░░░░ Formatting ░░░░░░░
 	pluralize, oxfordize, ellipsize,
-	parseArticles,
+	parseArticles, repeatJoin,
 	signNum, padNum, stringifyNum, verbalizeNum, ordinalizeNum, romanizeNum,
 	// ░░░░░░░ Content ░░░░░░░
 	loremIpsum, randWord,
