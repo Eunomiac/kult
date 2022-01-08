@@ -51,6 +51,17 @@ gsap.registerEffect({
 				duration: config.duration + timeToStaggerTargets,
 				ease: "slow(0.1, 2, false)"
 			})
+			.fromTo(ghostContainer, {
+				z: 10,
+				scale: 1
+			}, {
+				z: "+=100",
+				y: "-=200",
+				scale: 2.5,
+				opacity: 0.5,
+				ease: "expo.in",
+				duration: config.duration + timeToStaggerTargets - 0.5 * (config.duration + timeToStaggerTargets)
+			}, 0.5 * (config.duration + timeToStaggerTargets))
 			.fromTo(targets, {
 				filter: "blur(20px) brightness(1) drop-shadow(20px 20px 10px black)"
 			}, {
@@ -510,6 +521,11 @@ const initCardsRevealed = () => {
 			x: "+=5vw",
 			ease: "back.out(2)",
 			duration: 3
+		}, 0)
+		.to(".tarot-card-main", {
+			scale: 1,
+			duration: 0.5,
+			ease: "sine"
 		}, 0);
 };
 

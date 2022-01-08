@@ -74,6 +74,7 @@ export default class TarotDeck {
 		this._hoverAnim = gsap.timeline({paused: true})
 			.to(this.deckElem, {
 				z: gsap.getProperty(this.deckElem, "z") + 100,
+				rotationX: "-=25",
 				scale: 1.5,
 				duration: 0.5,
 				ease: "power.inOut"
@@ -82,11 +83,6 @@ export default class TarotDeck {
 				boxShadow: "none",
 				duration: 0.25,
 				ease: "none"
-			}, 0)
-			.to(`#${this.id} > .face-front`, {
-				boxShadow: "0 0 150px lime",
-				duration: 0.5,
-				ease: "power.inOut"
 			}, 0);
 		// this._bobAnim = gsap.timeline({
 		// 	paused: true,

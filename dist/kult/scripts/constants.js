@@ -186,6 +186,7 @@ const C = {
 		"major-arcana": [
 			{
 				name: "ANTHROPOS",
+				arcana: "Major",
 				affiliation: "Divine",
 				value: 0,
 				keyword: "Awakening to",
@@ -193,20 +194,20 @@ const C = {
 				note: "Because of the unique significance of Anthropos, a second card has been drawn and paired with it to reveal how the power of Anthropos manifests in the context of this reading.",
 				ghostText: {
 					individual: [
-						"an Awakened Man",
-						"a single mother feels divinity ignite in her heart",
-						"a teenager's visions of past lives reveal Awakened truths",
+						"an Awakened stranger",
+						"a single mother feeling divinity ignite in her heart",
+						"the author of a self-help book that really works",
 						"an enemy is revealed to have been a friend all along",
 						"a spiritual athiest who doesn't know how right he is",
+						"a teenager whose past lives reveal Awakened Truths",
 						"a Sleeper opening their eyes for the first time",
-						"the author of a self-help book that really works",
-						"a mole who has the trust of a Lichtor"
+						"an Awakened sympathizer with the trust of a Lichtor"
 					],
 					location: [
 						"a Tomb of the Unknown Soldier",
 						"a cozy second-hand book store",
-						"an Amish community",
-						"a remote survivalist camp"
+						"an Amish community untouched by the Archons",
+						"a remote survivalist camp protected by an Artifact"
 					],
 					organization: [
 						"a cult that worships humanity's lost divinity",
@@ -216,8 +217,10 @@ const C = {
 					],
 					situation: [
 						"a milestone on the Path to Awakening",
-						"Sleepers confront their divine captors head on",
-						"a divine plan fails catastrophically"
+						"a Sleeper mob confronts their divine captors head on",
+						"a divine plan fails catastrophically",
+						"spreading cracks in the Illusion",
+						"a shift in the Zeitgeist favouring humanity"
 					],
 					creature: [
 						"a monster demonstrates unexpected humanity",
@@ -235,6 +238,7 @@ const C = {
 			},
 			{
 				name: "DEMIURGOS",
+				arcana: "Major",
 				affiliation: "Divine",
 				value: 1,
 				keyword: "Imprisoned by",
@@ -247,7 +251,7 @@ const C = {
 						"an Archon taking a personal interest"
 					],
 					location: [
-						"the Demiurge's vanished Citadel",
+						"a reflection of the Demiurge's vanished Citadel",
 						"Metropolis",
 						"the Endless City",
 						"the Citadel of an Archon",
@@ -257,8 +261,8 @@ const C = {
 						"a dark street"
 					],
 					organization: [
-						"a dead civilization",
-						"grateful survivors",
+						"the descendants of a dead civilization",
+						"survivors just grateful to be alive",
 						"a cult whose indoctrinations always succeed",
 						"a neurolink start-up with the tech to rewrite memory"
 					],
@@ -266,18 +270,19 @@ const C = {
 						"a connection to the lost Demiurge Itself",
 						"stillness and death",
 						"hidden secrets",
-						"someone is watching"
+						"confirmation that someone has been watching",
+						"enslavement by magical compulsion"
 					],
 					creature: [
 						"beasts of Metropolis",
-						"a great Power that is sleeping",
-						"an enslaved god"
+						"a sleeping Power reaching out in Its dreams",
+						"an enslaved god who will trade anything for freedom"
 					],
 					item: [
 						"Machinery of Death and Rebirth",
 						"a scrawled map to a lost city",
 						"an artifact of Metropolis",
-						"a padlock covered in blood"
+						"a strong padlock covered in blood"
 					]
 				},
 				isDrawingShiftCard: true,
@@ -285,6 +290,7 @@ const C = {
 			},
 			{
 				name: "ASTAROTH",
+				arcana: "Major",
 				affiliation: "Divine",
 				value: 2,
 				keyword: "Hellish",
@@ -292,29 +298,33 @@ const C = {
 				note: "Because of the unique significance of Astaroth, a second card has been drawn and paired with it to reveal how the power of Astaroth manifests in the context of this reading.",
 				ghostText: {
 					individual: [
+						"a mole who has the trust of a Lichtor",
 						"a kid with an Illusion-shattering viral video",
-						"an epileptic who shouts Truths during his seizures",
-						"a philanthropist whose gifts are corrupting"
+						"an epileptic who shouts Truth during her seizures",
+						"a philanthropist whose gifts corrupt their recipients",
+						"a slighted Death Angel taking vengeance"
 					],
 					location: [
 						"Inferno",
 						"the Citadel of a Death Angel",
-						"a gateway to a shattered world"
+						"a gateway to a shattered world",
+						"a dark street",
+						"a secret path"
 					],
 					organization: [
-						"free wills behind the Veil",
-						"a nomadic cult of ritual killers",
-						"a sadistic, aggressive corporation",
-						"horribly mistreated employees"
+						"mysterious influence from behind the Veil",
+						"a nomadic gang of spree killers",
+						"a merciless, exploitative corporation",
+						"horribly mistreated employees close to snapping"
 					],
 					situation: [
 						"a direct connection to Astaroth",
-						"the will of Inferno made manifest",
+						"the will of Inferno gets what it wants",
 						"a solar eclipse",
-						"entwined wills, master and slave",
 						"unimaginable suffering",
+						"a threat to all things grows in power",
+						"entwined wills, master and slave",
 						"horrible beauty",
-						"a growing power",
 						"spreading cracks in the Illusion"
 					],
 					creature: [
@@ -333,49 +343,67 @@ const C = {
 			},
 			{
 				name: "Kether",
+				arcana: "Major",
 				affiliation: "Archon",
 				value: 3,
 				keyword: "the Archon of Hierarchy",
 				summary: "Kether's influence manifests as hierarchical structures with masters and servants, widening class gaps, and an aristocracy with power and benefits.",
 				note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["masters and servants, widening class gaps, and an aristocracy with power and benefits. Its influence is greatest in structures with a strong leader at their helm, including royal families, the leaders of the Catholic Church, corporate executives, and authoritarian countries such as China and North Korea."],
-					individual: [],
+					individual: [
+						"a butler who knows more than he'll willingly share",
+						"an unquestioningly loyal servant",
+						"an abuser enabled by their victim's submission",
+						"a pampered playboy with a seven-figure trust fund",
+						"a Men's Rights activist"
+					],
 					location: [],
 					organization: [],
-					situation: [],
+					situation: [
+						"entwined wills, master and slave"
+					],
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-3.webp"
 			},
 			{
 				name: "Chokmah",
+				arcana: "Major",
 				affiliation: "Archon",
 				value: 4,
 				keyword: "the Archon of Submission",
 				summary: "Chokmah's influence manifests as the submission to religious leaders, martyrdom, fanaticism, theocratic rule, and dogmatism. It exists virtually everywhere religion can be found.",
 				note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["submission to religious leaders, martyrdom, fanaticism, theocratic rule, and dogmatism Chokmah's servants have a strong influence in the Middle East and many imams and rabbis are lictors. The Archon also has significant influence over the Catholic Church."],
-					individual: [],
-					location: [],
+					individual: [
+						"a flaggelant with infected wounds",
+						"a high school chaplain",
+						"a born-again Christian",
+						"a socially-isolated Muslim who is being radicalized",
+						"a Flat Earther with a YouTube channel"
+					],
+					location: [
+						"the temple of a strict faith"
+					],
 					organization: [],
 					situation: [],
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-4.webp"
 			},
 			{
 				name: "Binah",
+				arcana: "Major",
 				affiliation: "Archon",
 				value: 5,
 				keyword: "the Archon of Community",
 				summary: "Binah's influence manifests as the family's power over the individual, mistrust of the state and other authorities outside of the family, strengthened traditions, and the distrust of strangers.",
 				note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["family's power over the individual, mistrust of the state and other authorities outside of the family, strengthened traditions, and the distrust of strangers Her grip is strong anywhere family ties are at their peak, including the Middle East, Africa, Eastern Europe, Latin America, China, and the southern United States. Her influence is once again growing in Russia. Among the Roma, Binah is a goddess who is worshipped and revered."],
 					individual: [],
 					location: [],
 					organization: [],
@@ -383,35 +411,40 @@ const C = {
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-5.webp"
 			},
 			{
 				name: "Chesed",
+				arcana: "Major",
 				affiliation: "Archon",
 				value: 6,
 				keyword: "the Archon of Safety",
 				summary: "Chesed's influence manifests as people's longing for safety, the desire to feel comfortable and safe from dangers threatening you, encouraging friendly behavior, and the sense that you are protected against the unknown and dangerous.",
 				note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["people's longing for safety, the desire to feel comfortable and safe from dangers threatening you, encouraging friendly behavior, and the sense that you are protected against the unknown and dangerous Once, Chesed's servants were to be found amid generous noblemen, monasteries, wise women of the forest, doctors who did anything to find cures for diseases, aid organizations, benevolent charities, and warm-hearted people. Now, his power has faded."],
 					individual: [],
-					location: [],
+					location: [
+						"a dark vault",
+						"a safehouse"
+					],
 					organization: [],
 					situation: [],
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-6.webp"
 			},
 			{
 				name: "Geburah",
+				arcana: "Major",
 				affiliation: "Archon",
 				value: 7,
 				keyword: "the Archon of Law",
 				summary: "Geburah's influence generates bureaucratic institutions, stricter laws, increased policing, and societal control over its citizenry. Those so influenced yield to increased control, typically out of their fear of chaos.",
 				note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["bureaucratic institutions, stricter laws, increased policing, and societal control over its citizenry. Those so influenced yield to increased control, typically out of their fear of chaos. The Archon has a strong influence over legal systems of every kind. Lictors are often judges, chiefs of police, or lawyers. They have a great presence anywhere bureaucracy is strong, and where laws and rules are used to control people."],
 					individual: [],
 					location: [],
 					organization: [],
@@ -419,35 +452,39 @@ const C = {
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-7.webp"
 			},
 			{
 				name: "Tiphareth",
+				arcana: "Major",
 				affiliation: "Archon",
 				value: 8,
 				keyword: "the Archon of Allure",
 				summary: "Tiphareth's influence incites a manic craving for beauty and affirmation, which must be fulfilled by any means necessary. Celebrities are worshipped as prophets, the mediocre waste their days imbibing the internet and television shows, and despise and ignore anyone who doesn't meet the social 'norms.'",
 				note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["a manic craving for beauty and affirmation, which must be fulfilled by any means necessary. Celebrities are worshipped as prophets, the mediocre waste their days imbibing the internet and television shows, and despise and ignore anyone who doesn't meet the social 'norms.' Her influence is great everywhere in society, but especially via the media, advertising, and the Internet."],
 					individual: [],
 					location: [],
 					organization: [],
-					situation: [],
+					situation: [
+						"resplendent beauty hides an ugly truth"
+					],
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-8.webp"
 			},
 			{
 				name: "Netzach",
+				arcana: "Major",
 				affiliation: "Archon",
 				value: 9,
 				keyword: "the Archon of Victory",
 				summary: "Netzach's influence strengthens patriotism and nationalism, unites societies against a common enemy, and feeds the us-versus-them mentality. The righteous obliterate all that threaten them, strengthen their military, justify their violence in the name of the Greater Good, and incite people to arm themselves.",
 				note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["patriotism and nationalism, unites societies against a common enemy, and feeds the us-versus-them mentality. The righteous obliterate all that threaten them, strengthen their military, justify their violence in the name of the Greater Good, and incite people to arm themselves. His influence is strongest within the military, military academies, private armies, manufacturers of weapons, lobbyists, and mercenaries. Has his largest influence in North America."],
 					individual: [],
 					location: [],
 					organization: [],
@@ -455,17 +492,18 @@ const C = {
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-9.webp"
 			},
 			{
 				name: "Hod",
+				arcana: "Major",
 				affiliation: "Archon",
 				value: 10,
 				keyword: "the Archon of Honor",
 				summary: "Hod's influence conflates honor with prestige, elevates one's status among others above all else, and sets the law aside in favor of personal vendettas. Expecting admiration for their adherence to their inflexible values, the honor-bound ruthlessly ostracize any who have brought shame upon themselves by failing to uphold their honor and fulfil the many duties it demands.",
 				note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["conflates honor with prestige, elevates one's status among others above all else, and sets the law aside in favor of personal vendettas. Expecting admiration for their adherence to their inflexible values, the honor-bound ruthlessly ostracize any who have brought shame upon themselves by failing to uphold their honor and fulfil the many duties it demands. The Principle is strongest in areas and communities where the honor culture still is very dominant, including the Middle East and countries in Asia, such as India, Pakistan, and Japan. In large parts of North Africa, Hod's servants and ideology are also still strong, even though these traditions have started to be questioned."],
 					individual: [],
 					location: [],
 					organization: [],
@@ -473,17 +511,18 @@ const C = {
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-10.webp"
 			},
 			{
 				name: "Yesod",
+				arcana: "Major",
 				affiliation: "Archon",
 				value: 11,
 				keyword: "the Archon of Avarice",
 				summary: "Yesod influences society through greed, capitalism, economics, consumer frenzy, and increased corporate power, as well as by promoting the admiration and respect of wealth as a sign of personal intelligence and ambition. It encourages contempt for the poverty-stricken, who are associated with laziness and stupidity, and supports the dismantling of social welfare institutions.",
 				note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["greed, capitalism, economics, consumer frenzy, and increased corporate power, as well as by promoting the admiration and respect of wealth as a sign of personal intelligence and ambition. It encourages contempt for the poverty-stricken, who are associated with laziness and stupidity, and supports the dismantling of social welfare institutions. The Archon has control over large parts of the Western world and nowadays also China."],
 					individual: [],
 					location: [],
 					organization: [],
@@ -491,35 +530,40 @@ const C = {
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-11.webp"
 			},
 			{
 				name: "Malkuth",
+				arcana: "Major",
 				affiliation: "Archon",
 				value: 12,
 				keyword: "the Archon of Awakening",
 				summary: "Malkuth's influence strives to free people from their prison by shattering the Illusion to reveal other dimensions, and inspiring people to question the nature of society and the fabric of reality. She inspires magicians and scientists to experiment with the unknown and search for their lost divinity. (Previously, Malkuth represented Conformity and the natural cycles we tend to see in our world and our prison.)",
 				note: "The card shows a connection or opposition to the Archon and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["free people from their prison by shattering the Illusion to reveal other dimensions, and inspiring people to question the nature of society and the fabric of reality. She inspires magicians and scientists to experiment with the unknown and search for their lost divinity. (Previously, Malkuth represented Conformity and the natural cycles we tend to see in our world and our prison.) Malkuth has her strongest influence among magicians and scientists. Europe is her primary stronghold, as well as regions of North America and Asia. During the Islamic Enlightenment, she had followers throughout the Middle East and North Africa."],
-					individual: [],
+					individual: [
+						"a Sleeper opening their eyes for the first time",
+						"a teen's past lives reveal Awakened truths"
+					],
 					location: [],
 					organization: [],
 					situation: [],
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-12.webp"
 			},
 			{
 				name: "Thaumiel",
+				arcana: "Major",
 				affiliation: "Death Angel",
 				value: 13,
 				keyword: "the Death Angel of Power",
 				summary: "Thaumiel's influence manifests as a hunger for power, corruption, dictatorship, fascism, intrigue, insurrection, oppression, ruthlessness and totalitarian rule – a breakdown of solidarity and trust.",
 				note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["hunger for power, corruption, dictatorship, fascism, intrigue, insurrection, oppression, ruthlessness and totalitarian rule – a breakdown of solidarity and trust. Thaumiel's Principle is strongest where there are hierarchies and power structures with clear rifts. Governments undergoing political upheaval, the entertainment business, the world of sports, organized crime, neo-nazi organizations, Wall Street and other stock exchanges, major corporations, and so on down to street gangs and school classes."],
 					individual: [],
 					location: [],
 					organization: [],
@@ -527,71 +571,88 @@ const C = {
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-13.webp"
 			},
 			{
 				name: "Chagidiel",
+				arcana: "Major",
 				affiliation: "Death Angel",
 				value: 14,
 				keyword: "the Death Angel of Abuse",
 				summary: "Chagidiel's influence takes shape in the violation of children, the perversion of adult love and care, forgotten and lost children, homeless street kids, and the degradation and ruination of school systems.",
 				note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["the violation of children, the perversion of adult love and care, forgotten and lost children, homeless street kids, and the degradation and ruination of school systems. The Death Angel's strongest influence is over nuclear families, but he is also active within pedophile networks, orphanages, youth centers, trafficking rings, illegal porn sites, and various cults and religious organizations all over the world."],
-					individual: [],
+					individual: [
+						"a serial rapist who lives in an unknowing family"
+					],
 					location: [],
 					organization: [],
 					situation: [],
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-14.webp"
 			},
 			{
 				name: "Sathariel",
+				arcana: "Major",
 				affiliation: "Death Angel",
 				value: 15,
 				keyword: "the Death Angel of Exclusion",
 				summary: "Satahariel's influence incites self-loathing, loneliness, hopelessness, contempt for 'normals,' self-destruction, anxiety, depression, suicide, school shootings and massacres, and communities of outsiders inspiring each other to commit destructive actions.",
 				note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: [", contempt for 'normals,' self-destruction, anxiety, depression, suicide, school shootings and massacres, and communities of outsiders inspiring each other to commit destructive actions. Sathariel's corruptive will seeks out those who feel rejected and those who feel their lives are devoid of meaning. These can be found everywhere."],
-					individual: [],
-					location: [],
+					individual: [
+						"a mute child with crayons",
+						"a prisoner kept in total isolation",
+						"an agoraphobic graphic artist"
+					],
+					location: [
+						"an isolation cell with black walls",
+						"a sensory deprivation tank"
+					],
 					organization: [],
-					situation: [],
+					situation: [
+						"an early-onset Alzheimer's diagnosis"
+					],
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-15.webp"
 			},
 			{
 				name: "Gamichicoth",
+				arcana: "Major",
 				affiliation: "Death Angel",
 				value: 16,
 				keyword: "the Death Angel of Fear",
 				summary: "Gamichicoth's influence awakens fear of 'the Other' by escalating distrust and blaming various ethnic groups, religions, or political dissidents for society's problems. False narratives are created and distributed through news media, rumors, and manipulated visual evidence, while heralds whisper how all our concerns would dissipate if only 'the Others' were punished or disappeared.",
 				note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["False narratives are created and distributed through news media, rumors, and manipulated visual evidence, while heralds whisper how all our concerns would dissipate if only 'the Others' were punished or disappeared. The Death Angels influence is strongest within the middle class and in regions with conservative values. The Ku Klux Klan, fanatic pro-lifers, concerned parents' groups, paramilitary forces committing genocide, neo-fascists of all types, and patriarchal structures who fear liberal values will corrupt young people are all at risk of falling under this Death Angel's influence."],
 					individual: [],
 					location: [],
 					organization: [],
-					situation: [],
+					situation: [
+						"a sudden explosion in a public place"
+					],
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-16.webp"
 			},
 			{
 				name: "Golab",
+				arcana: "Major",
 				affiliation: "Death Angel",
 				value: 17,
 				keyword: "the Death Angel of Torment",
 				summary: "Golab's influence increases societal sadism, giving people pleasure from inflicting pain on others or by being subjected to torment themselves. Criminals are tortured in public, people carry out their most sadistic ideas unto both willing and unwilling subjects in obscure safe houses, while murderers leave trails of mutilated bodies.",
 				note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["Golab's presence is strongest wherever sadistic assaults are committed against humans. He is found in organized crime, the military, terrorist groups, prisons, and psychiatric hospitals.  Criminals are tortured in public, people carry out their most sadistic ideas unto both willing and unwilling subjects in obscure safe houses, while murderers leave trails of mutilated bodies."],
 					individual: [],
 					location: [],
 					organization: [],
@@ -599,53 +660,69 @@ const C = {
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-17.webp"
 			},
 			{
 				name: "Togarini",
+				arcana: "Major",
 				affiliation: "Death Angel",
 				value: 18,
 				keyword: "the Death Angel of Compulsion",
 				summary: "Togarini's influence increases the manic creativity that distorts reality, tearing beauty asunder. Insane artwork opens portals to Inferno, magicians experiment at the border of life and death, and death itself acts erratically – souls binding themselves into rotting corpses, or haunting the living as distorted spectres.",
 				note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["Insane artwork opens portals to Inferno, magicians experiment at the border of life and death, and death itself acts erratically – souls binding themselves into rotting corpses, or haunting the living as distorted spectres. The Death Angel's influence is strongest among artists, magicians, body modifiers, and the senses and imagination enchanted by the dark and grotesque."],
-					individual: [],
+					individual: [
+						"an anorexic ballet dancer",
+						"a self-destructive black metal musician"
+					],
 					location: [],
 					organization: [],
-					situation: [],
-					creature: [],
-					item: []
+					situation: [
+						"being forced to eat human flesh"
+					],
+					creature: [
+						"a wendigo cursed for committing cannibalism"
+					],
+					item: [
+						"a pack of cigarettes"
+					]
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-18.webp"
 			},
 			{
 				name: "Hareb-Serap",
+				arcana: "Major",
 				affiliation: "Death Angel",
 				value: 19,
 				keyword: "the Death Angel of Conflict",
 				summary: "Hareb-Serap's influence propagates uncontrollable rage, bloodlust, and senseless violence. Gangs have shootouts in public places, police beat suspects to death, hooligans storm arenas, lynch mobs tear their targets to pieces, harmless conflicts escalate into bloody fist-fights, and 'normal' people teeter on the brink of explosive outbursts at all times.",
 				note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: ["Gangs have shootouts in public places, police beat suspects to death, hooligans storm arenas, lynch mobs tear their targets to pieces, harmless conflicts escalate into bloody fist-fights, and 'normal' people teeter on the brink of explosive outbursts at all times. The Death Angel's greatest influence is over war zones, gang territories, the Middle East, Africa, and parts of Asia. Many of his servants are soldiers or gang members, but Hareb-Serap's Principle can be stirred in all of us."],
 					individual: [],
 					location: [],
 					organization: [],
-					situation: [],
+					situation: [
+						"sudden, unexplained aggression"
+					],
 					creature: [],
-					item: []
+					item: [
+						"a bomber aircraft"
+					]
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-19.webp"
 			},
 			{
 				name: "Samael",
+				arcana: "Major",
 				affiliation: "Death Angel",
 				value: 20,
 				keyword: "the Death Angel of Vengeance",
 				summary: "Samael's influence strengthens paranoia, vindictiveness, and obsession with injustices, while perpetrators take brutal revenge for nonexistent affronts, jealous partners murder their loved ones for imagined betrayals, and terrorists exact gory retribution upon their foes.",
 				note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: [", while perpetrators take brutal revenge for nonexistent affronts, jealous partners murder their loved ones for imagined betrayals, and terrorists exact gory retribution upon their foes. The Death Angel has a strong influence over individuals with a strong lust for vengeance, but also in organizations with strong codes of honor and a willingness to use violence to get what they want, such as the mafia, gangs, terrorist organizations, and certain cults. Magicians occasionally seek insight into Samael's dark brilliance."],
 					individual: [],
 					location: [],
 					organization: [],
@@ -653,42 +730,56 @@ const C = {
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-20.webp"
 			},
 			{
 				name: "Gamaliel",
+				arcana: "Major",
 				affiliation: "Death Angel",
 				value: 21,
 				keyword: "the Death Angel of Lust",
 				summary: "Gamaliel influences society towards hypersexualization and objectification, where crowds commit gang rape, victims are forced into prostitution, pornography becomes increasingly hardcore and perverted, and celebrants gather in clubs and secret societies for macabre orgies, and people embrace mindless desires with no consideration of the consequences of their actions.",
 				note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: [", where crowds commit gang rape, victims are forced into prostitution, pornography becomes increasingly hardcore and perverted, and celebrants gather in clubs and secret societies for macabre orgies, and people embrace mindless desires with no consideration of the consequences of their actions. The Death Angel has a strong influence over the pornography business, webcam shows, brothels, rapists, and, deep down, virtually everyone to some degree."],
-					individual: [],
+					individual: [
+						"a <i>femme fatale</i> with a harem of lovers"
+					],
 					location: [],
-					organization: [],
+					organization: [
+						"a gentleman's club where anything goes"
+					],
 					situation: [],
 					creature: [],
-					item: []
+					item: [
+						"a Fleshlight"
+					]
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-21.webp"
 			},
 			{
 				name: "Nahemoth",
+				arcana: "Major",
 				affiliation: "Death Angel",
 				value: 22,
 				keyword: "the Death Angel of Discord",
 				summary: "Nahemoth's influence deforms the natural world, turning it dangerous and threatening, expressed as forest fires, oil spills, poisoned streams and groundwater, misshapen animal life, violent storms, cold snaps, heat waves, torrential rains, earthquakes, tsunamis, cannibal tribes, disfigured fetuses, and baleful eclipses. She turns the world upside down, instilling fear by destroying conformity and normalcy.",
 				note: "The card shows a connection or opposition to the Death Angel and/or its Principle. The bond might be in the present, the past, or something that is about to happen.",
 				ghostText: {
-					process: [", expressed as forest fires, oil spills, poisoned streams and groundwater, misshapen animal life, violent storms, cold snaps, heat waves, torrential rains, earthquakes, tsunamis, cannibal tribes, disfigured fetuses, and baleful eclipses. Her influence is strongest in regions where people fear and venerate nature, as well as places with chemical spills, radioactive zones, open sewers, strip mines, industrial zones, and rubbish dumps."],
 					individual: [],
 					location: [],
 					organization: [],
-					situation: [],
+					situation: [
+						"an earthquake",
+						"a raging fire",
+						"a tornado",
+						"a blood-red lunar eclipse"
+					],
 					creature: [],
 					item: []
 				},
+				isDrawingShiftCard: false,
 				imgfile: "major-22.webp"
 			}
 		],
@@ -721,18 +812,21 @@ const C = {
 		},
 		"minor-arcana": {
 			crescents: [
-				null,
 				{
 					name: "Ace of Crescents",
-					suit: "Crescents",
+					arcana: "Minor",
 					value: 1,
 					keyword: "Vortex",
 					summary: "The very source of creation, dreams, and the ever transforming chaos that has its source deep in Limbo.",
+					note: "",
+					suit: "Crescents",
 					ghostText: {
 						individual: [
 							"a world-changing visionary",
 							"a dangerous demagogue",
-							"a Dream Magician"
+							"a murderous narcoleptic",
+							"a Dream Magician",
+							"a habitual sleepwalker"
 						],
 						location: [
 							"the Vortex",
@@ -745,12 +839,12 @@ const C = {
 							"psychedelic deep-mind explorers"
 						],
 						situation: [
-							"world-changing",
-							"chaotic",
+							"a life turned upside down",
+							"an injection of chaos",
 							"a natural disaster",
-							"a tornado",
 							"the Maelstrom",
-							"a life turned upside down"
+							"a lie that changes everything",
+							"potentially world-changing"
 						],
 						creature: [
 							"a Dream Prince",
@@ -761,17 +855,21 @@ const C = {
 						item: [
 							"unexpected features",
 							"it does the opposite",
-							"an unlikely dream achieved"
+							"an unlikely dream achieved",
+							"a drawing board"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-crescents-1.webp"
 				},
 				{
 					name: "Two of Crescents",
-					suit: "Crescents",
+					arcana: "Minor",
 					value: 2,
 					keyword: "Creation",
 					summary: "Creation is the raw godly power to shape the world and to turn thought and dream into something inspiring.",
+					note: "",
+					suit: "Crescents",
 					ghostText: {
 						individual: [
 							"an inspired photographer",
@@ -796,13 +894,15 @@ const C = {
 							"a classic art foundation",
 							"a bohemian artist collective",
 							"a gang with graffiti artists",
-							"a struggling record company"
+							"a struggling record company",
+							"a 3D-printing company"
 						],
 						situation: [
 							"a melody only some can hear",
-							"he actually did it",
+							"he actually pulled it off",
 							"a controvertial art exhibit",
-							"a disturbing shift in the Zeitgeist"
+							"a disturbing shift in the Zeitgeist",
+							"with world-changing potential"
 						],
 						creature: [
 							"an artificial creation given life",
@@ -818,14 +918,17 @@ const C = {
 							"a portable typewriter"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-crescents-2.webp"
 				},
 				{
 					name: "Three of Crescents",
-					suit: "Crescents",
+					arcana: "Minor",
 					value: 3,
 					keyword: "Undoing",
 					summary: "Undoing is part of the natural cycle of collapse and obliteration of ideas, structures, bodies, dreams, and whole worlds.",
+					note: "",
+					suit: "Crescents",
 					ghostText: {
 						individual: [
 							"a cold-hearted hitman",
@@ -839,24 +942,24 @@ const C = {
 							"a waste plant",
 							"a car crusher",
 							"a concentration camp",
-							"a hospice for the dying",
-							"an abortion clinic"
+							"a hospice for the dying"
 						],
 						organization: [
 							"a demolitions company",
 							"a doomsday sect",
 							"a suicide cult",
-							"a gang of thrill-killers"
+							"a gang of thrill-killers",
+							"an abortion clinic"
 						],
 						situation: [
-							"a murder-suicide pact",
+							"a life falls apart",
 							"a cover-up",
 							"deleted information",
 							"a faked death",
 							"a Wall Street crash",
+							"the loss of important evidence",
+							"a murder-suicide pact",
 							"an earthquake",
-							"a raging fire",
-							"a life falls apart",
 							"burned paper records",
 							"a sudden explosion"
 						],
@@ -867,23 +970,26 @@ const C = {
 							"a thing that consumes"
 						],
 						item: [
-							"bomber aircraft",
+							"a computer virus",
 							"an incinerator",
 							"a flamethrower",
 							"a vat filled with acid",
 							"a sledgehammer",
-							"a computer virus",
-							"a handgun used in war"
+							"a handgun used in war",
+							"a bomber aircraft"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-crescents-3.webp"
 				},
 				{
 					name: "Four of Crescents",
-					suit: "Crescents",
+					arcana: "Minor",
 					value: 4,
 					keyword: "Transformation",
 					summary: "Transformation is a state of extreme change and metamorphosis.",
+					note: "",
+					suit: "Crescents",
 					ghostText: {
 						individual: [
 							"a reckless plastic surgeon",
@@ -896,22 +1002,25 @@ const C = {
 							"a landscape architect firm",
 							"a well-secured biolab",
 							"a discreet clinic",
-							"a Christian conversion center"
+							"a recently-gentrified neighborhood",
+							"a salon offering free makeovers"
 						],
 						organization: [
 							"a grass-roots political movement",
 							"competitive body modders",
-							"militant transhumanists"
+							"militant transhumanists",
+							"a Christian conversion center",
+							"secret professionals crafting false identities"
 						],
 						situation: [
 							"a change of heart",
 							"breaking a bad habit",
 							"a terminal illness",
 							"a sex change operation",
-							"a strange government program",
 							"removing someone's face",
-							"a total makeover",
 							"assuming a false identity",
+							"a total makeover",
+							"a strange government initiative",
 							"a lie that changes everything"
 						],
 						creature: [
@@ -927,24 +1036,27 @@ const C = {
 							"a carnival mask"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-crescents-4.webp"
 				},
 				{
 					name: "Five of Crescents",
-					suit: "Crescents",
+					arcana: "Minor",
 					value: 5,
 					keyword: "Connection",
 					summary: "Connection of intertwined structures, wills, or something that might hinder you or help you on your way.",
+					note: "",
+					suit: "Crescents",
 					ghostText: {
 						individual: [
 							"a greedy fixer",
 							"a silver-tongued lobbyist",
 							"an irritated network technician",
-							"a <i>femme fatale</i> with a harem of lovers",
+							"a charismatic club owner",
 							"a familiar street contact",
 							"a nosey electrician",
-							"a charismatic club owner",
-							"a sect leader"
+							"a sect leader",
+							"a <i>femme fatale</i> with a harem of lovers"
 						],
 						location: [
 							"a group of islands",
@@ -958,16 +1070,17 @@ const C = {
 						organization: [
 							"a hacker group",
 							"a network of terror cells",
-							"a gentleman's club",
+							"a law firm",
 							"a drug cartel",
 							"a fast food chain",
-							"a law firm"
+							"a gentleman's club"
 						],
 						situation: [
 							"a conspiracy",
 							"trapped and caught",
 							"bound",
-							"expanding"
+							"expanding",
+							"a murder-suicide pact"
 						],
 						creature: [
 							"a Tekron",
@@ -987,14 +1100,17 @@ const C = {
 							"a brain in a jar"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-crescents-5.webp"
 				},
 				{
 					name: "Six of Crescents",
-					suit: "Crescents",
+					arcana: "Minor",
 					value: 6,
 					keyword: "Merging",
 					summary: "Merging of ideas, bodies, and minds. Two things become one.",
+					note: "",
+					suit: "Crescents",
 					ghostText: {
 						individual: [
 							"a good-hearted priest",
@@ -1007,24 +1123,24 @@ const C = {
 							"where two rivers meet",
 							"two cities that have merged into one",
 							"sewer tunnels during a storm",
-							"impossibly dense foliage"
+							"impossibly dense foliage",
+							"a marriage chapel"
 						],
 						organization: [
 							"a global corporation",
 							"a secret umbrella company",
 							"diverse minds combining their genius",
 							"polygamy activists",
-							"a recently-gentrified neighborhood",
 							"a money-laundering operation"
 						],
 						situation: [
 							"an act of love",
 							"sworn into a secret cult",
-							"merging into the background",
+							"two people are revealed to be a single person",
 							"the assimilation of minorities",
 							"myth and reality become one",
-							"two ideologies become one",
-							"two people revealed to be a single person"
+							"merging into the background",
+							"two ideologies become one"
 						],
 						creature: [
 							"a Cairath",
@@ -1038,14 +1154,17 @@ const C = {
 							"a vial of blood from many people"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-crescents-6.webp"
 				},
 				{
 					name: "Seven of Crescents",
-					suit: "Crescents",
+					arcana: "Minor",
 					value: 7,
 					keyword: "Reflection",
 					summary: "Reflections can reveal the truth, be deceptive or may mirror a person or a place.",
+					note: "",
+					suit: "Crescents",
 					ghostText: {
 						individual: [
 							"an identical twin",
@@ -1061,7 +1180,8 @@ const C = {
 							"a raucus carnival",
 							"a hall of mirrors",
 							"rain-slicked streets",
-							"a desolate graveyard"
+							"a Japanese rock garden",
+							"a quiet, lonely graveyard"
 						],
 						organization: [
 							"a Malkuth cult",
@@ -1085,42 +1205,46 @@ const C = {
 							"a priceless mirror",
 							"a faded picture",
 							"a crystal ball",
-							"an old kaleidoscope",
-							"a rorschach test"
+							"a rorschach test",
+							"an old kaleidoscope"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-crescents-7.webp"
 				},
 				{
 					name: "Eight of Crescents",
-					suit: "Crescents",
+					arcana: "Minor",
 					value: 8,
 					keyword: "Repetition",
 					summary: "Repetition can be an endless loop, a recurring theme, Déjà vu, or something you can't escape.",
+					note: "",
+					suit: "Crescents",
 					ghostText: {
 						individual: [
 							"a postman who reads the mail",
 							"a jaded phone sex operator",
 							"a lecturer anxious to retire",
-							"a TV-addicted shut-in",
+							"a comedian with only one great joke",
 							"a night-shift janitor",
 							"a suicidal toll booth operator",
-							"a comedian with only one great joke",
+							"a TV-addicted shut-in",
 							"a habitual sleepwalker"
 						],
 						location: [
-							"a marriage chapel",
+							"a maze where everything looks the same",
 							"a hair and nail salon",
 							"a government office",
 							"a cheap night club with the same act each night",
 							"an amusement park whose rides never change",
-							"a maze where everything looks the same"
+							"a last-minute marriage chapel"
 						],
 						organization: [
 							"a conservative think tank",
 							"a pharmaceutical company pushing antidepressants",
 							"the cast of a theatre production",
-							"a tech company releasing version eleven"
+							"a tech company releasing version eleven",
+							"a company providing neighborhood ghost tours"
 						],
 						situation: [
 							"a cover band playing the same songs",
@@ -1138,28 +1262,33 @@ const C = {
 							"a hamster wheel",
 							"a rejected screenplay",
 							"a broken record player",
-							"a favorite novel"
+							"a favorite novel",
+							"an old kaleidoscope"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-crescents-8.webp"
 				},
 				{
 					name: "Nine of Crescents",
-					suit: "Crescents",
+					arcana: "Minor",
 					value: 9,
 					keyword: "Stillness",
 					summary: "Stillness represents apathy, tranquility and a situation that seems to be unchanging.",
+					note: "",
+					suit: "Crescents",
 					ghostText: {
 						individual: [
 							"a calm and soothing guru",
 							"a chain-smoking housewife who has given up",
 							"an old hippie who speaks in riddles",
-							"a homeless man at the same spot every day"
+							"a homeless man at the same spot every day",
+							"a TV-addicted shut-in"
 						],
 						location: [
 							"a small town frozen in time",
 							"suburban houses along a cul-de-sac",
-							"a Japanese rock garden",
+							"a desolate graveyard",
 							"a slow river in the countryside",
 							"a ghost town",
 							"an abandoned drive-in theater"
@@ -1173,7 +1302,8 @@ const C = {
 						situation: [
 							"a calm and quiet day",
 							"a school reunion where no one changed",
-							"a strict family dinner"
+							"a strict family dinner",
+							"merging into the background"
 						],
 						creature: [
 							"a lost god with no memory",
@@ -1188,17 +1318,19 @@ const C = {
 							"a panpipe"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-crescents-9.webp"
 				}
 			],
 			eyes: [
-				null,
 				{
 					name: "Ace of Eyes",
-					suit: "Eyes",
+					arcana: "Minor",
 					value: 1,
 					keyword: "Elysium",
 					summary: "Elysium is the very core of the Illusion and the intricate machinery that keeps you in chains.",
+					note: "",
+					suit: "Eyes",
 					ghostText: {
 						individual: [
 							"a powerful politician",
@@ -1223,7 +1355,8 @@ const C = {
 							"oppressive cultural values",
 							"a family gathering",
 							"a national holiday",
-							"stifling social traditions"
+							"stifling social traditions",
+							"a strange government program"
 						],
 						creature: [
 							"a Lictor",
@@ -1239,14 +1372,17 @@ const C = {
 							"a PDF of the US Constitution"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-eyes-1.webp"
 				},
 				{
 					name: "Two of Eyes",
-					suit: "Eyes",
+					arcana: "Minor",
 					value: 2,
 					keyword: "Imprisonment",
 					summary: "Imprisonment of your body, soul, and mind.",
+					note: "",
+					suit: "Eyes",
 					ghostText: {
 						individual: [
 							"a police officer",
@@ -1291,33 +1427,38 @@ const C = {
 							"a crumpled school report card"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-eyes-2.webp"
 				},
 				{
 					name: "Three of Eyes",
-					suit: "Eyes",
+					arcana: "Minor",
 					value: 3,
 					keyword: "Faith",
 					summary: "Faith that gives you purpose, but makes you blind.",
+					note: "",
+					suit: "Eyes",
 					ghostText: {
 						individual: [
-							"a television preacher",
+							"a televangelist preaching the Prosperity Gospel",
 							"a public relations consultant",
 							"an enthralled housewife",
 							"a diehard atheist",
-							"a football supporter",
-							"a street preacher"
+							"a street preacher",
+							"a football supporter"
 						],
 						location: [
 							"a secluded temple",
 							"an old church",
 							"a sports arena",
-							"a grandiose monument"
+							"a grandiose monument",
+							"a busy, well-maintained cemetary"
 						],
 						organization: [
 							"a religious sect",
 							"a Marxist group",
-							"a terror cell"
+							"a terror cell",
+							"supporters of a sports team that never wins"
 						],
 						situation: [
 							"an occult ceremony",
@@ -1337,28 +1478,32 @@ const C = {
 							"a first-edition copy of 'On the Origin of Species'"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-eyes-3.webp"
 				},
 				{
 					name: "Four of Eyes",
-					suit: "Eyes",
+					arcana: "Minor",
 					value: 4,
 					keyword: "Distractions",
 					summary: "Distractions in everyday life that make you blind to the Truth.",
+					note: "",
+					suit: "Eyes",
 					ghostText: {
 						individual: [
 							"an intrusive telephone salesman",
 							"the hot teenager next door",
-							"a street peddler",
+							"the neighborhood gossip",
 							"a charismatic internet celebrity",
 							"a famous actor",
-							"the neighborhood gossip"
+							"a street peddler"
 						],
 						location: [
 							"a movie theater",
 							"a shopping mall",
 							"a vacation resort",
-							"a strip club"
+							"a strip club",
+							"a casino"
 						],
 						organization: [
 							"an advertising agency",
@@ -1395,14 +1540,17 @@ const C = {
 							"a stay-fit magazine"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-eyes-4.webp"
 				},
 				{
 					name: "Five of Eyes",
-					suit: "Eyes",
+					arcana: "Minor",
 					value: 5,
 					keyword: "Division",
 					summary: "Division keeps us occupied with endless struggles.",
+					note: "",
+					suit: "Eyes",
 					ghostText: {
 						individual: [
 							"an online agitator",
@@ -1427,7 +1575,8 @@ const C = {
 							"a minority ethnic group",
 							"a right-wing political party",
 							"an online hate group",
-							"conspiracy theorists"
+							"a trio of conspiracy theorists living in a bunker",
+							"an online community of incels"
 						],
 						situation: [
 							"a political rally",
@@ -1450,18 +1599,21 @@ const C = {
 							"a cartoon parody of a religious icon"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-eyes-5.webp"
 				},
 				{
 					name: "Six of Eyes",
-					suit: "Eyes",
+					arcana: "Minor",
 					value: 6,
 					keyword: "Rebellion",
 					summary: "Rebellion and struggle against the ruling order.",
+					note: "",
+					suit: "Eyes",
 					ghostText: {
 						individual: [
 							"a stubborn loner",
-							"a teenager with an attitude",
+							"an anarchist",
 							"an unrepentant criminal",
 							"a charismatic political maverick",
 							"a mafia boss",
@@ -1469,7 +1621,7 @@ const C = {
 							"a gang member",
 							"a prolific YouTube critic",
 							"a black-hat hacker",
-							"an anarchist"
+							"a cocky, insolent teenager"
 						],
 						location: [
 							"a house occupied by squatters",
@@ -1482,7 +1634,8 @@ const C = {
 							"a guerrilla force",
 							"a punk rock band",
 							"an extremist group",
-							"an animal rights group"
+							"an animal rights group",
+							"teenagers with attitude"
 						],
 						situation: [
 							"a revolution",
@@ -1504,14 +1657,17 @@ const C = {
 							"an offensive placard"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-eyes-6.webp"
 				},
 				{
 					name: "Seven of Eyes",
-					suit: "Eyes",
+					arcana: "Minor",
 					value: 7,
 					keyword: "Madness",
 					summary: "Madness that overwhelms and tears apart, but may also grant insight.",
+					note: "",
+					suit: "Eyes",
 					ghostText: {
 						individual: [
 							"a distraught medical patient",
@@ -1526,27 +1682,30 @@ const C = {
 							"an insane asylum",
 							"an isolation cell",
 							"a decrepit house",
-							"an apartment with torn-down wallpaper"
+							"an apartment with torn-down wallpaper",
+							"a travelling carnival"
 						],
 						organization: [
-							"fools",
+							"fools with power",
 							"a psychological institute",
-							"a sect in a trailer park"
+							"a sect in a trailer park",
+							"a mob consumed by mass hysteria"
 						],
 						situation: [
-							"sudden psychosis",
+							"multiple personalities in conflict",
 							"severe depression",
 							"the onset of schizophrenia",
 							"a panic attack",
 							"an encounter with a phobia",
 							"reasons for paranoia",
+							"a mass delusion descends",
+							"sudden psychosis",
 							"unexplained aggression",
-							"multiple personalities in conflict",
-							"mob mentality assumes control",
-							"a mass delusion descends"
+							"mob mentality assumes control"
 						],
 						creature: [
-							"a creature of madness"
+							"a creature of madness",
+							"a body-hopping split personality"
 						],
 						item: [
 							"a half-burned doll",
@@ -1559,40 +1718,43 @@ const C = {
 							"an envelope holding ten bottle caps"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-eyes-7.webp"
 				},
 				{
 					name: "Eight of Eyes",
-					suit: "Eyes",
+					arcana: "Minor",
 					value: 8,
 					keyword: "Visions",
 					summary: "Visions that may bring insight, but may also lead you astray.",
+					note: "",
+					suit: "Eyes",
 					ghostText: {
 						individual: [
 							"an oracle in the suburbs",
 							"a self-proclaimed prophet",
 							"an inspired architect",
 							"an eccentric video artist",
-							"the CEO of a fast-growing IT company",
 							"a prescient mental patient"
 						],
 						location: [
 							"an old temple",
-							"the carnival",
+							"graffiti in a parking garage",
 							"a smoky opium den",
 							"an asylum",
 							"a techno club",
-							"graffiti in a parking garage"
+							"the carnival"
 						],
 						organization: [
-							"dream interpreters"
+							"dream interpreters",
+							"a fast-growing IT company"
 						],
 						situation: [
 							"nightmarish visions",
+							"rumors that speak of the Truth",
 							"a clear insight",
 							"a prophecy is revealed",
-							"eyes gouged out",
-							"rumors that speak of the Truth"
+							"eyes gouged out"
 						],
 						creature: [
 							"a being born of nightmares and visions",
@@ -1602,33 +1764,38 @@ const C = {
 							"a Super-8 camera",
 							"a sheet of LSD tabs",
 							"a decorated clay pot",
-							"an honest webpage"
+							"an honest webpage",
+							"a flashlight"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-eyes-8.webp"
 				},
 				{
 					name: "Nine of Eyes",
-					suit: "Eyes",
+					arcana: "Minor",
 					value: 9,
 					keyword: "Enlightenment",
 					summary: "The road that may lead you towards Enlightenment and Awakening.",
+					note: "",
+					suit: "Eyes",
 					ghostText: {
 						individual: [
 							"an amature philosopher",
-							"a magician with real power",
+							"a stage magician manifesting real power",
 							"a savvy technician",
 							"a dedicated body modder",
 							"a scientist on the verge of a major discovery",
-							"a homeless man beneath a bridge",
+							"an insightful homeless man beneath a bridge",
 							"a university student",
-							"a broadminded bartender"
+							"a broadminded bartender with pearls of wisdom"
 						],
 						location: [
 							"a road to the unknown",
 							"a twisted staircase",
 							"a high-tech laboratory",
-							"a university"
+							"a university",
+							"Burning Man"
 						],
 						organization: [
 							"a Cult that serves Malkuth",
@@ -1638,7 +1805,8 @@ const C = {
 						situation: [
 							"an initiation ritual",
 							"a science fair",
-							"a sect meeting"
+							"a sect meeting",
+							"a sudden psychosis confers insights"
 						],
 						creature: [
 							"a child of the night",
@@ -1654,35 +1822,37 @@ const C = {
 							"a flashlight"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-eyes-9.webp"
 				}
 			],
 			hourglasses: [
-				null,
 				{
 					name: "Ace of Hourglasses",
-					suit: "Hourglasses",
+					arcana: "Minor",
 					value: 1,
 					keyword: "Achlys",
 					summary: "Achlys represents nothingness, infinity, the void, but also the obliteration of the very soul.",
+					note: "",
+					suit: "Hourglasses",
 					ghostText: {
 						individual: [
 							"a severely-depressed soul",
 							"an extremely apathetic individual",
 							"a coma patient",
 							"a self-destructive misanthrope",
+							"a careless deep-sea diver",
 							"a priest who has lost his faith",
-							"a prisoner kept in total isolation",
-							"a careless deep-sea diver"
+							"a prisoner kept in total isolation"
 						],
 						location: [
 							"the vacuum of space",
 							"a deep well",
 							"black, still waters",
-							"a sensory deprivation tank",
-							"a bottomless mire",
 							"the depths of the ocean",
-							"an isolation cell with black walls"
+							"a bottomless mire",
+							"an isolation cell with a single lightbulb",
+							"a sensory deprivation tank"
 						],
 						organization: [
 							"a cult that worships She Who Waits Below"
@@ -1690,7 +1860,9 @@ const C = {
 						situation: [
 							"the total destruction of what makes a person",
 							"dissolved into atoms",
-							"a maelstrom that drags you down into the deep"
+							"a maelstrom that drags you down into the deep",
+							"a corpse discovered sealed behind a wall",
+							"scratchmarks inside an exhumed coffin"
 						],
 						creature: [
 							"children of the Underworld",
@@ -1704,36 +1876,43 @@ const C = {
 							"a suicide note"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-hourglasses-1.webp"
 				},
 				{
 					name: "Two of Hourglasses",
-					suit: "Hourglasses",
+					arcana: "Minor",
 					value: 2,
 					keyword: "Future",
 					summary: "Future revolves around things yet to come as well as potential that has yet not been unleashed.",
+					note: "",
+					suit: "Hourglasses",
 					ghostText: {
 						individual: [
 							"a suburban fortune teller",
-							"a professor in predictive analytics",
+							"an aspiring politician",
 							"a reckless gambler",
-							"an infant whose parents are unknown",
+							"a tech genius",
 							"a stock broker",
 							"a young up-and-comer",
 							"a tireless gardener",
 							"a sportsman aiming for the elite league",
-							"an aspiring politician",
-							"a tech genius"
+							"an infant whose parents are unknown",
+							"a professor in predictive analytics"
 						],
 						location: [
 							"an orphanage",
 							"a highway under construction",
-							"a construction site"
+							"a construction site",
+							"a science and technology exhibition",
+							"a school for gifted children"
 						],
 						organization: [
 							"futures analysts",
 							"an investment company",
-							"a technical university"
+							"a technical university",
+							"a predictive analytics thinktank",
+							"a private rocket company"
 						],
 						situation: [
 							"a prediction",
@@ -1754,14 +1933,17 @@ const C = {
 							"a biological weapon"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-hourglasses-2.webp"
 				},
 				{
 					name: "Three of Hourglasses",
-					suit: "Hourglasses",
+					arcana: "Minor",
 					value: 3,
 					keyword: "Past",
 					summary: "Past revolves around things that have already occurred and now come back, or could be discovered, if you look in the right place.",
+					note: "",
+					suit: "Hourglasses",
 					ghostText: {
 						individual: [
 							"a nostalgic old-timer",
@@ -1783,11 +1965,17 @@ const C = {
 						organization: [
 							"a center for genealogy studies",
 							"an archaeological society",
-							"an online vintage subculture group"
+							"an online vintage subculture group",
+							"a center for historical preservation",
+							"the stars of a TV show about hunting buried treasure"
 						],
 						situation: [
 							"an archaeological dig",
-							"an interrogation"
+							"an interrogation",
+							"a breakout of the plague",
+							"a time loop",
+							"the status quo",
+							"strange echoes"
 						],
 						creature: [
 							"a being from a time long passed",
@@ -1798,17 +1986,21 @@ const C = {
 							"a book of a family's history",
 							"a chalice from the Middle Ages",
 							"a photo of people long dead",
-							"a folded birth certificate"
+							"a folded birth certificate",
+							"an scandalous blog post from long ago"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-hourglasses-3.webp"
 				},
 				{
 					name: "Four of Hourglasses",
-					suit: "Hourglasses",
+					arcana: "Minor",
 					value: 4,
 					keyword: "Space",
 					summary: "Space represents someone or something that travels forward through space towards a goal or is always in motion.",
+					note: "",
+					suit: "Hourglasses",
 					ghostText: {
 						individual: [
 							"a hard-working truck driver",
@@ -1826,7 +2018,8 @@ const C = {
 							"an endless highway",
 							"railroad tracks",
 							"a slowly-flowing river",
-							"a freight elevator"
+							"a freight elevator",
+							"subway tunnels"
 						],
 						organization: [
 							"a moving company",
@@ -1838,8 +2031,7 @@ const C = {
 							"a train ride",
 							"a hunt",
 							"a speeding car",
-							"the transfer of information",
-							"humming power lines"
+							"the transfer of information"
 						],
 						creature: [
 							"the crazed dancers",
@@ -1850,17 +2042,21 @@ const C = {
 							"a phone with intact GPS info",
 							"a water bottle",
 							"a pair of shoes",
-							"a passport"
+							"a passport",
+							"humming power lines"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-hourglasses-4.webp"
 				},
 				{
 					name: "Five of Hourglasses",
-					suit: "Hourglasses",
+					arcana: "Minor",
 					value: 5,
 					keyword: "Borderland",
 					summary: "Borderland is the place between two worlds or two states of being, or where Time and Space meet the physical world.",
+					note: "",
+					suit: "Hourglasses",
 					ghostText: {
 						individual: [
 							"a corrupt customs agent",
@@ -1882,12 +2078,12 @@ const C = {
 						],
 						situation: [
 							"existing between two worlds",
-							"uncertain loyalties",
+							"a standoff",
 							"a deal between two powers",
 							"only half awake",
 							"between life and death",
-							"the status quo",
-							"a standoff"
+							"uncertain loyalties",
+							"the status quo"
 						],
 						creature: [
 							"a Borderliner"
@@ -1901,14 +2097,17 @@ const C = {
 							"a diplomatic passport"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-hourglasses-5.webp"
 				},
 				{
 					name: "Six of Hourglasses",
-					suit: "Hourglasses",
+					arcana: "Minor",
 					value: 6,
 					keyword: "Hidden",
 					summary: "Hidden represents something that is obscured and hidden from view. It is strongly tied to the city of Ktonor in the Underworld.",
+					note: "",
+					suit: "Hourglasses",
 					ghostText: {
 						individual: [
 							"an undercover agent",
@@ -1923,8 +2122,8 @@ const C = {
 							"a dusty vault",
 							"a panic room",
 							"a secret passage",
-							"an unknown trail in the wilderness",
 							"a smuggling route",
+							"an unknown trail in the wilderness",
 							"a safehouse"
 						],
 						organization: [
@@ -1934,7 +2133,9 @@ const C = {
 						situation: [
 							"an undercover operation",
 							"staying away from trouble",
-							"hidden meanings in conversations"
+							"hidden meanings in conversations",
+							"a scream that goes unheard",
+							"uncertain loyalties"
 						],
 						creature: [
 							"a child of the Underworld",
@@ -1944,17 +2145,21 @@ const C = {
 							"the key to a safehouse",
 							"a map of a secret route",
 							"an ancient artifact",
-							"buried secrets"
+							"buried secrets",
+							"a crime scene photo with a hidden message"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-hourglasses-6.webp"
 				},
 				{
 					name: "Seven of Hourglasses",
-					suit: "Hourglasses",
+					arcana: "Minor",
 					value: 7,
 					keyword: "Labyrinth",
 					summary: "Labyrinth is a maze filled with dangers and confusion, and is tied to the Underworld.",
+					note: "",
+					suit: "Hourglasses",
 					ghostText: {
 						individual: [
 							"a mathematician working on an unsolvable problem",
@@ -1968,9 +2173,9 @@ const C = {
 							"twisting alleyways",
 							"a hedge maze",
 							"a dark cellar",
+							"a Brazillian Favela",
 							"a network of caves",
-							"subway tunnels",
-							"a Brazillian Favela"
+							"subway tunnels"
 						],
 						organization: [
 							"a cult worshipping the creatures of the Underworld"
@@ -1991,29 +2196,35 @@ const C = {
 						item: [
 							"the compass from an old sailing vessel",
 							"a thousand-piece jigsaw puzzle",
-							"a cypher written by a madman"
+							"a cypher written by a madman",
+							"a phone with scrambled GPS info"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-hourglasses-7.webp"
 				},
 				{
 					name: "Eight of Hourglasses",
-					suit: "Hourglasses",
+					arcana: "Minor",
 					value: 8,
 					keyword: "Crossroad",
 					summary: "Crossroad is connected to two distinct paths, a choice that has to be made and two very different outcomes.",
+					note: "",
+					suit: "Hourglasses",
 					ghostText: {
 						individual: [
 							"a woman running from her past",
 							"a pressured politician",
 							"a girl considering an abortion",
-							"a bitter marriage counselor"
+							"a bitter marriage counselor",
+							"a priest who has lost his faith"
 						],
 						location: [
-							"at a crossroad",
-							"a road leading off the highway",
+							"an unexpected fork in the road",
+							"a highway offramp",
 							"a railway station",
-							"stairs leading down into the subway"
+							"stairs leading down into the subway",
+							"an unknown trail in the wilderness"
 						],
 						organization: [
 							"a fertility clinic",
@@ -2023,7 +2234,7 @@ const C = {
 							"a choice more important than it appears",
 							"an impossible decision",
 							"a bad break-up",
-							"a scream that goes unheard",
+							"a bloodcurdling scream in the distance",
 							"a child playing with a gun"
 						],
 						creature: [
@@ -2033,23 +2244,28 @@ const C = {
 						item: [
 							"a letter with life-changing information",
 							"a backpack",
-							"a slot machine"
+							"a slot machine",
+							"a letter of introduction"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-hourglasses-8.webp"
 				},
 				{
 					name: "Nine of Hourglasses",
-					suit: "Hourglasses",
+					arcana: "Minor",
 					value: 9,
 					keyword: "Gate",
 					summary: "Gate represents a threshold or obstacle that must be crossed or be protected.",
+					note: "",
+					suit: "Hourglasses",
 					ghostText: {
 						individual: [
-							"a security guard",
+							"a surprisingly-intelligent security guard",
 							"a self-taught locksmith",
 							"a driven hacker",
-							"a hard-to-please middle-manager"
+							"a hard-to-please middle-manager",
+							"a strict judge with an axe to grind"
 						],
 						location: [
 							"a bank vault",
@@ -2061,13 +2277,15 @@ const C = {
 						organization: [
 							"the bank",
 							"border guards",
-							"a cult that has sworn to protect a secret"
+							"a cult that has sworn to protect a secret",
+							"a group of hackers spreading ransomware"
 						],
 						situation: [
 							"something that needs to be opened",
 							"unexpected security measures",
 							"someone who keeps many secrets",
-							"forgotten memories surface"
+							"repressed memories hold the key",
+							"congested traffic at rush hour"
 						],
 						creature: [
 							"a guardian",
@@ -2080,28 +2298,33 @@ const C = {
 							"a red pill"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-hourglasses-9.webp"
 				}
 			],
 			roses: [
-				null,
 				{
 					name: "Ace of Roses",
-					suit: "Roses",
+					arcana: "Minor",
 					value: 1,
 					keyword: "Gaia",
 					summary: "Gaia is the Untamed Wilderness, that which cannot be controlled, the primal hunger and raw emotions.",
+					note: "",
+					suit: "Roses",
 					ghostText: {
 						individual: [
 							"Madman more animal than man",
 							"Neo-pagan nature worshiper",
-							"Native shaman who demands a sacrifice"
+							"Native shaman who demands a sacrifice",
+							"Newborn baby",
+							"a feral child being reintroduced to society"
 						],
 						location: [
 							"Borderland to Gaia",
 							"An overgrown house",
 							"Depth of the wilds",
-							"An animal nest"
+							"An animal nest",
+							"a network of caves"
 						],
 						organization: [
 							"Cult worshiping the untamed wilderness"
@@ -2125,23 +2348,25 @@ const C = {
 							"Rotting carcass crawling with worms"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-roses-1.webp"
 				},
 				{
 					name: "Two of Roses",
-					suit: "Roses",
+					arcana: "Minor",
 					value: 2,
 					keyword: "Birth",
 					summary: "Birth represents what comes out of passion, the start of something new, a soul merged into flesh.",
+					note: "",
+					suit: "Roses",
 					ghostText: {
 						individual: [
 							"Strict midwife",
 							"Depressed mother",
 							"Newborn in an incubator",
-							"Newborn baby",
+							"Desperate baby kidnapper",
 							"Proud godfather",
-							"Teenage parents",
-							"Desperate baby kidnapper"
+							"Teenage parents"
 						],
 						location: [
 							"Run-down maternity ward",
@@ -2171,14 +2396,17 @@ const C = {
 							"Sharp objects at the bottom of a box of baby clothes"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-roses-2.webp"
 				},
 				{
 					name: "Three of Roses",
-					suit: "Roses",
+					arcana: "Minor",
 					value: 3,
 					keyword: "Survival",
 					summary: "Survival represents the will to go on against all odds, the survival of the fittest and conquering difficulties by pure iron will.",
+					note: "",
+					suit: "Roses",
 					ghostText: {
 						individual: [
 							"Hillbilly survivalist with an iron will",
@@ -2213,22 +2441,28 @@ const C = {
 							"Door chain",
 							"Field rations",
 							"Map where secret trails are marked out",
-							"Blood stained compass"
+							"Blood stained compass",
+							"Night-vision goggles"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-roses-3.webp"
 				},
 				{
 					name: "Four of Roses",
-					suit: "Roses",
+					arcana: "Minor",
 					value: 4,
 					keyword: "Growth",
 					summary: "Growth represents things that gain power and expand, be it will, body, or nature.",
+					note: "",
+					suit: "Roses",
 					ghostText: {
 						individual: [
 							"Boy with physical deformations",
 							"Dedicated bodybuilder",
-							"Grotesquely obese woman"
+							"Grotesquely obese woman",
+							"Teenage parents",
+							"an infant whose parents are unknown"
 						],
 						location: [
 							"Place overtaken by nature",
@@ -2257,27 +2491,31 @@ const C = {
 							"Syringe with steroids",
 							"Seed embedded in black earth",
 							"Fertilized egg",
-							"Self help book"
+							"Self help book",
+							"a deliberately-punctured condom"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-roses-4.webp"
 				},
 				{
 					name: "Five of Roses",
-					suit: "Roses",
+					arcana: "Minor",
 					value: 5,
 					keyword: "Predator",
 					summary: "Predator represents the hunter, the one that is hungry and preys on the weak.",
+					note: "",
+					suit: "Roses",
 					ghostText: {
 						individual: [
 							"Influential film mogul",
 							"Manipulative femme fatale",
-							"Impulsive serial killer",
-							"Serial rapist who lives in an unknowing family",
+							"Online profile with the nickname \"Alpha_Male\"",
+							"Conjurer of Passion",
 							"Ruthless paparazzi",
 							"Aggressive CEO",
-							"Online profile with the nickname \"Alpha_Male",
-							"\" Conjurer of Passion"
+							"Serial rapist who lives in an unknowing family",
+							"Impulsive serial killer"
 						],
 						location: [
 							"Seedy hotel close to the red light district",
@@ -2289,11 +2527,12 @@ const C = {
 							"Big game hunting society"
 						],
 						situation: [
-							"Preys on the weak",
-							"Stalking someone in the night",
-							"Seduction",
-							"Attack from an ambush",
-							"Hidden motif"
+							"preying on the weak",
+							"being stalked in the night",
+							"an act of calculated seduction",
+							"an attack from ambush",
+							"Hidden motif",
+							"A body that changes and twists into something bestial"
 						],
 						creature: [
 							"Nosferatu that hunts from the shadows",
@@ -2309,20 +2548,24 @@ const C = {
 							"Limousine with loyal driver"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-roses-5.webp"
 				},
 				{
 					name: "Six of Roses",
-					suit: "Roses",
+					arcana: "Minor",
 					value: 6,
 					keyword: "Swarm",
 					summary: "Swarm represents a gathering, a collective mind, a mob swallowed by passion and acting as one.",
+					note: "",
+					suit: "Roses",
 					ghostText: {
 						individual: [
 							"Devoted follower",
 							"Animal trainer",
 							"Fisherman with a dark secret",
-							"Agitated football supporter"
+							"Agitated football supporter",
+							"Ruthless paparazzi"
 						],
 						location: [
 							"Square and streets",
@@ -2334,17 +2577,17 @@ const C = {
 						organization: [
 							"Football supporters",
 							"Religious sect",
-							"Union Activists"
+							"Union Activists",
+							"A group sharing the same deviant mindset",
+							"Angry mob on social media"
 						],
 						situation: [
-							"Goes with the Flow",
-							"Sacrifice for the best of the Collective",
-							"Collective punishment",
-							"Gathering of people",
-							"Congested traffic during rush hour",
-							"A group sharing the same mindset",
-							"Angry mob on social media",
-							"People traveling in collective traffic"
+							"going with the flow proves disastrous",
+							"a sacrifice for the good of the many",
+							"collective punishment for an individual's crime",
+							"a tightly-packed gathering of people",
+							"a dangerous echo chamber",
+							"slow-moving traffic"
 						],
 						creature: [
 							"Pack of wolves",
@@ -2357,14 +2600,17 @@ const C = {
 							"Locust broach in bronze"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-roses-6.webp"
 				},
 				{
 					name: "Seven of Roses",
-					suit: "Roses",
+					arcana: "Minor",
 					value: 7,
 					keyword: "Prey",
 					summary: "Prey represents the victim of passion or be the target for some enemy or dangerous situation.",
+					note: "",
+					suit: "Roses",
 					ghostText: {
 						individual: [
 							"Celebrity terrorized by a ruthless stalker",
@@ -2379,7 +2625,8 @@ const C = {
 							"Hidden cell in the basement of a house",
 							"Empty streets at night",
 							"Safe house for women",
-							"Old forest road"
+							"Old forest road",
+							"Cabin in the woods"
 						],
 						organization: [
 							"Support group for survivors of rape and sexual abuse"
@@ -2387,7 +2634,8 @@ const C = {
 						situation: [
 							"Lured into a trap",
 							"Blackmailed into obedience",
-							"Stalked by someone or something"
+							"Stalked by someone or something",
+							"incest in a broken home"
 						],
 						creature: [
 							"Creature of Passion",
@@ -2400,20 +2648,24 @@ const C = {
 							"Incriminating video tape"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-roses-7.webp"
 				},
 				{
 					name: "Eight of Roses",
-					suit: "Roses",
+					arcana: "Minor",
 					value: 8,
 					keyword: "Obsession",
 					summary: "Obsession represents the grip when passion has gotten hold of you and you cannot control it but are a victim to its influence.",
+					note: "",
+					suit: "Roses",
 					ghostText: {
 						individual: [
 							"Voyeuristic photographer",
 							"Eccentric art collector",
 							"Depressed ex husband",
-							"Unbearable narcissist"
+							"Unbearable narcissist",
+							"Impulsive serial killer"
 						],
 						location: [
 							"Classy strip club",
@@ -2422,7 +2674,8 @@ const C = {
 						],
 						organization: [
 							"Boy band fan club",
-							"Model agency"
+							"Model agency",
+							"a rehabilitation center for strange addictions"
 						],
 						situation: [
 							"Enslaved by passion",
@@ -2443,14 +2696,17 @@ const C = {
 							"Statue of the virgin Mary"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-roses-8.webp"
 				},
 				{
 					name: "Nine of Roses",
-					suit: "Roses",
+					arcana: "Minor",
 					value: 9,
 					keyword: "Love",
 					summary: "Love is a bond that can be stronger than death. It can give you strength and purpose, but also drag you down and be your doom.",
+					note: "",
+					suit: "Roses",
 					ghostText: {
 						individual: [
 							"Man with a broken heart",
@@ -2461,11 +2717,11 @@ const C = {
 						],
 						location: [
 							"Motel next to the highway",
-							"Cabin in the woods",
+							"Dating site",
 							"Church in the countryside",
 							"Beautiful park in the city",
 							"Shop where you can buy wedding dresses",
-							"Dating site",
+							"Cabin in the woods",
 							"Corpse buried in the woods"
 						],
 						organization: [
@@ -2479,8 +2735,8 @@ const C = {
 							"Unanswered love",
 							"Marriage ceremony",
 							"Honeymoon trip",
-							"Family incest",
-							"Social media update"
+							"Social media update",
+							"Family incest"
 						],
 						creature: [
 							"Creature of Passion"
@@ -2495,17 +2751,19 @@ const C = {
 							"Love letter soaked in blood"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-roses-9.webp"
 				}
 			],
 			skulls: [
-				null,
 				{
 					name: "Ace of Skulls",
-					suit: "Skulls",
+					arcana: "Minor",
 					value: 1,
 					keyword: "Metropolis",
 					summary: "Metropolis represents mankind's ancestral home, the Eternal City and the very core of the Demiurge's Machinery.",
+					note: "",
+					suit: "Skulls",
 					ghostText: {
 						individual: [
 							"Mourning widow",
@@ -2514,12 +2772,12 @@ const C = {
 							"Strict and unimaginative manager"
 						],
 						location: [
-							"Funeral chapel",
+							"The Citadels",
 							"Ruined city",
 							"Labyrinth of alleyways",
 							"The Abyss",
 							"The Machine City",
-							"The Citadels"
+							"Funeral chapel"
 						],
 						organization: [
 							"Section 11",
@@ -2545,22 +2803,25 @@ const C = {
 							"Obituary for long dead patriarch"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-skulls-1.webp"
 				},
 				{
 					name: "Two of Skulls",
-					suit: "Skulls",
+					arcana: "Minor",
 					value: 2,
 					keyword: "Forgetfulness",
 					summary: "Forgetfulness represents that which has faded from memory. It is strongly connected to the cycle of rebirth and the Oubliettes of Forgetfulness in Metropolis.",
+					note: "",
+					suit: "Skulls",
 					ghostText: {
 						individual: [
 							"Hypnotist",
 							"Senior citizen",
 							"Careless bookkeeper",
-							"Trauma victim",
-							"Inattentive babysitter",
 							"Distracted priest",
+							"Inattentive babysitter",
+							"Trauma victim",
 							"Sloppy surgeon"
 						],
 						location: [
@@ -2576,12 +2837,12 @@ const C = {
 						],
 						situation: [
 							"Traumatic event",
-							"Alzheimer's",
 							"Dementia",
-							"Memory loss",
+							"a genuine case of sudden amnesia",
 							"Manipulated minds",
+							"shock therapy",
 							"Past lives",
-							"Electric shocks"
+							"Alzheimer's"
 						],
 						creature: [
 							"Lives on stolen memories",
@@ -2598,14 +2859,17 @@ const C = {
 							"Boxes in the attic"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-skulls-2.webp"
 				},
 				{
 					name: "Three of Skulls",
-					suit: "Skulls",
+					arcana: "Minor",
 					value: 3,
 					keyword: "Remnants",
 					summary: "Remnants represents that which has been left behind after death, destruction, or transition.",
+					note: "",
+					suit: "Skulls",
 					ghostText: {
 						individual: [
 							"Pragmatic archaeologist",
@@ -2616,7 +2880,9 @@ const C = {
 						location: [
 							"Ruins from ancient times",
 							"Abandoned family home",
-							"Shipwreck on the bottom of the sea"
+							"Shipwreck on the bottom of the sea",
+							"Corpse buried in the woods",
+							"Funeral chapel"
 						],
 						organization: [
 							"Legal firm handling inheritances",
@@ -2638,22 +2904,26 @@ const C = {
 							"Last page in a book",
 							"A distorted message on a cassette tape",
 							"Automated distress signal",
-							"Strange machinery with parts missing"
+							"Strange machinery with parts missing",
+							"Hand grenade from WWII"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-skulls-3.webp"
 				},
 				{
 					name: "Four of Skulls",
-					suit: "Skulls",
+					arcana: "Minor",
 					value: 4,
 					keyword: "Spirit",
 					summary: "Spirit represents the psyche, the immaterial essence and the machinery that chains the divine soul.",
+					note: "",
+					suit: "Skulls",
 					ghostText: {
 						individual: [
 							"Sophisticated medium with a rich clientele",
-							"Girl in the suburb who sees \"ghosts",
-							"\" Scientist who tries to photograph the spirit world",
+							"Girl in the suburb who sees \"ghosts\"",
+							"Scientist who tries to photograph the spirit world",
 							"Conjurer of spirits living in an abandoned train",
 							"Possessed child kept tied to the bed"
 						],
@@ -2668,7 +2938,8 @@ const C = {
 						],
 						situation: [
 							"Legend of a person that is whispered in the projects",
-							"Song calling from Achlys in the Underworld"
+							"Song calling from Achlys in the Underworld",
+							"Past lives"
 						],
 						creature: [
 							"Wraiths and Phantoms",
@@ -2682,22 +2953,25 @@ const C = {
 							"Pack of old letters in French"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-skulls-4.webp"
 				},
 				{
 					name: "Five of Skulls",
-					suit: "Skulls",
+					arcana: "Minor",
 					value: 5,
 					keyword: "Transition",
 					summary: "Transition represents the crossing from life to death or into another form of existence.",
+					note: "",
+					suit: "Skulls",
 					ghostText: {
 						individual: [
-							"Methodical and well prepared hitman",
+							"Seductive death magician",
 							"Executioner who barely can keep it together",
 							"Trauma victim hovering between life and death",
 							"Nurse with a god complex",
 							"Pornstar with an asphyxiation fetish",
-							"Seductive death magician"
+							"Methodical and well prepared hitman"
 						],
 						location: [
 							"Abortion clinic",
@@ -2725,20 +2999,24 @@ const C = {
 							"Vial with seed spilled during the moment of death"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-skulls-5.webp"
 				},
 				{
 					name: "Six of Skulls",
-					suit: "Skulls",
+					arcana: "Minor",
 					value: 6,
 					keyword: "Flesh",
 					summary: "Flesh represents the body as a shell after death or as a prison of a soul that should have been released.",
+					note: "",
+					suit: "Skulls",
 					ghostText: {
 						individual: [
 							"Morbid surgeon that takes trophies",
 							"Insane young man that keeps the body of his dead father tied to a bed in the attic",
 							"Restrained undertaker with deviant sexual urges",
-							"Lobotomized girl kept at the basement of a brothel"
+							"Lobotomized girl kept at the basement of a brothel",
+							"Sloppy surgeon"
 						],
 						location: [
 							"Morgue in stainless steel where the antiseptic smell barely can douse out the stench of rot",
@@ -2752,8 +3030,7 @@ const C = {
 						situation: [
 							"Severe case of leprosy",
 							"The dead come to life",
-							"Forced to eat human flesh",
-							"Cannibalism"
+							"a necessary act of cannibalism"
 						],
 						creature: [
 							"Damned legionnaires"
@@ -2765,26 +3042,31 @@ const C = {
 							"Box of scalpels and surgical knives"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-skulls-6.webp"
 				},
 				{
 					name: "Seven of Skulls",
-					suit: "Skulls",
+					arcana: "Minor",
 					value: 7,
 					keyword: "Weapon",
 					summary: "Weapon represents the tool that brings death. That which brings forth a transition through violence.",
+					note: "",
+					suit: "Skulls",
 					ghostText: {
 						individual: [
 							"Vigilante in the suburbs armed with silenced pistol",
 							"Russian mafia enforcer",
 							"Elite sniper that takes pride in his work",
-							"Murderer who wants to get close and personal with the knife"
+							"a poet with a straight razor",
+							"Methodical and well prepared hitman"
 						],
 						location: [
 							"Room with an electric chair",
 							"War memorial",
 							"Weapon storage",
-							"Military headquarters"
+							"Military headquarters",
+							"Medieval torture chamber"
 						],
 						organization: [
 							"Arms dealers",
@@ -2807,26 +3089,30 @@ const C = {
 							"Ingram Mac-11 machine pistol",
 							"Video clips of executions and lethal accidents",
 							"Old video cassette with snuff porn",
+							"Nuclear codes printed out from a dot matrix printer",
 							"Pack of cigarettes",
 							"Hand grenade from WWII",
-							"Nuclear codes printed out from a dot matrix printer",
-							"Crime scene photos with hidden messages"
+							"crime scene photos missing a murder weapon"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-skulls-7.webp"
 				},
 				{
 					name: "Eight of Skulls",
-					suit: "Skulls",
+					arcana: "Minor",
 					value: 8,
 					keyword: "Suffering",
 					summary: "Suffering represents the pain that comes with death and the cleansing of the soul. It is strongly connected to the cycle of rebirth and the Oubliettes of Suffering in Inferno.",
+					note: "",
+					suit: "Skulls",
 					ghostText: {
 						individual: [
 							"Self mutilating prophet",
 							"Professional dominatrix",
 							"Military interrogation expert",
-							"Religious flagellant"
+							"Religious flagellant",
+							"Trauma victim"
 						],
 						location: [
 							"Purgatory that creates a bridge between Elysium and Inferno",
@@ -2844,7 +3130,8 @@ const C = {
 							"Painful bone cancer",
 							"Secrets within the Family",
 							"Video tape of a young child getting skinned alive",
-							"Horrible flashbacks"
+							"Horrible flashbacks",
+							"a rabies infection"
 						],
 						creature: [
 							"Purgatides",
@@ -2855,23 +3142,28 @@ const C = {
 							"Crown of thorns made of barbed wire",
 							"Waterboarding equipment",
 							"Rusty spikes",
-							"Shackles with runes carved into them"
+							"Shackles with runes carved into them",
+							"grotesque crime scene photos"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-skulls-8.webp"
 				},
 				{
 					name: "Nine of Skulls",
-					suit: "Skulls",
+					arcana: "Minor",
 					value: 9,
 					keyword: "Inferno",
 					summary: "Inferno represents the shadow of Metropolis, the many hells and Citadels and the realm from which the will of Astaroth flows.",
+					note: "",
+					suit: "Skulls",
 					ghostText: {
 						individual: [
 							"Tattoo artist who binds the clients to Inferno",
 							"Charismatic cult leader who hands out razor blades",
 							"Heroin addict who has learned to walk between worlds",
-							"Violent fanatic who catches glimpses of Inferno"
+							"Violent fanatic who catches glimpses of Inferno",
+							"Murderer who wants to get close and personal with the knife"
 						],
 						location: [
 							"Citadel of Astaroth",
@@ -2885,7 +3177,8 @@ const C = {
 						situation: [
 							"Child drenched in oil and blood is placed on the steps of a monastery",
 							"Secret whispered on the death bed",
-							"Lyrics of a black metal band invoke the powers of hell"
+							"Lyrics of a black metal band invoke the powers of hell",
+							"an untreated rabies infection"
 						],
 						creature: [
 							"Nepharite",
@@ -2898,6 +3191,7 @@ const C = {
 							"\"Forgive me\" written in blood on a piece of paper"
 						]
 					},
+					isDrawingShiftCard: false,
 					imgfile: "minor-skulls-9.webp"
 				}
 			]
