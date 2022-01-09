@@ -50,6 +50,8 @@ export default class TarotCard {
 		this._cardNum = cardNum;
 		this._height = C.card.height;
 		this._width = C.card.width;
+		this._affiliation = cardData.affiliation;
+		this._arcana = cardData.affiliation.toLowerCase() in C.TAROTDATA.suits ? "minor" : "major";
 		this._deck = deck;
 		this._x = this.deck.x;
 		this._y = this.deck.y;
@@ -71,9 +73,8 @@ export default class TarotCard {
 	get cardBack() { return (this._cardBack = this._cardBack ?? U.getImgCSS(`${this.deck.type}/card-back-${gsap.utils.random(1, C.numCardBacksByType[this.deck.type], 1)}.webp`)) }
 
 	get name() { return this.data.name }
-	get suit() { return (this.data.suit ?? "major-arcana").toLowerCase() }
-	get affiliation() { return (this.data.affiliation ?? this.suit).toLowerCase() }
-	get arcana() { return this.suit === "major-arcana" ? "major" : "minor" }
+	get affiliation() { return this._affiliation.toLowerCase() }
+	get arcana() { return this._arcana }
 	get keyword() { return this.data.keyword }
 
 	get slot() { return this._slot }
@@ -131,13 +132,7 @@ export default class TarotCard {
 				if (this.slot === SessionData.nextFaceDownSlot) {
 					this.flip();
 				} else {
-					const nextCardSel = SessionData.layout[SessionData.nextFaceDownSlot].card.selector;
-					const faceDownSel = Object.values(SessionData.layout)
-						.filter(({isFaceUp}) => !isFaceUp)
-						.map(({card}) => card.selector)
-						.join(", ");
-					gsap.effects.blinkInvalid(faceDownSel);
-					gsap.effects.blinkValid(nextCardSel);
+					gsap.effects.wiggleCard(SessionData.layout[SessionData.nextFaceDownSlot].card.cardElem, {z: 40});
 				}
 				break;
 			}
@@ -205,20 +200,6 @@ export default class TarotCard {
 						// Display card KEYWORD (title, top) and NAME (subtitle, bottom)
 						ghostPopText(this.keyword, this, 0, 25, {css: titleStyles});
 						ghostPopText(`the ${this.name}`, this, 95, 25, {css: subTitleStyles});
-						return;
-						const [numText, suitText] = this.name.split(/\s+of\s+/);
-						ghostPopText(numText, this, 95, 100, {
-							css: subTitleStyles
-						}, {delay: 0.5});
-						ghostPopText("of", this, 103, 100, {
-							css: {
-								...subTitleStyles,
-								fontSize: subTitleStyles.fontSize / 2
-							}
-						}, {delay: 0.7});
-						ghostPopText(suitText, this, 105, 100, {
-							css: subTitleStyles
-						}, {delay: 0.9});
 					}
 
 					// this._hoverTimeline = gsap.to(this.cardElem, {
@@ -236,20 +217,12 @@ export default class TarotCard {
 				} else if (this.slot === SessionData.nextFaceDownSlot) {
 					this._hoverTimeline = gsap.timeline()
 						.to(this.cardElem, {
-							z: "+=50",
+							z: `+=${C.card.height / 2}`,
 							duration: 0.5,
 							ease: "power4.inOut",
-							// boxShadow: "rgb(0 255 0) 0px 0px 50px",
 							scale: 1.2
-						}, 0)
-						.fromTo(`.tarot-card-main:not(#${this.id})`, {
-							filter: "none"
-						}, {
-							filter: "brightness(0.7) saturate(0.3)",
-							scale: 0.8,
-							duration: 0.5,
-							ease: "power4.inOut"
 						}, 0);
+					// gsap.effects.wiggleCard(this.cardElem, {z: "+=0"});
 				}
 			}
 
@@ -326,48 +299,49 @@ export default class TarotCard {
 		if (slot) {
 			SessionData.layout[slot].card = this;
 			this.slot = slot;
-			gsap.to(this.cardElem, {
+			// gsap.to(this.cardElem, {
+			// 	// rotationX: 0,
+			// 	z: 155,
+			// 	duration: 0.25,
+			// 	ease: "expo.in",
+			// 	callbackScope: this,
+			// 	onStart() {
+			// 		gsap.set(".tarot-card-main", {pointerEvents: slot === 5 ? "none" : "all"});
+			// 	},
+			// 	onComplete() {
+			gsap.killTweensOf(this.cardElem);
+			const cardState = Flip.getState(this.cardElem, "boxShadow, filter, rotationZ");
+			$(this.cardElem).appendTo("#card-layer");
+			gsap.set(this.cardElem, {
 				rotationX: 0,
-				z: 400,
-				duration: 0.25,
-				ease: "expo.in",
+				rotationZ: 0,
+				z: 0,
+				height: C.card.height,
+				width: C.card.width,
+				scale: 1,
+				boxShadow: "5px 5px 5px rgba(0,0,0,0.4)",
+				filter: "none",
+				...SessionData.layout[slot].pos
+			});
+			Flip.from(cardState, {
+				duration: 2,
+				ease: "expo.out",
+				absolute: true,
+				nested: true,
+				prune: true,
+				scale: true,
 				callbackScope: this,
-				onStart() {
-					gsap.set(".tarot-card-main", {pointerEvents: slot === 5 ? "none" : "all"});
-				},
 				onComplete() {
-					gsap.killTweensOf(this.cardElem);
-					const cardState = Flip.getState(this.cardElem, "boxShadow, filter, rotationZ");
-					$(this.cardElem).appendTo("#card-layer");
-					gsap.set(this.cardElem, {
-						rotationZ: 0,
-						z: 0,
-						height: C.card.height,
-						width: C.card.width,
-						scale: 1,
-						boxShadow: "5px 5px 5px rgba(0,0,0,0.4)",
-						filter: "none",
-						...SessionData.layout[slot].pos
-					});
-					Flip.from(cardState, {
-						duration: 2,
-						ease: "expo.out",
-						absolute: true,
-						nested: true,
-						prune: true,
-						scale: true,
-						callbackScope: this,
-						onComplete() {
-							gsap.set(this.cardElem, {backgroundPosition: "center center"});
-							if (slot === 5) {
-								gsap.killTweensOf(".canvas-layer, .canvas-layer *");
-								gsap.set(".tarot-card-main", {pointerEvents: "all"});
-								SetPhase(C.phases.cardsDealt);
-							}
-						}
-					});
+					gsap.set(this.cardElem, {backgroundPosition: "center center"});
+					if (slot === 5) {
+						gsap.killTweensOf(".canvas-layer, .canvas-layer *");
+						gsap.set(".tarot-card-main", {pointerEvents: "all"});
+						SetPhase(C.phases.cardsDealt);
+					}
 				}
 			});
+			// }
+			// });
 
 		}
 	}

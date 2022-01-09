@@ -5,7 +5,7 @@
 |*     ▌██████████████████░░░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░░░███████████████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
-import {gsap, ExpoScaleEase, Flip, MotionPathPlugin, RoughEase, SlowMo, SplitText} from "./external/greensock/all.js";
+import {gsap, CustomEase, CustomWiggle, ExpoScaleEase, Flip, MotionPathPlugin, RoughEase, SlowMo, SplitText} from "./external/greensock/all.js";
 import {InitializeDomElements, Initialize, SessionData, SetPhase, Update} from "../kult.js";
 import U from "./utilities.js";
 import C from "./constants.js";
@@ -17,7 +17,7 @@ const DEBUG = {
 	// isLimitingDeckSize: 2,
 	FUNCS: {
 		"To Orbit": [() => {
-			gsap.globalTimeline.timeScale(10);
+			gsap.globalTimeline.timeScale(50);
 			gsap.delayedCall(5, () => {
 				const deck = SessionData.decks[2];
 				SetPhase(C.phases.cardsInOrbit, {deck});
@@ -26,10 +26,10 @@ const DEBUG = {
 				});
 			});
 		}, () => {
-			gsap.globalTimeline.timeScale(10);
+			gsap.globalTimeline.timeScale(50);
 			gsap.delayedCall(5, () => {
 				const deck = SessionData.decks[2];
-				deck._deck = deck._deck.filter((deckData) => !("suit" in deckData) || ["Crescents", "Eyes", "Hourglasses"].includes(deckData.suit));
+				deck._deck = deck._deck.filter((deckData) => ["Crescents", "Eyes", "Hourglasses"].includes(deckData.affiliation));
 				SetPhase(C.phases.cardsInOrbit, {deck});
 				gsap.delayedCall(13, () => {
 					gsap.globalTimeline.timeScale(1);
@@ -37,7 +37,7 @@ const DEBUG = {
 			});
 		}, "black", "white"],
 		"To Dealt": [() => {
-			gsap.globalTimeline.timeScale(10);
+			gsap.globalTimeline.timeScale(50);
 			gsap.delayedCall(5, () => {
 				const deck = SessionData.decks[2];
 				SetPhase(C.phases.cardsInOrbit, {deck});
@@ -49,10 +49,10 @@ const DEBUG = {
 				});
 			});
 		}, () => {
-			gsap.globalTimeline.timeScale(10);
+			gsap.globalTimeline.timeScale(50);
 			gsap.delayedCall(5, () => {
 				const deck = SessionData.decks[2];
-				deck._deck = deck._deck.filter((deckData) => !("suit" in deckData) || ["Crescents", "Eyes", "Hourglasses"].includes(deckData.suit));
+				deck._deck = deck._deck.filter((deckData) => ["Crescents", "Eyes", "Hourglasses"].includes(deckData.affiliation));
 				SetPhase(C.phases.cardsInOrbit, {deck});
 				gsap.delayedCall(13, () => {
 					SessionData.deck.cards.slice(0, 5).forEach((card) => card.deal());
@@ -63,7 +63,7 @@ const DEBUG = {
 			});
 		}, "black", "white"],
 		"To Revealed": [() => {
-			gsap.globalTimeline.timeScale(10);
+			gsap.globalTimeline.timeScale(50);
 			gsap.delayedCall(5, () => {
 				const deck = SessionData.decks[2];
 				SetPhase(C.phases.cardsInOrbit, {deck});
@@ -71,15 +71,17 @@ const DEBUG = {
 					SessionData.deck.cards.slice(0, 5).forEach((card) => card.deal());
 					gsap.delayedCall(13, () => {
 						Object.values(SessionData.layout).forEach(({card}) => card.flip());
-						gsap.globalTimeline.timeScale(1);
+						gsap.delayedCall(10, () => {
+							gsap.globalTimeline.timeScale(1);
+						})
 					});
 				});
 			});
 		}, () => {
-			gsap.globalTimeline.timeScale(10);
+			gsap.globalTimeline.timeScale(50);
 			gsap.delayedCall(5, () => {
 				const deck = SessionData.decks[2];
-				deck._deck = deck._deck.filter((deckData) => !("suit" in deckData) || ["Crescents", "Eyes", "Hourglasses"].includes(deckData.suit));
+				deck._deck = deck._deck.filter((deckData) => ["Crescents", "Eyes", "Hourglasses"].includes(deckData.affiliation));
 				SetPhase(C.phases.cardsInOrbit, {deck});
 				gsap.delayedCall(13, () => {
 					SessionData.deck.cards.slice(0, 5).forEach((card) => card.deal());
@@ -118,7 +120,7 @@ const DEBUG = {
 					gsap.globalTimeline.timeScale(0.2);
 					$(event.target).text("▲⏰▲").css({color: "black", backgroundColor: "brown"});
 				} else {
-					gsap.globalTimeline.timeScale(10);
+					gsap.globalTimeline.timeScale(50);
 					$(event.target).text("▼⏰▼").css({color: "white", backgroundColor: "#330033"});
 				}
 			},
@@ -245,7 +247,7 @@ const DEBUG = {
 		return pingElem;
 	},
 	C, U,
-	gsap, ExpoScaleEase, Flip, MotionPathPlugin, RoughEase, SlowMo, SplitText,
+	gsap, CustomEase, CustomWiggle, ExpoScaleEase, Flip, MotionPathPlugin, RoughEase, SlowMo, SplitText,
 	TarotDeck, TarotCard,
 	initialize: () => {
 		// Fetch debug layer & kill everything inside it.

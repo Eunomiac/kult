@@ -32,59 +32,121 @@ gsap.registerEffect({
 	}
 });
 gsap.registerEffect({
+	name: "wiggleCard",
+	extendTimeline: true,
+	defaults: {
+		z: 20,
+		angle: 5,
+		duration: 0.2
+	},
+	effect: (targets, config = {}) => gsap.timeline()
+		.to(targets, {
+			z: config.z,
+			rotationX: config.angle,
+			rotationY: config.angle,
+			duration: 0.5,
+			repeat: 1,
+			yoyo: true,
+			ease: "circ.out"
+		}, 0)
+		.to(targets, {
+			rotationX: -config.angle,
+			repeat: 1,
+			yoyo: true,
+			duration: 0.25,
+			repeatDelay: 0.25,
+			ease: "sine.inOut"
+		}, 0)
+		.to(targets, {
+			rotationY: -config.angle,
+			repeat: 1,
+			yoyo: true,
+			duration: 0.25,
+			repeatDelay: 0.25,
+			ease: "sine.inOut"
+		}, 0.25)
+		.to(targets, {rotationX: 0, rotationY: 0, duration: 0.15, ease: "power2.out"}, ">")
+		.timeScale(1 / config.duration)
+});
+/*
+- have suit or key symbol ghost-pop-expand like a pulse whenever the card spits out ghost text
+- give box shadow to ghost container element and blur it a bunch, with a border radius, maybe less taxing
+- ghost text should rise out of a point ON the card, same z-coord and everything, then animate it to the desired 3d position
+- look at codepen and google animation examples of what you want so you can steal their ease curves and timing
+*/
+
+gsap.registerEffect({
 	name: "splashGhostText",
 	extendTimeline: true,
 	defaults: {
 		duration: 10,
 		ease: "none",
-		delay: 0.5
+		delay: 0,
+		xMult: {min: 0, max: 1.5},
+		yMult: {min: 0.5, max: 1}
 	},
 	effect: (targets, config = {}) => {
-		gsap.set(targets, {filter: "blur(0px) brightness(1) drop-shadow(20px 20px 10px black)"});
+		/* What we want to happen:
+		- letters start in
+			1) x, y, z = final relative position within container divs, but with absolute = true
+			2) drop-shadow filter only
+			3) opacity: 1
+			4) scale: 1
+		- letter-container starts at initial x pos but final z pos, doesn't start moving till letters are in place
+		- from(letters): (all start time = 0)
+			- opacity: 0 --- very fast, staggered,
+			- x & y: origin --- starts slow, ends fast; will have to determine origin point relative to ghost-container
+				- might be tricky if we want ghost container to start moving before all letters are in place
+			- z: origin --- starts fast, ends slow
+			- blur filter --- fit into either x/y or z tween
+		- to(letter-container): starts sometime into animation, uses back-and-forth slow ease
+		- to(letters) --- hop out and fade out, staggered so they're gone before letter-container animation finishes
+
+		For positioning:
+
+		function getXPos(eWidth, eMult) { return eMult * slotWidth - 0.5 * eWidth }
+		function getYPos(eHeight, eMult) { return eMult * slotHeight - 0.5 * eHeight }
+
+		*/
+
+		gsap.set(targets, {filter: "blur(0px) drop-shadow(20px 20px 10px black)"});
+		// gsap.set(targets, {filter: "blur(0px)"});
 		const [ghostContainer] = $(targets[0]).parents("div.ghost-container");
+		const containerWidth = parseInt(gsap.getProperty(ghostContainer, "width", "px"));
+		const containerHeight = parseInt(gsap.getProperty(ghostContainer, "height", "px"));
 		const timeToStaggerTargets = 0.1 * targets.length;
 		return gsap.timeline({delay: config.delay})
 			.fromTo(ghostContainer, {
-				x: `-=${0.5 * gsap.getProperty(ghostContainer, "width")}`
+				x: gsap.utils.random(config.xMin * containerWidth, config.xMax * containerWidth),
+				y: gsap.utils.random(-0.5 * containerHeight, 0.5 * containerHeight),
+				z: gsap.utils.random(150, 250, 1)
 			}, {
-				x: `+=${gsap.getProperty(ghostContainer, "width")}`,
+				x: `+=${config.xMax * containerWidth - config.xMin * containerWidth}`,
 				duration: config.duration + timeToStaggerTargets,
 				ease: "slow(0.1, 2, false)"
-			})
-			.fromTo(ghostContainer, {
-				z: 10,
-				scale: 1
-			}, {
-				z: "+=100",
+			}, 0)
+			.to(ghostContainer, {
+				z: "+=500",
 				y: "-=200",
-				scale: 2.5,
-				opacity: 0.5,
 				ease: "expo.in",
 				duration: config.duration + timeToStaggerTargets - 0.5 * (config.duration + timeToStaggerTargets)
-			}, 0.5 * (config.duration + timeToStaggerTargets))
+			}, 0.5 + 0.5 * (config.duration + timeToStaggerTargets))
 			.fromTo(targets, {
-				filter: "blur(20px) brightness(1) drop-shadow(20px 20px 10px black)"
+				filter: "blur(20px) drop-shadow(20px 20px 10px black)",
+				opacity: 0
 			}, {
-				filter: "blur(0px) brightness(8) drop-shadow(20px 20px 10px black)",
+				filter: "blur(0px) drop-shadow(20px 20px 10px black)",
+				opacity: 1,
 				duration: (0.2 * config.duration) / 2,
 				ease: config.ease,
 				stagger: {
 					amount: 0.5,
 					ease: "none",
-					start: "end"
-				}
-			}, 0)
-			.from(targets, {
-				duration: 0.1,
-				opacity: 0,
-				ease: "none",
-				stagger: {
-					each: 0.02,
-					ease: "power2"
+					from: "end"
 				}
 			}, 0)
 			.to(targets, {
-				filter: "blur(30px) brightness(10) drop-shadow(20px 20px 10px black)",
+				filter: "blur(30px) drop-shadow(20px 20px 10px black)",
 				duration: (0.2 * config.duration) / 2,
 				ease: config.ease,
 				stagger: {
@@ -100,8 +162,20 @@ gsap.registerEffect({
 						});
 					}
 				}
-			}, config.duration - (0.2 * config.duration) / 2 + timeToStaggerTargets - 0.5)
-			.timeScale(gsap.utils.random(0.8, 1.2)); // - timeToStaggerTargets);
+			}, config.duration - (0.2 * config.duration) / 2 + timeToStaggerTargets)
+			.to(targets, {
+				x: "+=200",
+				y: "-=300",
+				scale: 2,
+				duration: 3,
+				ease: "expo.in",
+				stagger: {
+					amount: config.duration + timeToStaggerTargets - 0.5 * (config.duration + timeToStaggerTargets),
+					ease: "expo.out",
+					from: "end"
+				}
+			}, config.duration - (0.2 * config.duration) / 2 + timeToStaggerTargets - 1)
+			.timeScale(gsap.utils.random(0.8, 1.2));
 	}
 });
 gsap.registerEffect({
@@ -308,7 +382,7 @@ function ghostPopText(text, card, yPercent, z = 0, {css = {}, vars = {}} = {}) {
 		x: C.card.width / 2,
 		y: C.card.height * (yPercent / 100),
 		z,
-		rotationX: -25,
+		rotationX: -25
 		// backgroundColor: "rgba(0, 255, 255, 0.2)",
 		// outline: "2px dotted cyan"
 	});
@@ -316,45 +390,20 @@ function ghostPopText(text, card, yPercent, z = 0, {css = {}, vars = {}} = {}) {
 	gsap.effects.splashPopText(split.chars, vars).then(() => $($textContainer).remove());
 }
 
-function ghostBanner(text, {x, y, z} = {}) {
-	x = x ?? C.slotPos[1].x;
-	y = y ?? C.slotPos[1].y;
-	z = z ?? 300;
-	const [ghostElem] = $("<span class=\"ghost-text ghost-banner\"></span>").text(text).appendTo("#control-layer");
-	gsap.set(ghostElem, {
-		x,
-		y,
-		z,
-		transformOrigin: "50% 50%"
-		// backgroundColor: "rgba(255, 255, 255, 0.2)",
-		// outline: "2px dotted white"
-	});
-	const split = new SplitText(ghostElem, {type: "chars,words,lines", position: "absolute"});
-	gsap.effects.splashGhostText(split.chars, {x, y, horizSpan: 0.25 * gsap.getProperty("#control-layer", "width")}).then(() => $(ghostElem).remove());
-	// DEBUG.PING({x: C.slotPos[1].x, y: C.slotPos[1].y, z: 0}, {parentSelector: $("#control-layer")[0], label: "Slot Pos", color: "cyan", bgColor: "lime", shadowColor: "black"});
-	// DEBUG.PING({x: gsap.getProperty("#control-layer", "x"), y: gsap.getProperty("#control-layer", "y"), z: gsap.getProperty("#control-layer", "z")}, {parentSelector: $("#control-layer")[0], label: "Control Pos", color: "yellow", bgColor: "cyan", shadowColor: "black"});
-}
-
-function ghostText(slot, text, duration) {
+function ghostBanner(text, vPos = "middle", css = {}) {
 	// First create the internal text element, to measure its width.
-	const $ghostElem = $("<span class=\"ghost-text\"></span>")
-		.text(text)
-		.appendTo(`#ghost-slot-${slot}`);
-	gsap.set($ghostElem, {
-		whiteSpace: "nowrap"
-	});
-	const ghostWidth = parseInt(gsap.getProperty($ghostElem[0], "width", "px"));
-	const ghostHeight = parseInt(gsap.getProperty($ghostElem[0], "height", "px"));
-	// gsap.set($ghostElem, {
-	// 	backgroundColor: "rgba(255, 0, 0, 0.2)",
-	// 	outline: "1px dotted red"
-	// });
+	const [ghostElem] = $("<span class=\"ghost-text ghost-banner\"></span>")
+		.html(text)
+		.appendTo("#control-layer");
+	gsap.set(ghostElem, {whiteSpace: "nowrap", ...css});
+	const ghostWidth = parseInt(gsap.getProperty(ghostElem, "width", "px"));
+	const ghostHeight = parseInt(gsap.getProperty(ghostElem, "height", "px"));
 
 	// Now create the container to control translation animations
-	const $ghostContainer = $(`<div class="ghost-container ghost-container-slot-${slot}"></div>`)
-		.append($ghostElem)
-		.appendTo(`#ghost-slot-${slot}`);
-	gsap.set($ghostContainer, {
+	const [ghostContainer] = $("<div class=\"ghost-container ghost-banner-container\"></div>")
+		.append(ghostElem)
+		.appendTo("#control-layer");
+	gsap.set(ghostContainer, {
 		display: "blocK",
 		xPercent: -50,
 		yPercent: -50,
@@ -363,14 +412,53 @@ function ghostText(slot, text, duration) {
 		position: "absolute",
 		pointerEvents: "none",
 		transformOrigin: "50% 50%",
-		x: gsap.utils.random(0.5 * ghostWidth, gsap.getProperty(`#ghost-slot-${slot}`, "width") - 0.5 * ghostWidth),
-		y: gsap.utils.random(0.5 * ghostHeight, gsap.getProperty(`#ghost-slot-${slot}`, "height") - 0.5 * ghostHeight),
-		z: 0
-		// backgroundColor: "rgba(0, 255, 255, 0.2)",
-		// outline: "2px dotted cyan"
+		x: parseInt(gsap.getProperty("#control-layer", "width", "px")) / 2,
+		y: {
+			top: 0,
+			middle: parseInt(gsap.getProperty("#control-layer", "height", "px")) / 2,
+			bottom: parseInt(gsap.getProperty("#control-layer", "height", "px"))
+		}[vPos]
 	});
-	const split = new SplitText($ghostElem[0], {type: "chars,words,lines"});
-	gsap.effects.splashGhostText(split.chars, {duration}).then(() => $($ghostContainer).remove());
+	const split = new SplitText(ghostElem, {type: "chars,words,lines", position: "absolute"});
+	return gsap.effects.splashGhostText(split.chars, {xMin: -0.3, xMax: 0.3}).then(() => $(ghostContainer).remove());
+}
+
+function ghostText(slot, text, duration) {
+	// Retrieve top container for slot ghost text
+	const [ghostSlot] = $(`#ghost-slot-${slot}`);
+	const slotWidth = parseInt(gsap.getProperty(ghostSlot, "width", "px"));
+	const slotHeight = parseInt(gsap.getProperty(ghostSlot, "height", "px"));
+
+	// Create the internal text element, to measure its width.
+	const [ghostElem] = $("<span class=\"ghost-text\"></span>")
+		.html(text)
+		.appendTo(ghostSlot);
+	gsap.set(ghostElem, {whiteSpace: "nowrap"});
+	const ghostWidth = parseInt(gsap.getProperty(ghostElem, "width", "px"));
+	const ghostHeight = parseInt(gsap.getProperty(ghostElem, "height", "px"));
+
+	// Now create the container to control translation animations
+	const [ghostContainer] = $(`<div class="ghost-container ghost-container-slot-${slot}"></div>`)
+		.append(ghostElem)
+		.appendTo(ghostSlot);
+	gsap.set(ghostContainer, {
+		display: "blocK",
+		xPercent: -50,
+		yPercent: -50,
+		height: ghostHeight,
+		width: ghostWidth,
+		position: "absolute",
+		pointerEvents: "none",
+		transformOrigin: "50% 50%",
+		x: slotWidth / 2,
+		y: slotHeight / 2,
+		z: 0,
+		rotationX: -1 * gsap.getProperty("#over-layer", "rotationX")
+	});
+	const split = new SplitText(ghostElem, {type: "chars", position: "absolute"});
+	return gsap.timeline({onComplete() { $(ghostContainer).remove() }})
+		.splashGhostText(split.chars, {duration}, 0)
+		.wiggleCard(SessionData.layout[slot].card.cardElem, {z: 20, angle: 5, duration: 0.2}, 0.5);
 }
 
 const SetPhase = (phase, data) => {
@@ -485,21 +573,19 @@ const initCardsDealt = () => {
 		.then(() => {
 			for (let i = 1; i <= 5; i++) {
 				const $ghostZone = $(`<div id="ghost-slot-${i}" class="ghost-zone"></div>`)
-					.appendTo("#over-layer");
+					.appendTo("#card-layer");
 				gsap.set($ghostZone, {
-					xPercent: -50,
-					yPercent: -50,
-					height: 1.25 * C.card.height,
-					width: 2 * C.card.width,
+					// xPercent: -50,
+					// yPercent: -50,
+					height: C.card.height,
+					width: C.card.width,
 					// backgroundColor: "rgba(0, 255, 0, 0.2)",
 					// outline: "2px dashed lime",
 					position: "absolute",
 					pointerEvents: "none",
 					display: "block",
-					x: C.slotPos[i].x,
-					y: C.slotPos[i].y + U.getPixels(13, "vh"),
-					z: 150,
-					rotationX: -1 * gsap.getProperty("#over-layer", "rotationX")
+					x: gsap.getProperty(SessionData.layout[i].card.cardElem, "x"),
+					y: gsap.getProperty(SessionData.layout[i].card.cardElem, "y")
 				});
 			}
 		});
@@ -517,11 +603,11 @@ const initCardsRevealed = () => {
 				SessionData.inTransition = false;
 			}
 		}, 0)
-		.to(".ghost-zone", {
-			x: "+=5vw",
-			ease: "back.out(2)",
-			duration: 3
-		}, 0)
+		// .to(".ghost-zone", {
+		// 	x: "+=5vw",
+		// 	ease: "back.out(2)",
+		// 	duration: 3
+		// }, 0)
 		.to(".tarot-card-main", {
 			scale: 1,
 			duration: 0.5,

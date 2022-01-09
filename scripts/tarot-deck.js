@@ -211,7 +211,7 @@ export default class TarotDeck {
 		const stepOffset = C.deckOffset / this.cards.length;
 
 		gsap.fromTo(this.cardElems, {
-			filter: "none",
+			filter: "none"
 		}, {
 			x(cardNum, cardElem) { return xCenter + (radius * U.sinOf(stepAngle * cardNum)) + gsap.utils.random(-150, 150) },
 			y(cardNum, cardElem) { return yCenter + (radius * U.cosOf(stepAngle * cardNum)) + gsap.utils.random(-150, 150) },
